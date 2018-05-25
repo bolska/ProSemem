@@ -1,0 +1,108 @@
+/*Tira a borda do ScrollPane (outra opção)*/
+.noborder{  
+    -fx-padding: 0;  
+    -fx-background-insets: 0;  
+}
+
+.border {
+   -fx-border-style: solid inside; 
+   -fx-border-width: 0.5;
+   -fx-border-color: gray;
+}
+
+.HBox{
+    -fx-padding: 1;
+    -fx-border-insets: 1;
+    -fx-background-insets: 1;
+    
+    -fx-background-radius: 2;
+    -fx-border-style: solid inside; 
+    -fx-border-width: 1;
+    -fx-border-radius: 2;
+    -fx-border-color: blue;
+}
+
+.HBox:hover{
+  -fx-border-color: red;
+}
+
+.Meus-comp {
+    -fx-background-color: #ffffff;
+} 
+
+.jfx-snackbar-content {
+    -fx-background-color: BLACK;
+    -fx-background-radius: 15;
+}
+.jfx-snackbar-toast {
+    -fx-text-fill: WHITE;
+    -fx-font-size: 18;  
+}
+.jfx-snackbar-action {
+    -fx-text-fill: #ff4081; 
+}
+
+.Label-atividade{
+    -fx-label-padding: 0 2 0 10;
+    -fx-border-insets: 1;
+    -fx-background-insets: 1;
+    
+    -fx-background-radius: 10;
+    -fx-border-style: solid inside; 
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+.Anchor-top {
+    -fx-background-color: #496eff;
+}
+
+.Background-calendar {
+    -fx-background-color: #ffffff; 
+    /*#cad3f7;*/
+}
+
+.Box-dia {
+   -fx-background-radius: 5;
+   -fx-border-radius: 5;  
+}
+
+.Box-dia:hover{
+    -fx-effect: dropshadow(gaussian, gray, 10, 0.5, 0, 0);
+}
+
+.Set-Border-Button {
+    -fx-border-style: solid inside; 
+    -fx-border-width: 1;
+    -fx-border-color: #496eff;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    
+    -fx-text-fill: #496eff;
+    -jfx-rippler-fill: #496eff;
+}
+
+.Set-Border-Button:hover {
+    -fx-background-color: rgba(73, 110, 255, 0.3);
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.scroll-pane {
+   -fx-background-color: transparent;
+}
+
+.column-header {
+    -fx-background-color: white;
+    
+    -fx-border-style: solid inside; 
+    -fx-border-width: 0.5;
+    -fx-border-color: gray;
+}
+
+.column-header:hover {
+    -fx-background-color: gray;
+}
+
