@@ -5,7 +5,6 @@
  */
 package Classes;
 
-import java.time.LocalDate;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -19,6 +18,7 @@ public class AtividadeProperty {
     private SimpleIntegerProperty intervalo;
     private SimpleStringProperty tipo;    //"P" = Principal, "I" = Importante, "S" = Secundário
     private SimpleIntegerProperty protocoloId;
+    private SimpleStringProperty obs;
     private Atividade atividade;
     
     private SimpleStringProperty dataGerada;
@@ -31,6 +31,7 @@ public class AtividadeProperty {
         intervalo = new SimpleIntegerProperty(a.getIntervalo());
         tipo = new SimpleStringProperty(a.getTipo());
         protocoloId = new SimpleIntegerProperty(a.getProtocoloId());
+        obs = new SimpleStringProperty(a.getObs());
     }
 
     public int getId(){
@@ -57,6 +58,10 @@ public class AtividadeProperty {
         return atividade;
     }
     
+    public String getObs(){
+        return obs.getValue();
+    }
+    
     public void setDescricaoProperty(String descricao){
         this.descricao = new SimpleStringProperty(descricao);
         this.atividade.setDescricao(descricao);
@@ -72,12 +77,9 @@ public class AtividadeProperty {
         this.atividade.setTipo(tipo);
     }
     
-//    public String getDataGerada(){
-//        return this.dataGerada.getValue();
-//    }
-//    
-//    public void setDataGeradaProperty(LocalDate data){
-//        data = data.plusDays(intervalo.getValue());
-//        this.dataGerada = new SimpleStringProperty(data.toString());
-//    }
+    public void setObsProperty(String obs){
+        this.obs = new SimpleStringProperty(obs);
+        this.atividade.setObs(obs);
+    }
+    
 }

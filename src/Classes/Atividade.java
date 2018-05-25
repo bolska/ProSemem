@@ -15,6 +15,7 @@ public class Atividade {
     private int intervalo;
     private String tipo;    //Principal, Importante, Secundário
     private int protocoloId;
+    private String obs;
 
     public int getId() {
         return id;
@@ -54,5 +55,13 @@ public class Atividade {
 
     public void setProtocoloId(int protocoloId) {
         this.protocoloId = protocoloId;
+    }
+
+    public String getObs() {
+        return obs;
+    }
+
+    public void setObs(String obs) {
+        this.obs = obs;
     }
 }

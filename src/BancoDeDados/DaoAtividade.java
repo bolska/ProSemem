@@ -6,7 +6,6 @@ import Model.SnackbarModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -14,9 +13,9 @@ import javafx.scene.control.Alert;
 
 public class DaoAtividade {
     //Atividade
-    private final String INSERT_ATIVIDADE = "INSERT INTO ATIVIDADE (ATIV_ID, ATIV_DESCRICAO, ATIV_INTERVALO, ATIV_TIPO, PROTO_ID) VALUES (0,?,?,?,?)";
+    private final String INSERT_ATIVIDADE = "INSERT INTO ATIVIDADE (ATIV_ID, ATIV_DESCRICAO, ATIV_INTERVALO, ATIV_TIPO, ATIV_OBS, PROTO_ID) VALUES (0,?,?,?,?,?)";
     private final String UPDATE_DESCR_PRINCIPAL_ATIVIDADE = "UPDATE ATIVIDADE SET ATIV_DESCRICAO=? WHERE ATIV_ID=?";
-    private final String UPDATE_ATIVIDADE = "UPDATE ATIVIDADE SET ATIV_DESCRICAO=?, ATIV_TIPO=?, ATIV_INTERVALO=? WHERE ATIV_ID=?";
+    private final String UPDATE_ATIVIDADE = "UPDATE ATIVIDADE SET ATIV_DESCRICAO=?, ATIV_TIPO=?, ATIV_INTERVALO=?, ATIV_OBS=? WHERE ATIV_ID=?";
     private final String DELETE_ATIVIDADE = "DELETE FROM ATIVIDADE WHERE ATIV_ID=?";
     private final String DELETE_BY_PROTOCOLOID_ATIVIDADE = "DELETE FROM ATIVIDADE WHERE PROTO_ID=?";
     private final String LIST_ATIVIDADE = "SELECT * FROM ATIVIDADE WHERE PROTO_ID=?";
@@ -37,7 +36,8 @@ public class DaoAtividade {
                 pstm.setString(1, atividade.getDescricao());
                 pstm.setInt(2, atividade.getIntervalo());
                 pstm.setString(3, atividade.getTipo());
-                pstm.setInt(4, atividade.getProtocoloId());
+                pstm.setString(4, atividade.getObs());
+                pstm.setInt(5, atividade.getProtocoloId());
                 
                 SnackbarModel.showSnackbar(SnackbarModel.ATIVIDADE_ADD);
                 
@@ -69,7 +69,8 @@ public class DaoAtividade {
                 pstm.setString(1, atividade.getDescricao());
                 pstm.setString(2, atividade.getTipo());
                 pstm.setInt(3, atividade.getIntervalo());
-                pstm.setInt(4, atividade.getId());
+                pstm.setString(4, atividade.getObs());
+                pstm.setInt(5, atividade.getId());
                 
                 SnackbarModel.showSnackbar(SnackbarModel.ATIVIDADE_UPD);
                 
@@ -169,6 +170,7 @@ public class DaoAtividade {
                 atividade.setDescricao(rs.getString("ATIV_DESCRICAO"));
                 atividade.setIntervalo(rs.getInt("ATIV_INTERVALO"));
                 atividade.setTipo(rs.getString("ATIV_TIPO"));
+                atividade.setObs(rs.getString("ATIV_OBS"));
                 atividade.setProtocoloId(rs.getInt("PROTO_ID"));
                 
                 listaAtividade.add(atividade);
@@ -202,6 +204,7 @@ public class DaoAtividade {
                 atividade.setDescricao(rs.getString("ATIV_DESCRICAO"));
                 atividade.setIntervalo(rs.getInt("ATIV_INTERVALO"));
                 atividade.setTipo(rs.getString("ATIV_TIPO"));
+                atividade.setObs(rs.getString("ATIV_OBS"));
                 atividade.setProtocoloId(rs.getInt("PROTO_ID"));
             }
 
@@ -234,6 +237,7 @@ public class DaoAtividade {
                 atividade.setDescricao(rs.getString("ATIV_DESCRICAO"));
                 atividade.setIntervalo(rs.getInt("ATIV_INTERVALO"));
                 atividade.setTipo(rs.getString("ATIV_TIPO"));
+                atividade.setObs(rs.getString("ATIV_OBS"));
                 atividade.setProtocoloId(PROTO_ID);
             }
 
