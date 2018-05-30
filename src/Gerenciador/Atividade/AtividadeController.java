@@ -13,6 +13,7 @@ import Model.Modelo;
 import Model.SnackbarModel;
 import RegrasNegocio.Verify;
 import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXTextArea;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -39,6 +40,8 @@ import javafx.util.converter.IntegerStringConverter;
  */
 public class AtividadeController implements Initializable {
 
+    private Atividade atividade;
+    
     @FXML
     private TableView<AtividadeProperty> tableAtividade;
 
@@ -51,6 +54,9 @@ public class AtividadeController implements Initializable {
     @FXML
     private TableColumn<AtividadeProperty, Integer> columnIntervalo;
 
+    @FXML
+    private JFXTextArea textAreaAtividadeObs;
+    
     @FXML
     void buttonAddAtividade(ActionEvent event) {
         if (Modelo.protocoloController.isTableSelected()) {
@@ -96,10 +102,10 @@ public class AtividadeController implements Initializable {
                 DaoAtividade daoAtividade = new DaoAtividade();
                 DaoEvento daoEvento = new DaoEvento();
 
-                Atividade atividade = tableAtividade.getSelectionModel().getSelectedItem().getAtividade();
+                Atividade atv = tableAtividade.getSelectionModel().getSelectedItem().getAtividade();
 
-                daoEvento.removeEventoAtividadeById(atividade.getId());
-                daoAtividade.removeAtividade(atividade.getId());
+                daoEvento.removeEventoAtividadeById(atv.getId());
+                daoAtividade.removeAtividade(atv.getId());
 
                 iniciaTabela();
                 Modelo.getMainController().atualizaCalendario();
@@ -109,14 +115,39 @@ public class AtividadeController implements Initializable {
             DaoAtividade daoAtividade = new DaoAtividade();
             DaoEvento daoEvento = new DaoEvento();
 
-            Atividade atividade = tableAtividade.getSelectionModel().getSelectedItem().getAtividade();
+            Atividade atv = tableAtividade.getSelectionModel().getSelectedItem().getAtividade();
 
-            daoEvento.removeEventoAtividadeById(atividade.getId());
-            daoAtividade.removeAtividade(atividade.getId());
+            daoEvento.removeEventoAtividadeById(atv.getId());
+            daoAtividade.removeAtividade(atv.getId());
 
             iniciaTabela();
             Modelo.getMainController().atualizaCalendario();
         }
+    }
+    
+    @FXML
+    void buttonSalvarObs(ActionEvent event) {
+        Modelo.getInstance().showAlertInfo("Em desenvolvimento.");
+        event.consume();
+//        if(atividade.getObs() == null){
+//            updateObs(atividade);
+//            event.consume();
+//        }
+//        else if(!atividade.getObs().equals(textAreaAtividadeObs.getText())){
+//            updateObs(atividade);
+//            event.consume();
+//        }
+//        else{
+//            Modelo.getInstance().showAlertErro("Não houve nenhuma alteração no campo Observação.");
+//            
+//            event.consume();
+//        }
+    }
+    
+    private void updateObs(Atividade atv){
+        atv.setObs(textAreaAtividadeObs.getText());
+        DaoAtividade daoA = new DaoAtividade();
+        daoA.atualizaAtividade(atv);
     }
     
     private ObservableList<AtividadeProperty> listaTodos() {
@@ -136,11 +167,6 @@ public class AtividadeController implements Initializable {
         columnTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
         columnIntervalo.setCellValueFactory(new PropertyValueFactory<>("intervalo"));
         columnIntervalo.setSortType(TableColumn.SortType.ASCENDING);
-        
-        tableAtividade.getSortOrder().add(columnIntervalo);
-        tableAtividade.setItems(listaTodos());
-        tableAtividade.setPlaceholder(new Label("Lista Vazia."));
-        tableAtividade.setEditable(true);
         
         columnDescr.setCellFactory(TextFieldTableCell.forTableColumn());
         columnDescr.setOnEditCommit(e ->{
@@ -211,6 +237,20 @@ public class AtividadeController implements Initializable {
             daoAtividade.atualizaAtividade(atividade.getAtividade());
             iniciaTabela();
         });   
+        
+        tableAtividade.setItems(listaTodos());
+        tableAtividade.setPlaceholder(new Label("Lista Vazia."));
+        tableAtividade.setEditable(true);
+        tableAtividade.getSortOrder().add(columnIntervalo);
+        tableAtividade.sort();
+        
+        tableAtividade.setOnMouseClicked( (e) -> {
+            atividade = tableAtividade.getSelectionModel().getSelectedItem().getAtividade();
+            textAreaAtividadeObs.disableProperty().set(false);
+            if(atividade.getObs() != null){
+                textAreaAtividadeObs.setText(atividade.getObs());
+            }
+        });
     }
     
     private void changeOldPrincipalToImportante(int protoID){
@@ -225,5 +265,6 @@ public class AtividadeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Modelo.getInstance().setAtividadeController(this);
         tableAtividade.setPlaceholder(new Label("Selecione um Protocolo."));
+        textAreaAtividadeObs.disableProperty().set(true);
     }
 }

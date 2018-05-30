@@ -45,4 +45,9 @@ public class ProtocoloProperty {
         this.descricao = new SimpleStringProperty(descr);
         this.protocolo.setDescricao(descr);
     }   
+    
+    public void setObsProperty(String obs){
+        this.obs = new SimpleStringProperty(obs);
+        this.protocolo.setObs(obs);
+    }
 }

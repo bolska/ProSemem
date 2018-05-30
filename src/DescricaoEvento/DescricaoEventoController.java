@@ -24,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import Model.Modelo;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextArea;
@@ -59,7 +60,10 @@ public class DescricaoEventoController implements Initializable {
     private JFXTextField textFieldFazenda;
 
     @FXML
-    private JFXTextArea textAreaObs;
+    private JFXTextArea textAreaProtocoloObs;
+    
+    @FXML
+    private JFXTextArea textAreaAtividadeObs;
     
     @FXML
     private JFXColorPicker colorPicker;
@@ -71,19 +75,31 @@ public class DescricaoEventoController implements Initializable {
     private JFXCheckBox checkBoxConfirmado;
     
     private Protocolo protocolo;
+    private Atividade atividade;
     
     @FXML
     private void editableTextArea(ActionEvent event) {
-        if(!protocolo.getObs().equals(textAreaObs.getText())){
-            this.protocolo.setObs(textAreaObs.getText());    
-            DaoProtocolo daoP = new DaoProtocolo();
-            daoP.atualizaProtocolo(protocolo);
+        if(protocolo.getObs() == null){
+            updateObs(protocolo);
+            event.consume();
+        }
+        else if(!protocolo.getObs().equals(textAreaProtocoloObs.getText())){
+            updateObs(protocolo);
+            event.consume();
+        }
+        else if(atividade.getObs() == null){
+            updateObs(atividade);
+            event.consume();
+        }
+        else if(!atividade.getObs().equals(textAreaAtividadeObs.getText())){
+            updateObs(atividade);
             event.consume();
         }
         else{
             Modelo.getInstance().popup.setAutoHide(false);
-            Modelo.getInstance().showAlertErro("Não houve nenhuma alteração na Observação.");
+            Modelo.getInstance().showAlertErro("Não houve nenhuma alteração no campo Observação.");
             Modelo.getInstance().popup.setAutoHide(true);
+            
             event.consume();
         }
     }
@@ -133,8 +149,8 @@ public class DescricaoEventoController implements Initializable {
         
         Evento evento = Modelo.getInstance().evento;
         Sessao sessao = daoS.getSessaoById(evento.getSessaoId());
-        this.protocolo = daoP.getProtocoloById(evento.getProtocoloId());
-        Atividade atividade = daoA.getAtividadeById(evento.getAtividadeId());
+        protocolo = daoP.getProtocoloById(evento.getProtocoloId());
+        atividade = daoA.getAtividadeById(evento.getAtividadeId());
         Fazenda fazenda = daoF.getFazendaById(sessao.getFazendaId());
         Encarregado encarregado = daoE.getEncarregadoById(fazenda.getEncarregadoId());
         
@@ -146,12 +162,13 @@ public class DescricaoEventoController implements Initializable {
         });
         
         textFieldSessao.setText(evento.getSessaoId());
-        textFieldProtocolo.setText(this.protocolo.getDescricao());
+        textFieldProtocolo.setText(protocolo.getDescricao());
         textFieldAtividade.setText(atividade.getDescricao());
         textFieldTipoAtividade.setText(atividade.getTipo());
         textFieldFazenda.setText(fazenda.getNome());
         textFieldEncarregado.setText(encarregado.getNome());
-        textAreaObs.setText(this.protocolo.getObs());
+        textAreaProtocoloObs.setText(protocolo.getObs());
+        textAreaAtividadeObs.setText(atividade.getObs());
         
         if(evento.getConfirmado() == 1){
             checkBoxConfirmado.setSelected(true);
@@ -177,17 +194,30 @@ public class DescricaoEventoController implements Initializable {
         });
     }
     
-    private void setLabelsEditableFalse(){
+    private void setEditableFalse(){
         textFieldSessao.setEditable(false);
         textFieldProtocolo.setEditable(false);
         textFieldAtividade.setEditable(false);
         textFieldFazenda.setEditable(false);
         textFieldEncarregado.setEditable(false);
+        textFieldTipoAtividade.setEditable(false);
+    }
+    
+    private void updateObs(Protocolo prot){
+        prot.setObs(textAreaProtocoloObs.getText());    
+        DaoProtocolo daoP = new DaoProtocolo();
+        daoP.atualizaProtocolo(prot);
+    }
+    
+    private void updateObs(Atividade atv){
+        atv.setObs(textAreaAtividadeObs.getText());
+        DaoAtividade daoA = new DaoAtividade();
+        daoA.atualizaAtividade(atv);
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        setLabelsEditableFalse();
+        setEditableFalse();
         insereLabel();
     }    
     

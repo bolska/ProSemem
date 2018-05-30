@@ -5,6 +5,7 @@
 <?import com.jfoenix.controls.JFXColorPicker?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -12,9 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="391.0" prefWidth="656.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DescricaoEvento.DescricaoEventoController">
+<AnchorPane id="AnchorPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="656.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DescricaoEvento.DescricaoEventoController">
    <children>
-      <VBox prefHeight="391.0" prefWidth="656.0">
+      <VBox prefHeight="460.0" prefWidth="656.0">
          <children>
             <HBox prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #4286f4;">
                <children>
@@ -24,6 +25,9 @@
                            <font>
                               <Font size="14.0" />
                            </font>
+                           <StackPane.margin>
+                              <Insets left="30.0" />
+                           </StackPane.margin>
                         </Label>
                      </children></StackPane>
                   <StackPane prefHeight="35.0" prefWidth="29.0">
@@ -32,21 +36,22 @@
                      </children></StackPane>
                </children>
             </HBox>
-            <AnchorPane prefHeight="352.0" prefWidth="656.0">
+            <AnchorPane prefHeight="420.0" prefWidth="656.0">
                <children>
                   <JFXTextField fx:id="textFieldSessao" labelFloat="true" layoutX="56.0" layoutY="14.0" prefHeight="25.0" prefWidth="124.0" promptText="Sessão" />
                   <JFXTextField fx:id="textFieldProtocolo" labelFloat="true" layoutX="56.0" layoutY="54.0" prefHeight="25.0" prefWidth="260.0" promptText="Protocolo" />
                   <JFXTextField fx:id="textFieldAtividade" labelFloat="true" layoutX="56.0" layoutY="99.0" prefHeight="25.0" prefWidth="260.0" promptText="Atividade" />
                   <JFXTextField fx:id="textFieldFazenda" labelFloat="true" layoutX="346.0" layoutY="14.0" prefHeight="25.0" prefWidth="260.0" promptText="Fazenda" />
                   <JFXTextField fx:id="textFieldEncarregado" labelFloat="true" layoutX="346.0" layoutY="54.0" prefHeight="25.0" prefWidth="260.0" promptText="Encarregado" />
-                  <JFXTextArea fx:id="textAreaObs" labelFloat="true" layoutX="56.0" layoutY="188.0" prefHeight="64.0" prefWidth="552.0" promptText="Observação" />
-                  <JFXButton layoutX="56.0" layoutY="284.0" onAction="#buttonRemoverEvento" text="Remover Evento" />
-                  <JFXButton layoutX="258.0" layoutY="284.0" onAction="#buttonRemoverSessao" text="Remover toda a Sessão" />
+                  <JFXTextArea fx:id="textAreaProtocoloObs" labelFloat="true" layoutX="56.0" layoutY="191.0" prefHeight="64.0" prefWidth="552.0" promptText="Observação Protocolo" />
+                  <JFXButton layoutX="56.0" layoutY="369.0" onAction="#buttonRemoverEvento" text="Remover Evento" />
+                  <JFXButton layoutX="258.0" layoutY="369.0" onAction="#buttonRemoverSessao" text="Remover toda a Sessão" />
                   <JFXColorPicker fx:id="colorPicker" layoutX="385.0" layoutY="106.0" prefHeight="20.0" prefWidth="22.0" promptText="colorPicker" style="-fx-color-label-visible: false;" />
                   <Label layoutX="346.0" layoutY="103.0" prefHeight="25.0" prefWidth="22.0" text="Cor:" />
-                  <JFXButton layoutX="493.0" layoutY="284.0" onAction="#editableTextArea" text="Salvar Observação" />
+                  <JFXButton layoutX="493.0" layoutY="369.0" onAction="#editableTextArea" text="Salvar Observação" />
                   <JFXCheckBox fx:id="checkBoxConfirmado" layoutX="346.0" layoutY="150.0" text="Confirmado" />
-                  <JFXTextField fx:id="textFieldTipoAtividade" layoutX="56.0" layoutY="146.0" prefHeight="25.0" prefWidth="260.0" promptText="Tipo da Atividade" />
+                  <JFXTextField fx:id="textFieldTipoAtividade" labelFloat="true" layoutX="56.0" layoutY="146.0" prefHeight="25.0" prefWidth="260.0" promptText="Tipo da Atividade" />
+                  <JFXTextArea fx:id="textAreaAtividadeObs" labelFloat="true" layoutX="56.0" layoutY="280.0" prefHeight="64.0" prefWidth="552.0" promptText="Observação Atividade" />
                </children>
             </AnchorPane>
          </children>

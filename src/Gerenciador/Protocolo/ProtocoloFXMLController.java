@@ -1,11 +1,14 @@
 package Gerenciador.Protocolo;
 
 import BancoDeDados.DaoProtocolo;
+import Classes.Protocolo;
 import Classes.ProtocoloProperty;
 import Model.Modelo;
 import Model.SnackbarModel;
 import RegrasNegocio.Verify;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXTextArea;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -36,11 +39,23 @@ public class ProtocoloFXMLController implements Initializable {
     private AnchorPane paneAtividade;
     
     @FXML
+    private JFXTextArea textAreaProtocoloObs;
+    
+    @FXML
+    private JFXButton buttonSalvar;
+    
+    @FXML
     private void tableClickedEvent(MouseEvent evt){
         if(evt.getClickCount() == 1 && !evt.isConsumed() && !tableProtocolo.getSelectionModel().isEmpty()){
             Modelo.getInstance().protocolo = tableProtocolo.getSelectionModel().getSelectedItem().getProtocolo();
             Modelo.getInstance().pane = rootPane;
-            Modelo.atividadeController.iniciaTabela();    
+            Modelo.atividadeController.iniciaTabela(); 
+            
+            buttonSalvar.disableProperty().set(false);
+            textAreaProtocoloObs.disableProperty().set(false);
+            if(Modelo.getInstance().protocolo.getObs() != null){
+                textAreaProtocoloObs.setText(Modelo.getInstance().protocolo.getObs());
+            }
         }
     }
     
@@ -97,6 +112,30 @@ public class ProtocoloFXMLController implements Initializable {
 //        }
     }
     
+    @FXML
+    void buttonSalvarObs(ActionEvent event) {
+        Modelo.getInstance().showAlertInfo("Em desenvolvimento.");
+//        Protocolo proto = Modelo.getInstance().protocolo;
+//        if(proto.getObs() == null){
+//            updateObs(Modelo.getInstance().protocolo);
+//        }
+//        else if(!proto.getObs().equals(textAreaProtocoloObs.getText())){
+//            System.out.println(textAreaProtocoloObs.getText());
+//            System.out.println(Modelo.getInstance().protocolo.getObs());
+//            updateObs(proto);
+//        }
+//        else{
+//            Modelo.getInstance().showAlertErro("Não houve nenhuma alteração no campo Observação.");
+//            
+//        }
+    }
+    
+    private void updateObs(Protocolo proto){
+        proto.setObs(textAreaProtocoloObs.getText());
+        DaoProtocolo daoP = new DaoProtocolo();
+        daoP.atualizaProtocolo(proto);
+    }
+    
     private ObservableList<ProtocoloProperty> listaTodos() {
         DaoProtocolo daoProtocolo = new DaoProtocolo();
         
@@ -113,8 +152,9 @@ public class ProtocoloFXMLController implements Initializable {
         columnDescr.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         columnDescr.setSortType(TableColumn.SortType.ASCENDING);
         
-        tableProtocolo.getSortOrder().add(columnDescr);
         tableProtocolo.setItems(listaTodos());
+        tableProtocolo.getSortOrder().add(columnDescr);
+        tableProtocolo.sort();
         
         tableProtocolo.setEditable(true);
         columnDescr.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -123,11 +163,11 @@ public class ProtocoloFXMLController implements Initializable {
                 e.consume();
             }
             else if(!e.getNewValue().trim().isEmpty()){
-                ProtocoloProperty protocolo = tableProtocolo.getSelectionModel().getSelectedItem();
-                protocolo.setDescricaoProperty(e.getNewValue().trim());
-                if(!Verify.hasEqual(protocolo.getProtocolo())){
+                ProtocoloProperty protocoloP = tableProtocolo.getSelectionModel().getSelectedItem();
+                protocoloP.setDescricaoProperty(e.getNewValue().trim());
+                if(!Verify.hasEqual(protocoloP.getProtocolo())){
                     DaoProtocolo daoP = new DaoProtocolo();
-                    daoP.atualizaProtocolo(protocolo.getProtocolo());
+                    daoP.atualizaProtocolo(protocoloP.getProtocolo());
                     Modelo.getMainController().atualizaCalendario();
                 }
                 else{
@@ -165,6 +205,9 @@ public class ProtocoloFXMLController implements Initializable {
         Modelo.getInstance().setProcotoloController(this);
         iniciaTabela();
         iniciaAtividadePane();
+        
+        textAreaProtocoloObs.disableProperty().set(true);
+        buttonSalvar.disableProperty().set(true);
     }    
     
 }
