@@ -39,7 +39,7 @@ public class ProtocoloFXMLController implements Initializable {
     private AnchorPane paneAtividade;
     
     @FXML
-    private JFXTextArea textAreaProtocoloObs;
+    private JFXTextArea textAreaObs;
     
     @FXML
     private JFXButton buttonSalvar;
@@ -47,14 +47,23 @@ public class ProtocoloFXMLController implements Initializable {
     @FXML
     private void tableClickedEvent(MouseEvent evt){
         if(evt.getClickCount() == 1 && !evt.isConsumed() && !tableProtocolo.getSelectionModel().isEmpty()){
-            Modelo.getInstance().protocolo = tableProtocolo.getSelectionModel().getSelectedItem().getProtocolo();
-            Modelo.getInstance().pane = rootPane;
-            Modelo.atividadeController.iniciaTabela(); 
-            
-            buttonSalvar.disableProperty().set(false);
-            textAreaProtocoloObs.disableProperty().set(false);
-            if(Modelo.getInstance().protocolo.getObs() != null){
-                textAreaProtocoloObs.setText(Modelo.getInstance().protocolo.getObs());
+            if(Modelo.getInstance().protocolo != tableProtocolo.getSelectionModel().getSelectedItem().getProtocolo()){
+                
+                Modelo.getInstance().protocolo = tableProtocolo.getSelectionModel().getSelectedItem().getProtocolo();
+                Modelo.getInstance().pane = rootPane;
+                
+                Modelo.atividadeController.iniciaTabela();  
+                Modelo.atividadeController.textAreaAtividadeObs.clear();
+                Modelo.atividadeController.textAreaAtividadeObs.disableProperty().set(true);
+                Modelo.atividadeController.buttonSalvar.disableProperty().set(true);
+                
+                buttonSalvar.disableProperty().set(false);
+                textAreaObs.disableProperty().set(false);
+                textAreaObs.clear();
+                
+                if(Modelo.getInstance().protocolo.getObs() != null){
+                    textAreaObs.setText(Modelo.getInstance().protocolo.getObs());
+                }
             }
         }
     }
@@ -113,25 +122,22 @@ public class ProtocoloFXMLController implements Initializable {
     }
     
     @FXML
-    void buttonSalvarObs(ActionEvent event) {
-        Modelo.getInstance().showAlertInfo("Em desenvolvimento.");
-//        Protocolo proto = Modelo.getInstance().protocolo;
-//        if(proto.getObs() == null){
-//            updateObs(Modelo.getInstance().protocolo);
-//        }
-//        else if(!proto.getObs().equals(textAreaProtocoloObs.getText())){
-//            System.out.println(textAreaProtocoloObs.getText());
-//            System.out.println(Modelo.getInstance().protocolo.getObs());
-//            updateObs(proto);
-//        }
-//        else{
-//            Modelo.getInstance().showAlertErro("Não houve nenhuma alteração no campo Observação.");
-//            
-//        }
+    private void buttonSalvarObsP(ActionEvent event) {
+        Protocolo proto = Modelo.getInstance().protocolo;
+        if(proto.getObs() == null){
+            updateObs(Modelo.getInstance().protocolo);
+        }
+        else if(!proto.getObs().equals(textAreaObs.getText())){
+            updateObs(proto);
+        }
+        else{
+            Modelo.getInstance().showAlertErro("Não houve nenhuma alteração no campo Observação.");
+            
+        }
     }
     
     private void updateObs(Protocolo proto){
-        proto.setObs(textAreaProtocoloObs.getText());
+        proto.setObs(textAreaObs.getText());
         DaoProtocolo daoP = new DaoProtocolo();
         daoP.atualizaProtocolo(proto);
     }
@@ -152,11 +158,11 @@ public class ProtocoloFXMLController implements Initializable {
         columnDescr.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         columnDescr.setSortType(TableColumn.SortType.ASCENDING);
         
+        tableProtocolo.setEditable(true);
         tableProtocolo.setItems(listaTodos());
         tableProtocolo.getSortOrder().add(columnDescr);
         tableProtocolo.sort();
         
-        tableProtocolo.setEditable(true);
         columnDescr.setCellFactory(TextFieldTableCell.forTableColumn());
         columnDescr.setOnEditCommit(e ->{
             if(e.getOldValue().trim().equals(e.getNewValue().trim())){
@@ -206,7 +212,7 @@ public class ProtocoloFXMLController implements Initializable {
         iniciaTabela();
         iniciaAtividadePane();
         
-        textAreaProtocoloObs.disableProperty().set(true);
+        textAreaObs.disableProperty().set(true);
         buttonSalvar.disableProperty().set(true);
     }    
     

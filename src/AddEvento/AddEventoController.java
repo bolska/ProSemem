@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package AddEvento;
 
 import BancoDeDados.DaoAtividade;
@@ -197,10 +192,9 @@ public class AddEventoController implements Initializable {
     
     private void startComboFazenda(){
         DaoFazenda daoF = new DaoFazenda();
-        List<Fazenda> listFazenda = new ArrayList();
+        ObservableList<Fazenda> listFazenda = daoF.getListFazenda();
         
-        listFazenda = daoF.getListFazenda();
-        comboFazenda.setItems(FXCollections.observableArrayList(listFazenda));
+        comboFazenda.setItems(listFazenda);
         
         comboFazenda.setCellFactory((comboBox) -> {
             return new ListCell<Fazenda>() {
@@ -262,6 +256,8 @@ public class AddEventoController implements Initializable {
         
         ObservableList<AtividadeProperty> obLista = FXCollections.observableArrayList(lista);
         tabelaAtividade.setItems(FXCollections.observableArrayList(obLista));
+        tabelaAtividade.getSortOrder().add(colunaIntervalo);
+        tabelaAtividade.sort();
     }
     
     @Override

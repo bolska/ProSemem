@@ -26,8 +26,8 @@
          </children>
       </HBox>
       <JFXButton layoutX="75.0" layoutY="550.0" onAction="#buttonAddAtividade" prefHeight="27.0" prefWidth="116.0" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../../CSS/CalendarioCSS.css" text="Adicionar" AnchorPane.bottomAnchor="96.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="445.0" />
-      <JFXButton layoutX="437.0" layoutY="550.0" onAction="#buttonSalvarObs" prefHeight="27.0" prefWidth="116.0" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../../CSS/CalendarioCSS.css" text="Salvar Observação" AnchorPane.bottomAnchor="96.0" AnchorPane.leftAnchor="437.0" AnchorPane.rightAnchor="83.0" />
-      <JFXTextArea fx:id="textAreaAtividadeObs" labelFloat="true" layoutX="19.0" layoutY="363.0" prefHeight="130.0" prefWidth="606.0" promptText="Observação Atividade" />
+      <JFXButton fx:id="buttonSalvar" layoutX="437.0" layoutY="550.0" onAction="#buttonSalvarObs" prefHeight="27.0" prefWidth="116.0" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../../CSS/CalendarioCSS.css" text="Salvar Observação" AnchorPane.bottomAnchor="96.0" AnchorPane.leftAnchor="437.0" AnchorPane.rightAnchor="83.0" />
+      <JFXTextArea fx:id="textAreaAtividadeObs" labelFloat="true" layoutX="19.0" layoutY="358.0" prefHeight="130.0" prefWidth="606.0" promptText="Observação Atividade" />
       <JFXButton layoutX="263.0" layoutY="550.0" onAction="#buttonExcluir" prefHeight="27.0" prefWidth="116.0" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../../CSS/CalendarioCSS.css" text="Excluir" />
    </children>
 </AnchorPane>

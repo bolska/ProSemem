@@ -144,10 +144,11 @@ public class FazendaFXMLController implements Initializable {
         
         columnSigla.setCellValueFactory(new PropertyValueFactory<>("sigla"));
         
-        tableFazenda.getSortOrder().add(columnNome);
         tableFazenda.setItems(listAll());
-        
         tableFazenda.setEditable(true);
+        tableFazenda.getSortOrder().add(columnNome);
+        tableFazenda.sort();
+        
         
         columnNome.setCellFactory(TextFieldTableCell.forTableColumn());
         columnNome.setOnEditCommit(e -> {
