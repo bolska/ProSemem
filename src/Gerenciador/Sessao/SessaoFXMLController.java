@@ -72,15 +72,9 @@ public class SessaoFXMLController implements Initializable {
         columnNameAber.setCellValueFactory(new PropertyValueFactory<>("protocoloDescricao"));
         columnIdAber.setSortType(TableColumn.SortType.ASCENDING);
         
-        tableSessaoAber.getSortOrder().add(columnIdAber);
         tableSessaoAber.setItems(listAllAberta());
-        
-//        tableSessaoAti.setEditable(true);
-        
-//        columnNameAti.setCellFactory(TextFieldTableCell.forTableColumn());
-//        columnNameAti.setOnEditCommit(e -> {
-//            
-//        });
+        tableSessaoAber.getSortOrder().add(columnIdAber);
+        tableSessaoAber.sort();
     }
     
     public void startTableEncerrada() {
@@ -89,15 +83,9 @@ public class SessaoFXMLController implements Initializable {
         columnNameEnc.setCellValueFactory(new PropertyValueFactory<>("protocoloDescricao"));
         columnIdEnc.setSortType(TableColumn.SortType.ASCENDING);
         
-        tableSessaoEnc.getSortOrder().add(columnIdEnc);
         tableSessaoEnc.setItems(listAllEncerrada());
-        
-//        tableSessaoEnc.setEditable(true);
-        
-//        columnNameEnc.setCellFactory(TextFieldTableCell.forTableColumn());
-//        columnNameEnc.setOnEditCommit(e -> {
-//            
-//        });
+        tableSessaoEnc.getSortOrder().add(columnIdEnc);
+        tableSessaoEnc.sort();
     }
     
     @Override

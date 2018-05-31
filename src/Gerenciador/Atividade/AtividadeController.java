@@ -12,6 +12,7 @@ import Classes.AtividadeProperty;
 import Model.Modelo;
 import Model.SnackbarModel;
 import RegrasNegocio.Verify;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTextArea;
 import java.net.URL;
@@ -55,7 +56,10 @@ public class AtividadeController implements Initializable {
     private TableColumn<AtividadeProperty, Integer> columnIntervalo;
 
     @FXML
-    private JFXTextArea textAreaAtividadeObs;
+    public JFXTextArea textAreaAtividadeObs;
+    
+    @FXML
+    public JFXButton buttonSalvar;
     
     @FXML
     void buttonAddAtividade(ActionEvent event) {
@@ -127,23 +131,34 @@ public class AtividadeController implements Initializable {
     
     @FXML
     void buttonSalvarObs(ActionEvent event) {
-        Modelo.getInstance().showAlertInfo("Em desenvolvimento.");
-        event.consume();
-//        if(atividade.getObs() == null){
-//            updateObs(atividade);
-//            event.consume();
-//        }
-//        else if(!atividade.getObs().equals(textAreaAtividadeObs.getText())){
-//            updateObs(atividade);
-//            event.consume();
-//        }
-//        else{
-//            Modelo.getInstance().showAlertErro("Não houve nenhuma alteração no campo Observação.");
-//            
-//            event.consume();
-//        }
+        if(isTableSelected()){
+            if(atividade.getObs() == null){
+                updateObs(atividade);
+                event.consume();
+            }
+            else if(!atividade.getObs().equals(textAreaAtividadeObs.getText())){
+                updateObs(atividade);
+                event.consume();
+            }
+            else{
+                Modelo.getInstance().showAlertErro("Não houve nenhuma alteração no campo Observação.");
+
+                event.consume();
+            }
+        }
+        else{
+            Modelo.getInstance().showAlertErro("Selecione uma atividade.");
+        }
     }
     
+    private boolean isTableSelected(){
+        if(!tableAtividade.getSelectionModel().isEmpty()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     private void updateObs(Atividade atv){
         atv.setObs(textAreaAtividadeObs.getText());
         DaoAtividade daoA = new DaoAtividade();
@@ -246,7 +261,11 @@ public class AtividadeController implements Initializable {
         
         tableAtividade.setOnMouseClicked( (e) -> {
             atividade = tableAtividade.getSelectionModel().getSelectedItem().getAtividade();
+            
+            textAreaAtividadeObs.clear();
             textAreaAtividadeObs.disableProperty().set(false);
+            buttonSalvar.disableProperty().set(false);
+            
             if(atividade.getObs() != null){
                 textAreaAtividadeObs.setText(atividade.getObs());
             }
@@ -266,5 +285,6 @@ public class AtividadeController implements Initializable {
         Modelo.getInstance().setAtividadeController(this);
         tableAtividade.setPlaceholder(new Label("Selecione um Protocolo."));
         textAreaAtividadeObs.disableProperty().set(true);
+        buttonSalvar.disableProperty().set(true);
     }
 }

@@ -28,10 +28,10 @@
                         <Label alignment="CENTER" prefHeight="37.0" prefWidth="67.0" text="Protocolos" />
                      </children>
                   </HBox>
-                  <JFXButton layoutX="74.0" layoutY="526.0" onAction="#buttonAddProtocolo" prefHeight="27.0" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../../CSS/CalendarioCSS.css" text="Adicionar" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="74.0" AnchorPane.rightAnchor="446.0" />
-                  <JFXButton fx:id="buttonSalvar" layoutX="417.0" layoutY="526.0" onAction="#buttonSalvarObs" prefHeight="27.0" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../../CSS/CalendarioCSS.css" text="Salvar Observação" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="417.0" AnchorPane.rightAnchor="103.0" />
-                  <JFXTextArea fx:id="textAreaProtocoloObs" labelFloat="true" layoutX="15.0" layoutY="343.0" onMouseClicked="#buttonSalvarObs" prefHeight="119.0" prefWidth="606.0" promptText="Observação Protocolo" AnchorPane.bottomAnchor="211.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
-                  <JFXButton layoutX="249.0" layoutY="526.0" onAction="#buttonExcluir" prefHeight="27.0" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../../CSS/CalendarioCSS.css" text="Excluir" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="249.0" AnchorPane.rightAnchor="271.0" />
+                  <JFXButton layoutX="74.0" layoutY="526.0" onAction="#buttonAddProtocolo" prefHeight="27.0" prefWidth="116.0" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../../CSS/CalendarioCSS.css" text="Adicionar" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="74.0" />
+                  <JFXButton fx:id="buttonSalvar" layoutX="434.0" layoutY="526.0" onAction="#buttonSalvarObsP" prefHeight="27.0" prefWidth="116.0" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../../CSS/CalendarioCSS.css" text="Salvar Observação" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="434.0" />
+                  <JFXTextArea fx:id="textAreaObs" labelFloat="true" layoutX="15.0" layoutY="343.0" prefHeight="119.0" prefWidth="606.0" promptText="Observação Protocolo" AnchorPane.bottomAnchor="211.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+                  <JFXButton layoutX="260.0" layoutY="526.0" onAction="#buttonExcluir" prefHeight="27.0" prefWidth="116.0" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../../CSS/CalendarioCSS.css" text="Excluir" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="260.0" />
                </children>
             </AnchorPane>
           <AnchorPane fx:id="paneAtividade" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
