@@ -43,7 +43,6 @@ import RegrasNegocio.Verify;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
 import java.sql.Date;
 import javafx.collections.ObservableList;
@@ -57,6 +56,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 /**
  *
@@ -64,12 +64,13 @@ import javafx.scene.paint.Color;
  */
 public class MainController implements Initializable {
 
+    private Label labelEventoAnimation;
     private boolean isMenuOpen = true;
+    private boolean isEventoAnimation = false;
     private String whichCompromissoIsSelected; //Seleciona o Compromisso a ser adicionado
-    private final TransitionAnimation animation = new TransitionAnimation();
+    private final Stage gerenciadorStage = new Stage();
     private final DataFormat DRAG_EVENT = new DataFormat("DRAG_EVENT");
-    private Stage gerenciadorStage = new Stage();
-    private ObservableList<Label> listEventosConfirmar = FXCollections.observableArrayList();
+    private final TransitionAnimation animation = new TransitionAnimation();
     
     @FXML
     private VBox rootPane;
@@ -108,7 +109,10 @@ public class MainController implements Initializable {
     private ScrollPane scrollPaneCompromissos;
     
     @FXML
-    private JFXListView listViewConfirmacao;
+    private ScrollPane scrollPaneConfirmacao;
+    
+    @FXML
+    private VBox vBoxConfirmacao;
     
     @FXML
     private void animationMenu(MouseEvent evt) throws InterruptedException{
@@ -478,6 +482,11 @@ public class MainController implements Initializable {
                 }
             }
         }
+        if(isEventoAnimation){
+            isEventoAnimation = false;
+            TransitionAnimation scale = new TransitionAnimation();
+            scale.setScaleAnimation(labelEventoAnimation, 0.2, 0.2, 200);
+        }
     }
 
     private void adicionaEvento(int mes, int ano, VBox vBox, Evento evento){
@@ -510,6 +519,13 @@ public class MainController implements Initializable {
                         labelEvento.setId(Integer.toString(evento.getId())); //Armazena o id do Evento na label
                         labelEvento.setText(evento.getSessaoId() + " - " + fazenda.getSigla().toUpperCase() + " - " + atv.getDescricao());
 
+                        if(isEventoAnimation){
+                            if(labelEvento.getId().equals(labelEventoAnimation.getId())){
+                                labelEventoAnimation = labelEvento;
+                            }
+                        }
+                            
+                        
                         //Monta o estilo em CSS
                         colorString.append("-fx-background-color: #");
                         colorString.append(sessao.getCor().substring(2,8)).append(";\n");
@@ -619,13 +635,12 @@ public class MainController implements Initializable {
     public void atualizaCalendario(){
         carregaCalendarioLabels();
         carregaEventos();
-        populateListViewConfirmacao();
+        populateListConfirmacao();
     }
     
     private void inicializaComboMes(){
         ObservableList<String> listaMeses = FXCollections.observableArrayList();
         LocalDate data = Modelo.getInstance().dataAtual;
-        
         for(int i = 1; i < 13; i++){
             listaMeses.add(Modelo.getInstance().getStringMes(i));
         }
@@ -945,42 +960,88 @@ public class MainController implements Initializable {
         });
     }
     
-    private void populateListViewConfirmacao(){
-        listViewConfirmacao.getItems().clear();
+    private void populateListConfirmacao(){
+        vBoxConfirmacao.getChildren().clear();
         
+        HBox hBox;
         Label label;
-        Evento evento;
+        Sessao sessao;
+        Fazenda fazenda;
         Atividade atividade;
+        
+        DaoSessao daoS = new DaoSessao();
         DaoEvento daoE = new DaoEvento();
+        DaoFazenda daoF = new DaoFazenda();
         DaoAtividade daoA = new DaoAtividade();
+        
         Date data = Date.valueOf(Modelo.getInstance().dataHoje);
         ObservableList<Evento> listEvento = daoE.getListEventoNotConfirmed(data);
         
         if(!listEvento.isEmpty()){
-            for(int i = 0; i < listEvento.size(); i++){
-                label = new Label(); 
+            for(Evento evento : listEvento){
                 StringBuilder text = new StringBuilder();
 
-                evento = listEvento.get(i);
+                sessao = daoS.getSessaoById(evento.getSessaoId());
+                fazenda = daoF.getFazendaById(sessao.getFazendaId());
                 atividade = daoA.getAtividadeById(evento.getAtividadeId());
-
-                text.append(evento.getSessaoId()).append(" - ").append(atividade.getDescricao());
+                
+                text.append(evento.getSessaoId()).append(" - ").append(fazenda.getSigla()).append(" - ").append(atividade.getDescricao());
+                
+                label = new Label(); 
                 label.setText(text.toString());
+                label.setId(Integer.toString(evento.getId()));
+                
 
+                label.getStylesheets().add("CSS/CalendarioCSS.css");
+                label.getStyleClass().add("Label-Confirmacao");
+                
+                label.setPrefWidth(vBoxConfirmacao.getPrefWidth());
+                
+                label.setOnMouseClicked( (e) -> {
+                    if(!isEventShowing(evento)){
+                        Modelo.getInstance().dataAtual = evento.getData().toLocalDate();
+                        
+                        comboMes.getSelectionModel().select(Modelo.getInstance().dataAtual.getMonthValue() - 1);
+                        spinnerAno.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(2015, 2100, Modelo.getInstance().dataAtual.getYear()));
+                    }
+                    isEventoAnimation = true;
+                    labelEventoAnimation = new Label();
+                    labelEventoAnimation.setId(Integer.toString(evento.getId()));
+                    
+                    atualizaCalendario();
+                });
+                
+                hBox = new HBox(label);
+                hBox.getStylesheets().add("CSS/CalendarioCSS.css");
+                hBox.getStyleClass().add("HBox-Confirmacao");
+                
                 if(atividade.getTipo().equals("Principal") || atividade.getTipo().equals("Importante")){
                     label.setStyle("-fx-border-color: RED");
                 }
                 else{
-                    label.setStyle("-fx-border-color: #000000");
+                    label.setStyle("-fx-border-color: #FFC200");
                 }
 
-                listViewConfirmacao.getItems().add(label);
+                
+                vBoxConfirmacao.getChildren().add(hBox);
             }
         }
         else{
             label = new Label("Lista Vazia");
-            listViewConfirmacao.getItems().add(label);
+            vBoxConfirmacao.getChildren().add(label);
         }
+    }
+    
+    private boolean isEventShowing(Evento evento){
+        LocalDate dateEvento = evento.getData().toLocalDate();
+        LocalDate dateAtual = Modelo.getInstance().dataAtual;
+        
+        if(dateEvento.getYear() == dateAtual.getYear()){
+            if(dateEvento.getMonthValue() == dateAtual.getMonthValue()){
+                return true;
+            }
+        }
+        return false;
     }
     
     @Override
@@ -989,6 +1050,7 @@ public class MainController implements Initializable {
         scrollPaneInStackPane.setFitToWidth(true);
         leftScrollPane.getStyleClass().add("edge-to-edge");
         scrollPaneCompromissos.getStyleClass().add("edge-to-edge");
+        scrollPaneConfirmacao.getStyleClass().add("edge-to-edge");
         
         SnackbarModel.pane = rootPane;
         
@@ -998,5 +1060,6 @@ public class MainController implements Initializable {
         
         atualizaCalendario();
         populateVBoxCompromissos();
+        populateListConfirmacao();
     }
 }

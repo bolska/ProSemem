@@ -49,6 +49,7 @@ public class CompromissoController implements Initializable {
             Modelo.getInstance().showAlertErro("Descrição vazia.");
             Modelo.getInstance().popup.setAutoHide(true);
         }
+        Modelo.getMainController().atualizaCalendario();
     }
     
     private void updateCompromisso(){

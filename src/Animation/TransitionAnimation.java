@@ -7,12 +7,11 @@ package Animation;
 
 import com.jfoenix.controls.JFXHamburger;
 import javafx.animation.Animation;
-import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -24,11 +23,13 @@ public class TransitionAnimation {
     private TranslateTransition translate;
     private TranslateResizeTransition transition;
     private RotateTransition rotate;
+    private ScaleTransition scale;
     
     public TransitionAnimation(){
         translate = new TranslateTransition();
         transition = new TranslateResizeTransition();
         rotate = new RotateTransition();
+        scale = new ScaleTransition();
     }
     
     public void setTranslateAnimationOn(Node node, double fromX, double toX, double duration){
@@ -57,12 +58,22 @@ public class TransitionAnimation {
     
     public boolean isRunning(){
         if(rotate.getStatus() == Animation.Status.RUNNING || transition.getStatus() == Animation.Status.RUNNING 
-        || translate.getStatus() == Animation.Status.RUNNING){
+        || translate.getStatus() == Animation.Status.RUNNING || scale.getStatus() == Animation.Status.RUNNING){
             
             return false;
         }
         else{
             return true;
         }
+    }
+    
+    public void setScaleAnimation(Node node, double byX, double byY, double duration){
+        scale.setDuration(Duration.millis(duration));
+        scale.setNode(node);
+        scale.setByX(byX);
+        scale.setByY(byY);
+        scale.setCycleCount(6);
+        scale.setAutoReverse(true);
+        scale.play();
     }
 }
