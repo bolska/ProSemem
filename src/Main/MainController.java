@@ -443,7 +443,7 @@ public class MainController implements Initializable {
 
     private void carregaEventos(){
         DaoEvento daoEvento = new DaoEvento();
-        ObservableList<Evento> listaEvento = daoEvento.getListaEvento();
+        ObservableList<Evento> listaEvento = daoEvento.getListEventoForCalendario();
         
         int anoAtual = Modelo.getInstance().dataAtual.getYear();
         int mesAtual = Modelo.getInstance().dataAtual.getMonthValue();    

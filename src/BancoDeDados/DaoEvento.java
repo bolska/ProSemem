@@ -35,7 +35,7 @@ public class DaoEvento {
     private final String DELETE_COMPROMISSO_EVENTO = "DELETE FROM EVENTO WHERE COMP_ID=? and EVT_DATA=?";
     private final String DELETE_EVENTO_COMPROMISSO_BY_ID = "DELETE FROM EVENTO WHERE COMP_ID=?";
     private final String COUNT_EVENTO_BY_DATE = "select count(EVT_ID) from EVENTO where EVT_DATA=?";
-    private final String LIST_EVENTO = "SELECT * FROM EVENTO";
+    private final String LIST_EVENTO_FOR_CALENDARIO = "SELECT * FROM EVENTO WHERE EVT_DATA >= ? AND EVT_DATA <= ?";
     private final String LISTBYDATA_AND_ATIVIDADE_EVENTO = "SELECT * FROM EVENTO WHERE EVT_DATA=? AND ATIV_ID=?";
     private final String LIST_EVENTO_BY_ID = "SELECT * FROM EVENTO WHERE EVT_ID=?";
     private final String LIST_EVENTO_BY_PROTOCOLO_ID = "SELECT * FROM EVENTO WHERE PROTO_ID=?";
@@ -342,15 +342,24 @@ public class DaoEvento {
         }
     }
     
-    public ObservableList<Evento> getListaEvento() {
+    public ObservableList<Evento> getListEventoForCalendario() {
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rs = null;
         ObservableList<Evento> listaEvento = FXCollections.observableArrayList();
 
+        LocalDate dataAtual = Modelo.getInstance().dataAtual;
+        LocalDate dataMesAnterior = LocalDate.of(dataAtual.getYear(), dataAtual.getMonthValue() - 1, 1);
+        LocalDate dataMesPosterior = LocalDate.of(dataAtual.getYear(), dataAtual.getMonthValue() + 1, 20);
+        
+        
         try {
             conn = Conexao.getConexao();
-            pstm = conn.prepareStatement(LIST_EVENTO);
+            pstm = conn.prepareStatement(LIST_EVENTO_FOR_CALENDARIO);
+            
+            pstm.setDate(1, Date.valueOf(dataMesAnterior));
+            pstm.setDate(2, Date.valueOf(dataMesPosterior));
+            
             rs = pstm.executeQuery();
 
             while(rs.next()) {
