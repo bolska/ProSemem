@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXHamburger?>
-<?import com.jfoenix.controls.JFXListView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -69,20 +68,35 @@
                                  </HBox.margin>
                               </JFXButton>
                            </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </HBox>
                         <ScrollPane fx:id="scrollPaneCompromissos" fitToWidth="true" hbarPolicy="NEVER" minHeight="-Infinity" prefHeight="170.0" styleClass="border" stylesheets="@../CSS/CalendarioCSS.css">
                            <content>
                               <VBox fx:id="vBoxCompromissos" prefHeight="0.0" prefWidth="158.0" />
                            </content>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </ScrollPane>
-                        <Label text="Eventos a serem confirmados">
+                        <HBox>
                            <VBox.margin>
-                              <Insets top="7.0" />
-                           </VBox.margin></Label>
-                        <JFXListView fx:id="listViewConfirmacao" prefHeight="262.0" prefWidth="160.0">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin></JFXListView>
+                              <Insets bottom="5.0" top="10.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label text="Lista Confirmação">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <ScrollPane fx:id="scrollPaneConfirmacao" fitToWidth="true" hbarPolicy="NEVER" minHeight="-Infinity" prefHeight="203.0" prefWidth="160.0" styleClass="border" stylesheets="@../CSS/CalendarioCSS.css">
+                           <content>
+                              <VBox fx:id="vBoxConfirmacao" prefHeight="0.0" prefWidth="158.0" />
+                           </content>
+                        </ScrollPane>
                      </children>
                   </VBox>
                </content>
