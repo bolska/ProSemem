@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gerenciador.Sessao.SessaoFXMLController">
+   <children>
+      <SplitPane prefHeight="675.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <items>
+            <AnchorPane prefHeight="675.0" prefWidth="1280.0">
+               <children>
+                  <TableView fx:id="tableSessaoAber" layoutX="142.0" layoutY="197.0" prefHeight="200.0" prefWidth="452.0" AnchorPane.leftAnchor="150.0">
+                    <columns>
+                      <TableColumn fx:id="columnIdAber" prefWidth="120.0" text="Identificador" />
+                      <TableColumn fx:id="columnNameAber" prefWidth="331.0" text="Nome do Protocolo" />
+                    </columns>
+                  </TableView>
+                  <TableView fx:id="tableSessaoEnc" layoutX="735.0" layoutY="197.0" prefHeight="200.0" prefWidth="452.0" AnchorPane.rightAnchor="150.0">
+                     <columns>
+                        <TableColumn fx:id="columnIdEnc" prefWidth="120.0" text="Identificador" />
+                        <TableColumn fx:id="columnNameEnc" prefWidth="331.0" text="Nome do Protocolo" />
+                     </columns>
+                  </TableView>
+                  <Label layoutX="281.0" layoutY="137.0" text="Sessões Abertas" AnchorPane.leftAnchor="281.0">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="787.0" layoutY="137.0" text="Sessões Encerradas" AnchorPane.rightAnchor="261.0">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
+         </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

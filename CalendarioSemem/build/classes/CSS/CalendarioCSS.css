@@ -1,0 +1,208 @@
+/*Tira a borda do ScrollPane (outra opção)*/
+/*ALL==================================================*/
+.noborder{  
+    -fx-padding: 0;  
+    -fx-background-insets: 0;  
+}
+
+.border {
+   -fx-border-style: solid inside; 
+   -fx-border-width: 0.5;
+   -fx-border-color: gray;
+}
+/*ALL*/
+
+/*COMPROMISSO BOX======================================*/
+.HBox{
+    -fx-padding: 1;
+    -fx-border-insets: 1;
+    -fx-background-insets: 1;
+    
+    -fx-background-radius: 2;
+    -fx-border-style: solid inside; 
+    -fx-border-width: 1;
+    -fx-border-radius: 2;
+    -fx-border-color: transparent;
+}
+
+.HBox:hover{
+  -fx-border-color: red;
+}
+/*COMPROMISSO BOX*/
+
+/*CONFIRMACAO BOX=====================================================*/
+.HBox-Confirmacao-Important{
+    -fx-padding: 5;
+    -fx-border-insets: 3;
+    -fx-background-insets: 3;
+    
+    -fx-background-radius: 2;
+    -fx-border-style: solid inside; 
+    -fx-border-width: 1;
+    -fx-border-radius: 2;
+    -fx-border-color: red;
+}
+
+.HBox-Confirmacao-notImportant{
+    -fx-padding: 5;
+    -fx-border-insets: 3;
+    -fx-background-insets: 3;
+    
+    -fx-background-radius: 2;
+    -fx-border-style: solid inside; 
+    -fx-border-width: 1;
+    -fx-border-radius: 2;
+    -fx-border-color: #ffc200;
+}
+
+.HBox-Confirmacao-Important:hover {
+    -fx-background-color: rgba(255, 0, 0, 0.1);
+}
+
+.HBox-Confirmacao-notImportant:hover {
+    -fx-background-color: rgba(255, 194, 0, 0.1);
+}
+/*CONFIRMACAO BOX*/
+
+/*===============================================================*/
+.Meus-comp {
+    -fx-background-color: #ffffff;
+}
+/**/
+
+/*SNACKBAR=============================================*/
+.jfx-snackbar-content {
+    -fx-background-color: rgba(0, 0, 0, 0.8);
+    -fx-background-radius: 15;
+    
+    -fx-padding: 0 0 5px 0;
+    -fx-border-insets: 0 0 5px 0;
+    -fx-background-insets: 0 0 5px 0;
+}
+.jfx-snackbar-toast {
+    -fx-text-fill: WHITE;
+    -fx-font-size: 18;  
+}
+.jfx-snackbar-action {
+    -fx-text-fill: #ff4081; 
+}
+/*SNACKBAR*/
+
+/*HOME PAGE============================================*/
+.Label-atividade{
+    -fx-label-padding: 0 2 0 10;
+    -fx-border-insets: 1;
+    -fx-background-insets: 1;
+    
+    -fx-background-radius: 10;
+    -fx-border-style: solid inside; 
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+.Anchor-top {
+    -fx-background-color: #8CA3ff; /*#496eff;*/
+}
+
+.Background-calendar {
+    -fx-background-color: #ffffff; 
+    /*#cad3f7;*/
+}
+
+.Box-dia {
+   -fx-background-radius: 5;
+   -fx-border-radius: 5;  
+}
+
+.Box-dia:hover{
+    -fx-effect: dropshadow(gaussian, gray, 10, 0.5, 0, 0);
+}
+
+.Combo-mes {
+    -fx-background-color: #cad3f7;
+}
+
+.Spinner-ano {
+    -fx-control-inner-background: #cad3f7;
+}
+/*HOME PAGE*/
+
+/*ALL BUTTONS===========================================*/
+.Set-Border-Button {
+    -fx-border-style: solid inside; 
+    -fx-border-width: 1;
+    -fx-border-color: #496eff;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    
+    -fx-text-fill: #496eff;
+    -jfx-rippler-fill: #496eff;
+}
+
+.Set-Border-Button:hover {
+    -fx-background-color: rgba(73, 110, 255, 0.3);
+}
+/*ALL BUTTONS*/
+
+/*GENERAL CLASSES==========================================*/
+
+/*SCROLL PANE*/
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.scroll-pane {
+   -fx-background-color: transparent;
+}
+/*SCROLL PANE*/
+
+/*TABLE*/
+.column-header {
+    -fx-background-color: #f4f4f4;
+    
+    -fx-border-style: solid inside; 
+    -fx-border-width: 0 0 0.5 0;
+    -fx-border-color: #000000;
+}
+
+.column-header:hover {
+    -fx-background-color: rgba(73, 110, 255, 0.3);
+}
+
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-view:focused{
+    -fx-background-color: transparent;
+}
+
+.table-row-cell { 
+    -fx-background-color: transparent;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: rgba(73, 110, 255, 0.1);
+}
+
+.table-row-cell:odd:hover {
+    -fx-background-color: rgba(73, 110, 255, 0.1);
+}
+
+.table-row-cell:selected {
+    -fx-background-color: rgba(73, 110, 255, 0.5);
+}
+
+.table-row-cell:odd:selected {
+    -fx-background-color: rgba(73, 110, 255, 0.5);
+}
+
+.table-row-cell:odd {
+    -fx-background-color: rgba(73, 110, 255, 0.03);
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+/*TABLE*/
+
+/*GENERAL CLASSES*/
+
