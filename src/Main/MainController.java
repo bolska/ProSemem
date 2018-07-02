@@ -157,30 +157,30 @@ public class MainController implements Initializable {
     }
     
     private void carregaCalendarioLabels() {
-        LocalDate data = Modelo.getInstance().dataAtual; 
+        LocalDate dataAtual = Modelo.getInstance().dataAtual; 
         
         //Variáveis de controle
         int contDiaAtual = 1;       //Valor dos dias do mês atual
         int contGrid = 1;           //Valor da posição dos dias do mês anterior
         int contDiaPosterior = 1;   //Valor dos dias do mês posterior
-        int contDiaSemana = 1;      //Valor, em String, do dia de semana (Sempre começa no Domingo)
+        int contDiaSemana = 1;      //Valor do dia de semana (Sempre começa no Domingo)
         
         //Variáveis para manipular os dias do mês atual
-        LocalDate primeiroDiaMes = data.withDayOfMonth(1);                      //Pega a data do primeiro dia do mês
+        LocalDate primeiroDiaMes = dataAtual.withDayOfMonth(1);                      //Pega a data do primeiro dia do mês
         int diaComecaMesAtual = primeiroDiaMes.getDayOfWeek().getValue() + 1;   //Usa-se +1 para corrigir o dia da semana
-        int qtdeDiasMesAtual = data.lengthOfMonth();                            //Quantidade de dias no mês
+        int qtdeDiasMesAtual = dataAtual.lengthOfMonth();                            //Quantidade de dias no mês
         
         //Variáveis para manipular os dias do mês anterior
-        int qtdeDiasMesAnterior = data.minusMonths(1).lengthOfMonth();
+        int qtdeDiasMesAnterior = dataAtual.minusMonths(1).lengthOfMonth();
         int valorDoDiaMesAnterior = qtdeDiasMesAnterior - diaComecaMesAtual + 2; 
 
         //Comando For anda por todo nó (Node) do GridPane
         for(Node node : calendarioGridPane.getChildren()) {
             
-            VBox boxDia = (VBox) node;      //Transforma o Node em VBox
-            boxDia.getStylesheets().add("CSS/CalendarioCSS.css");
-            boxDia.getStyleClass().add("Box-dia");
-            boxDia.getChildren().clear();   //Limpa a lista de filhos do VBox
+            VBox vBoxDay = (VBox) node;
+            vBoxDay.getStylesheets().add("CSS/CalendarioCSS.css");
+            vBoxDay.getStyleClass().add("Box-dia");
+            vBoxDay.getChildren().clear();   //Limpa a lista de filhos do VBox
             
             //Ajusta para começar na primeira linha do calendário (tava começando na segunda linha)
             if(diaComecaMesAtual == 8){
@@ -195,25 +195,30 @@ public class MainController implements Initializable {
                 contDiaSemana = 1;
             }
 
+            //String para definir o estilo do VBoxDia
+            StringBuilder stringColor = new StringBuilder("-fx-background-color: ");
+            
             //Adiciona os dias do mês anterior
             if(contGrid < diaComecaMesAtual) {
                 Label label = new Label((Integer.toString(valorDoDiaMesAnterior)));
                 label.setPadding(new Insets(5));
                 label.setId(diaSemanaString(contDiaSemana)); //Seta o id do label para o dia da semana
                 
-                boxDia.getChildren().add(label);
-                boxDia.setId("anterior");
+                vBoxDay.getChildren().add(label);
+                vBoxDay.setId("anterior");
                 
                 if(contDiaSemana == 1) {
-                    boxDia.setStyle("-fx-background-color: #FFA09B");
+                    stringColor.append("#FFA09B;");
+//                    boxDia.setStyle("-fx-background-color: #FFA09B");
                 } else {
-//                    boxDia.setStyle("-fx-background-color: #E9F2F5"); // antes
-                    boxDia.setStyle("-fx-background-color: #7bd0ed"); //#cce7f0
+                    stringColor.append("#7BD0ED;");
+//                    boxDia.setStyle("-fx-background-color: #7bd0ed"); //#cce7f0
                 }
                 
                 contGrid++;
                 valorDoDiaMesAnterior++;
                 contDiaSemana++;
+                showTodayDate(stringColor, vBoxDay);
             } 
             else {
                 //Adiciona os dias do mês posterior
@@ -222,18 +227,20 @@ public class MainController implements Initializable {
                     label.setPadding(new Insets(5));
                     label.setId(diaSemanaString(contDiaSemana)); //Seta o id do label para o dia da semana
                     
-                    boxDia.getChildren().add(label); 
-                    boxDia.setId("posterior");
+                    vBoxDay.getChildren().add(label); 
+                    vBoxDay.setId("posterior");
 
                     if(contDiaSemana == 1) {
-                        boxDia.setStyle("-fx-background-color: #FFA09B");
+                        stringColor.append("#FFA09B;");
+//                        boxDia.setStyle("-fx-background-color: #FFA09B");
                     } else {
-//                        boxDia.setStyle("-fx-background-color: #E9F2F5"); // antes 
-                        boxDia.setStyle("-fx-background-color: #7bd0ed"); //#cce7f0
+                        stringColor.append("#7BD0ED;");
+//                        boxDia.setStyle("-fx-background-color: #7bd0ed"); //#cce7f0
                     }
 
                     contDiaPosterior++;
                     contDiaSemana++;
+                    showTodayDate(stringColor, vBoxDay);
                 } 
                 //Adiciona os dias do mês atual
                 else {
@@ -241,17 +248,19 @@ public class MainController implements Initializable {
                     label.setPadding(new Insets(5));
                     label.setId(diaSemanaString(contDiaSemana)); //Seta o id do label para o dia da semana
                     
-                    boxDia.getChildren().add(label);
-                    boxDia.setId("atual");
+                    vBoxDay.getChildren().add(label);
+                    vBoxDay.setId("atual");
 
                     if(contDiaSemana == 1) {
-                        boxDia.setStyle("-fx-background-color: #FFE4C4");
+                        stringColor.append("#FFE4C4;");
+//                        boxDia.setStyle("-fx-background-color: ");
                     } else {
-//                        boxDia.setStyle("-fx-background-color: #FFFFFF"); // antes
-                        boxDia.setStyle("-fx-background-color: #e3ecf0");
+                        stringColor.append("#E3ECF0;");
+//                        boxDia.setStyle("-fx-background-color: #e3ecf0");
                     }
-
+                    
                     contDiaSemana++;
+                    showTodayDate(stringColor, vBoxDay);
                 }
                 contDiaAtual++;
             }
@@ -363,9 +372,9 @@ public class MainController implements Initializable {
         }
         
         Label label = (Label) vBox.getChildren().get(0);
-        //RODRIGO=====================================
+
         Modelo.getInstance().labelId = label.getId();
-        //RODRIGO=====================================
+
         Modelo.getInstance().eventoDiaSelecionado = Integer.parseInt(label.getText());
         Modelo.getInstance().eventoMesSelecionado = data.getMonthValue();
         Modelo.getInstance().eventoAnoSelecionado = data.getYear();
@@ -422,23 +431,7 @@ public class MainController implements Initializable {
         } 
         catch (Exception exception) {
             Modelo.getInstance().showAlertErro(exception.getMessage());
-        }
-        
-//        try {
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getClassLoader().getResource("AddEvento/AddEventoFXML.fxml"));
-//            Parent root = loader.load();
-//            Stage stage = new Stage(StageStyle.UNDECORATED); //Sem Bordas
-//            stage.initModality(Modality.APPLICATION_MODAL);  //Não deixa sair da tela
-//
-//            // Mostra a cena no layout
-//            Scene scene = new Scene(root);
-//            stage.setScene(scene);
-//            stage.show();
-//        } 
-//        catch (Exception e) {
-//             System.out.println(e);
-//        }        
+        }     
     }
 
     private void carregaEventos(){
@@ -482,13 +475,18 @@ public class MainController implements Initializable {
                 }
             }
         }
+        
+        eventoAnimation();
+    }
+
+    private void eventoAnimation(){
         if(isEventoAnimation){
             isEventoAnimation = false;
             TransitionAnimation scale = new TransitionAnimation();
             scale.setScaleAnimation(labelEventoAnimation, 0.2, 0.2, 200);
         }
     }
-
+    
     private void adicionaEvento(int mes, int ano, VBox vBox, Evento evento){
         if(ano == evento.getData().toLocalDate().getYear()){
             
@@ -498,7 +496,7 @@ public class MainController implements Initializable {
                 int dia = evento.getData().toLocalDate().getDayOfMonth();
                 
                 if(Integer.parseInt(label.getText()) == dia){
-
+                    
                     Label labelEvento = new Label(); 
                     labelEvento.getStylesheets().add("CSS/CalendarioCSS.css");
                     labelEvento.getStyleClass().add("Label-atividade");
@@ -593,22 +591,6 @@ public class MainController implements Initializable {
                             catch (Exception error) {
                                 Modelo.getInstance().showAlertErro(error.getMessage());
                             }
-//                            try {
-//                                FXMLLoader loader = new FXMLLoader();
-//                                loader.setLocation(getClass().getClassLoader().getResource("DescricaoEvento/DescricaoEventoFXML.fxml"));
-//
-//                                Parent root = loader.load();
-//                                Stage stage = new Stage(StageStyle.UNDECORATED); 
-//                                stage.initModality(Modality.APPLICATION_MODAL);  
-//
-//                                // Mostra a cena no layout
-//                                Scene scene = new Scene(root);
-//                                stage.setScene(scene);
-//                                stage.show();
-//                            } 
-//                            catch (Exception ex) {
-//                                Modelo.getInstance().showAlertErro(ex.getMessage());
-//                            }
                         }
                     });
                     
@@ -633,9 +615,13 @@ public class MainController implements Initializable {
     }
     
     public void atualizaCalendario(){
+        System.out.println("1");
         carregaCalendarioLabels();
+        System.out.println("2");
         carregaEventos();
+        System.out.println("3");
         populateListConfirmacao();
+        System.out.println("4");
     }
     
     private void inicializaComboMes(){
@@ -833,8 +819,7 @@ public class MainController implements Initializable {
             Modelo.getInstance().showAlertErro(e.getMessage());
         }
     }
-    
-    //Drag-and-Drop Event no objeto de origem
+
     private void setDragAndDropEventSource(Label label){
         
         label.setOnDragDetected( (e) -> {
@@ -857,7 +842,6 @@ public class MainController implements Initializable {
         });
     }
     
-    //Drag-and-Drop Event no objeto alvo
     private void setDragAndDropEventTarget(VBox vBox){
         Label label = new Label("Solte Aqui.");
         label.getStylesheets().add("CSS/CalendarioCSS.css");
@@ -991,10 +975,6 @@ public class MainController implements Initializable {
                 label.setText(text.toString());
                 label.setId(Integer.toString(evento.getId()));
                 
-
-//                label.getStylesheets().add("CSS/CalendarioCSS.css");
-//                label.getStyleClass().add("Label-Confirmacao");
-                
                 label.setPrefWidth(vBoxConfirmacao.getPrefWidth());
                 
                 label.setOnMouseClicked( (e) -> {
@@ -1004,6 +984,7 @@ public class MainController implements Initializable {
                         comboMes.getSelectionModel().select(Modelo.getInstance().dataAtual.getMonthValue() - 1);
                         spinnerAno.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(2015, 2100, Modelo.getInstance().dataAtual.getYear()));
                     }
+                    
                     isEventoAnimation = true;
                     labelEventoAnimation = new Label();
                     labelEventoAnimation.setId(Integer.toString(evento.getId()));
@@ -1046,6 +1027,69 @@ public class MainController implements Initializable {
         return false;
     }
     
+    private void showTodayDate(StringBuilder stringColor, VBox vBoxDay){
+        LocalDate todayDate = LocalDate.now();
+        LocalDate showingDate = Modelo.getInstance().dataAtual;
+        
+        stringColor.append(" -fx-border-color: ");
+        
+        
+        if(vBoxDay.getId().equals("atual")){
+            if(showingDate.getYear() == todayDate.getYear()){
+
+                if(showingDate.getMonthValue() == todayDate.getMonthValue()){
+
+                    Label labelDay = (Label) vBoxDay.getChildren().get(0);
+                    int dayValue = Integer.parseInt(labelDay.getText());
+
+                    if(todayDate.getDayOfMonth() == dayValue){
+                        stringColor.append("blue;");
+                    }
+                    else{
+                        stringColor.append("white;");
+                    }
+                }
+                else{
+                    stringColor.append("white;");
+                }
+            }
+            else{
+                stringColor.append("white;");
+            }
+        }
+        else{
+            stringColor.append("white;");
+        }
+        
+        vBoxDay.setStyle(stringColor.toString()); 
+        
+        /*
+        Se DataAtual.YEAR == DataHoje.YEAR {
+            Se DataAtual.Month - 1 == DataHoje.Month {
+                //anterior
+                Se DiaLabel == DataHoje.Day {
+                
+                }      
+            }
+            Se DataAtual.Month == DataHoje.Month {
+                //atual
+                Se DiaLabel == DataHoje.Day {
+                
+                }
+            }
+            Se DataAtual.Month + 1 == DataHoje.Month {
+                //posterior
+                Se DiaLabel == DataHoje.Day {
+                
+                }
+            }
+            Se Não {
+                //Nenhum
+            }
+        }
+        */
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         scrollPaneInStackPane.getStyleClass().add("edge-to-edge"); //Tira a borda do ScrollPane
@@ -1059,7 +1103,6 @@ public class MainController implements Initializable {
         Modelo.setMainController(this);
         
         inicializaTudo();
-        
         atualizaCalendario();
         populateVBoxCompromissos();
         populateListConfirmacao();

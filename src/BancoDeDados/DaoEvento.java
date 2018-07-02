@@ -349,8 +349,21 @@ public class DaoEvento {
         ObservableList<Evento> listaEvento = FXCollections.observableArrayList();
 
         LocalDate dataAtual = Modelo.getInstance().dataAtual;
-        LocalDate dataMesAnterior = LocalDate.of(dataAtual.getYear(), dataAtual.getMonthValue() - 1, 1);
-        LocalDate dataMesPosterior = LocalDate.of(dataAtual.getYear(), dataAtual.getMonthValue() + 1, 20);
+        LocalDate dataMesAnterior = LocalDate.now();
+        LocalDate dataMesPosterior = LocalDate.now();
+        
+        if(dataAtual.getMonthValue() - 1 == 0){
+            dataMesAnterior = LocalDate.of(dataAtual.getYear() - 1, 12, 1);
+            dataMesPosterior = LocalDate.of(dataAtual.getYear(), dataAtual.getMonthValue() + 1, 20);
+        }
+        else if(dataAtual.getMonthValue() + 1 == 13){
+            dataMesAnterior = LocalDate.of(dataAtual.getYear(), dataAtual.getMonthValue() - 1, 1);
+            dataMesPosterior = LocalDate.of(dataAtual.getYear() + 1, 1, 20);
+        }
+        else{
+            dataMesAnterior = LocalDate.of(dataAtual.getYear(), dataAtual.getMonthValue() - 1, 1);
+            dataMesPosterior = LocalDate.of(dataAtual.getYear(), dataAtual.getMonthValue() + 1, 20);
+        }
         
         
         try {

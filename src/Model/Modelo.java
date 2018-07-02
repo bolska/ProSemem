@@ -40,7 +40,7 @@ public class Modelo {
     public static AtividadeController atividadeController;
     public static FazendaFXMLController fazendaController;
     
-    //Data Atual
+    //Data
     public LocalDate dataAtual; //Data em que o calendário está
     public LocalDate dataHoje; 
     
