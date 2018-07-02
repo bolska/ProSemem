@@ -56,12 +56,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
-/**
- *
- * @author Bolska
- */
+
 public class MainController implements Initializable {
 
     private Label labelEventoAnimation;
@@ -72,61 +68,47 @@ public class MainController implements Initializable {
     private final DataFormat DRAG_EVENT = new DataFormat("DRAG_EVENT");
     private final TransitionAnimation animation = new TransitionAnimation();
     
-    @FXML
-    private VBox rootPane;
+    @FXML private VBox rootPane;
     
-    @FXML
-    private GridPane calendarioGridPane;
+    @FXML private GridPane calendarioGridPane;
 
-    @FXML
-    private ScrollPane scrollPaneInStackPane;
+    @FXML private ScrollPane scrollPaneInStackPane;
     
-    @FXML
-    private ScrollPane leftScrollPane;
+    @FXML private VBox leftVBox;
 
-    @FXML
-    private JFXComboBox comboMes;
+    @FXML private JFXComboBox comboMes;
     
-    @FXML
-    private Spinner spinnerAno;
+    @FXML private Spinner spinnerAno;
 
-    @FXML
-    private HBox cabecarioSemana;
+    @FXML private HBox cabecarioSemana;
     
-    @FXML
-    private StackPane centerStackPane;
+    @FXML private StackPane centerStackPane;
     
-    @FXML
-    private JFXHamburger hamburgerIcon;
+    @FXML private JFXHamburger hamburgerIcon;
     
-    @FXML
-    private VBox vBoxCompromissos;
+    @FXML private VBox vBoxCompromissos;
     
-    @FXML
-    private JFXButton buttonCompromisso;
+    @FXML private JFXButton buttonCompromisso;
     
-    @FXML
-    private ScrollPane scrollPaneCompromissos;
+    @FXML private ScrollPane scrollPaneCompromissos;
     
-    @FXML
-    private ScrollPane scrollPaneConfirmacao;
+    @FXML private ScrollPane scrollPaneConfirmacao;
     
-    @FXML
-    private VBox vBoxConfirmacao;
+    @FXML private VBox vBoxConfirmacao;
     
     @FXML
     private void animationMenu(MouseEvent evt) throws InterruptedException{
         if(animation.isRunning()){
             if(isMenuOpen){
                 isMenuOpen = false;
-                animation.setTranslateAnimationOn(leftScrollPane, 0, -leftScrollPane.getWidth(), 500);
-                animation.setTranslateResizeAnimationOn(centerStackPane, 0, -leftScrollPane.getWidth(), 500, leftScrollPane.getWidth());
+                animation.setTranslateAnimationOn(leftVBox, 0, -leftVBox.getWidth(), 500);
+                animation.setTranslateResizeAnimationOn(centerStackPane, 0, -leftVBox.getWidth(), 500, leftVBox.getWidth());
                 animation.hambumguerAnimation(hamburgerIcon, 360, 500);
             }
             else{
                 isMenuOpen = true;
-                animation.setTranslateAnimationOn(leftScrollPane, -leftScrollPane.getWidth(), 0, 500);
-                animation.setTranslateResizeAnimationOn(centerStackPane, -leftScrollPane.getWidth(), 0, 500, -leftScrollPane.getWidth());
+                animation.setTranslateAnimationOn(leftVBox, -leftVBox.getWidth(), 0, 500);
+                animation.setTranslateResizeAnimationOn(centerStackPane, -leftVBox.getWidth(), 0, 500, -leftVBox.getWidth());
                 animation.hambumguerAnimation(hamburgerIcon, -360, 500);  
             }   
         }
@@ -154,6 +136,12 @@ public class MainController implements Initializable {
         else{
             Modelo.getInstance().showAlertErro("Gerenciador já está aberto.");
         }
+    }
+    
+    @FXML
+    private void buttonTodayDate(ActionEvent evt){
+        Modelo.getInstance().dataAtual = Modelo.getInstance().dataHoje;
+        atualizaCalendario();
     }
     
     private void carregaCalendarioLabels() {
@@ -615,13 +603,9 @@ public class MainController implements Initializable {
     }
     
     public void atualizaCalendario(){
-        System.out.println("1");
         carregaCalendarioLabels();
-        System.out.println("2");
         carregaEventos();
-        System.out.println("3");
         populateListConfirmacao();
-        System.out.println("4");
     }
     
     private void inicializaComboMes(){
@@ -1094,7 +1078,7 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         scrollPaneInStackPane.getStyleClass().add("edge-to-edge"); //Tira a borda do ScrollPane
         scrollPaneInStackPane.setFitToWidth(true);
-        leftScrollPane.getStyleClass().add("edge-to-edge");
+        leftVBox.getStyleClass().add("edge-to-edge");
         scrollPaneCompromissos.getStyleClass().add("edge-to-edge");
         scrollPaneConfirmacao.getStyleClass().add("edge-to-edge");
         
