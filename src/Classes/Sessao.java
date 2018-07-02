@@ -1,50 +1,52 @@
 package Classes;
 
+import BancoDeDados.DaoProtocolo;
 import java.sql.Date;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
-/**
- *
- * @author user
- */
-public class Sessao {
-    private String id;
-    private String estado;
-    private int protocoloId;
-    private int fazendaId;
+public class Sessao 
+{
+    private SimpleStringProperty id;
+    private SimpleStringProperty estado;
+    private SimpleStringProperty protocoloDescricao;
+    private SimpleStringProperty cor;
+    private SimpleIntegerProperty protocoloId;
+    private SimpleIntegerProperty fazendaId;
+
     private Date dataAbertura;
     private Date dataEncerramento;
-    private String cor;
 
     public String getId() {
-        return id;
+        return id.getValue();
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = new SimpleStringProperty(id);
     }
 
     public String getEstado() {
-        return estado;
+        return estado.getValue();
     }
 
     public void setEstado(String estado) {
-        this.estado = estado;
+        this.estado = new SimpleStringProperty(estado);
     }
 
     public int getFazendaId() {
-        return fazendaId;
+        return fazendaId.getValue();
     }
 
     public void setFazendaId(int fazendaId) {
-        this.fazendaId = fazendaId;
+        this.fazendaId = new SimpleIntegerProperty(fazendaId);
     }
     
     public int getProtocoloId() {
-        return protocoloId;
+        return protocoloId.getValue();
     }
 
     public void setProtocoloId(int protocoloId) {
-        this.protocoloId = protocoloId;
+        this.protocoloId = new SimpleIntegerProperty(protocoloId);
     }
 
     public Date getDataAbertura() {
@@ -64,10 +66,16 @@ public class Sessao {
     }
 
     public String getCor() {
-        return cor;
+        return cor.getValue();
     }
 
     public void setCor(String cor) {
-        this.cor = cor;
+        this.cor = new SimpleStringProperty(cor);
+    }
+    
+    public String getProtocoloDescricao(){
+        DaoProtocolo daoProtocolo = new DaoProtocolo();
+        Protocolo protocolo = daoProtocolo.getProtocoloById(getProtocoloId());
+        return protocolo.getDescricao();
     }
 }

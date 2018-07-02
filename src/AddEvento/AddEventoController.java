@@ -4,15 +4,13 @@ import BancoDeDados.DaoAtividade;
 import BancoDeDados.DaoFazenda;
 import BancoDeDados.DaoProtocolo;
 import BancoDeDados.DaoSessao;
-import Classes.AtividadeProperty;
+import Classes.Atividade;
 import Classes.Protocolo;
 import Model.Modelo;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +22,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 import Classes.Fazenda;
 import Classes.Sessao;
@@ -39,63 +36,51 @@ import javafx.event.ActionEvent;
  * @author Bolska
  */
 public class AddEventoController implements Initializable {
+
+    @FXML private Label labelDataSelecionada;
     
-    @FXML
-    private AnchorPane root;
+    @FXML private JFXComboBox comboBoxProtocolo;
+    
+    @FXML private JFXComboBox comboBoxFazenda;
+    
+    @FXML private JFXTextField textFieldSessao;
+    
+    @FXML private JFXColorPicker colorPicker;
+
+    @FXML private TableView<Atividade> tableAtividade;
+    
+    @FXML private TableColumn<Atividade, Integer> columnID;
+    
+    @FXML private TableColumn<Atividade, String> columnDescr;
+    
+    @FXML private TableColumn<Atividade, Integer> columnIntervalo;
+    
+    @FXML private TableColumn<Atividade, String> columnTipo;
 
     @FXML
-    private Label labelDataSelecionada;
-    
-    @FXML
-    private JFXComboBox comboProtocolo;
-    
-    @FXML
-    private JFXComboBox comboFazenda;
-    
-    @FXML
-    private JFXTextField textFieldSessao;
-    
-    @FXML
-    private JFXColorPicker jfxColorPicker;
-    
-    //Tabela Atividade
-    @FXML
-    private TableView<AtividadeProperty> tabelaAtividade;
-    @FXML
-    private TableColumn<AtividadeProperty, Integer> colunaID;
-    @FXML
-    private TableColumn<AtividadeProperty, String> colunaDescr;
-    @FXML
-    private TableColumn<AtividadeProperty, Integer> colunaIntervalo;
-    @FXML
-    private TableColumn<AtividadeProperty, String> colunaTipo;
-    
-    
-    
-    @FXML
     private void botaoSalvarEventoProtocolo(MouseEvent evt){
-        boolean passou = true;
+        boolean verifyFields = true;
         
-        Protocolo protocolo = (Protocolo) comboProtocolo.getSelectionModel().getSelectedItem();
-        Fazenda fazenda = (Fazenda) comboFazenda.getSelectionModel().getSelectedItem();
+        Protocolo protocolo = (Protocolo) comboBoxProtocolo.getSelectionModel().getSelectedItem();
+        Fazenda fazenda = (Fazenda) comboBoxFazenda.getSelectionModel().getSelectedItem();
         
         if(protocolo == null){
-            passou = false;
-            comboProtocolo.setStyle("-fx-border-color: #DD1D36");
+            verifyFields = false;
+            comboBoxProtocolo.setStyle("-fx-border-color: #DD1D36");
         }
         else{
-            comboProtocolo.setStyle("-fx-border: transparent");
+            comboBoxProtocolo.setStyle("-fx-border: transparent");
         }    
         
         if(fazenda == null){
-            passou = false;
-            comboFazenda.setStyle("-fx-border-color: #DD1D36");
+            verifyFields = false;
+            comboBoxFazenda.setStyle("-fx-border-color: #DD1D36");
         }
         else{
-            comboFazenda.setStyle("-fx-border: transparent");
+            comboBoxFazenda.setStyle("-fx-border: transparent");
         }
 
-        if(passou){
+        if(verifyFields){
             Modelo.getInstance().protocolo = protocolo;
             Modelo.getInstance().fazenda = fazenda;
             
@@ -127,7 +112,7 @@ public class AddEventoController implements Initializable {
         sessao.setFazendaId(Modelo.getInstance().fazenda.getId());
         sessao.setId(textFieldSessao.getText());
         sessao.setDataAbertura(sqlDate);
-        sessao.setCor(jfxColorPicker.getValue().toString());
+        sessao.setCor(colorPicker.getValue().toString());
         sessao.setEstado("A");
         
         if(!Verify.hasEqual(sessao)){
@@ -149,10 +134,10 @@ public class AddEventoController implements Initializable {
         ObservableList<Protocolo> listaProtocolo = FXCollections.observableArrayList();
                 
         listaProtocolo = daoProtocolo.getListProtocolo();
-        comboProtocolo.setItems(listaProtocolo);
+        comboBoxProtocolo.setItems(listaProtocolo);
         
         //Configurações do comboBox para por o objeto Protocolo em vez de apenas sua Descrição
-        comboProtocolo.setCellFactory((comboBox) -> {
+        comboBoxProtocolo.setCellFactory((comboBox) -> {
             return new ListCell<Protocolo>() {
                 @Override
                 protected void updateItem(Protocolo p, boolean empty) {
@@ -167,7 +152,7 @@ public class AddEventoController implements Initializable {
             };
         });
 
-        comboProtocolo.setConverter(new StringConverter<Protocolo>() {
+        comboBoxProtocolo.setConverter(new StringConverter<Protocolo>() {
             @Override
             public String toString(Protocolo p) {
                 if (p == null) {
@@ -184,8 +169,8 @@ public class AddEventoController implements Initializable {
         });
         
         //Evento para carregar a tabela de Atividades
-        comboProtocolo.setOnAction((event) -> {
-            Protocolo protocoloSelecionado = (Protocolo) comboProtocolo.getSelectionModel().getSelectedItem();
+        comboBoxProtocolo.setOnAction((event) -> {
+            Protocolo protocoloSelecionado = (Protocolo) comboBoxProtocolo.getSelectionModel().getSelectedItem();
             carregaTabelaAtividade(protocoloSelecionado);
         });
     }
@@ -194,9 +179,9 @@ public class AddEventoController implements Initializable {
         DaoFazenda daoF = new DaoFazenda();
         ObservableList<Fazenda> listFazenda = daoF.getListFazenda();
         
-        comboFazenda.setItems(listFazenda);
+        comboBoxFazenda.setItems(listFazenda);
         
-        comboFazenda.setCellFactory((comboBox) -> {
+        comboBoxFazenda.setCellFactory((comboBox) -> {
             return new ListCell<Fazenda>() {
                 @Override
                 protected void updateItem(Fazenda f, boolean empty) {
@@ -211,7 +196,7 @@ public class AddEventoController implements Initializable {
             };
         });
 
-        comboFazenda.setConverter(new StringConverter<Fazenda>() {
+        comboBoxFazenda.setConverter(new StringConverter<Fazenda>() {
             @Override
             public String toString(Fazenda f) {
                 if (f == null) {
@@ -240,24 +225,19 @@ public class AddEventoController implements Initializable {
     }
 
     private void iniciaTabelaAtividade() {
-        colunaID.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colunaDescr.setCellValueFactory(new PropertyValueFactory<>("descricao"));
-        colunaIntervalo.setCellValueFactory(new PropertyValueFactory<>("intervalo"));
-        colunaTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));   
+        columnID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        columnDescr.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+        columnIntervalo.setCellValueFactory(new PropertyValueFactory<>("intervalo"));
+        columnTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));   
     }
     
     private void carregaTabelaAtividade(Protocolo protocolo){
         DaoAtividade daoAtividade = new DaoAtividade();
+        ObservableList<Atividade> listAtividade = daoAtividade.getListaAtividadeByProtocoloId(protocolo.getId());
         
-        List<AtividadeProperty> lista = new ArrayList<>();
-        daoAtividade.getListaAtividadeByProtocoloId(protocolo.getId()).forEach(atividade ->{
-            lista.add(new AtividadeProperty(atividade));
-        });
-        
-        ObservableList<AtividadeProperty> obLista = FXCollections.observableArrayList(lista);
-        tabelaAtividade.setItems(FXCollections.observableArrayList(obLista));
-        tabelaAtividade.getSortOrder().add(colunaIntervalo);
-        tabelaAtividade.sort();
+        tableAtividade.setItems(listAtividade);
+        tableAtividade.getSortOrder().add(columnIntervalo);
+        tableAtividade.sort();
     }
     
     @Override

@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Gerenciador.Atividade;
 
 import BancoDeDados.DaoAtividade;
 import BancoDeDados.DaoEvento;
 import Classes.Atividade;
-import Classes.AtividadeProperty;
 import Model.Modelo;
 import Model.SnackbarModel;
 import RegrasNegocio.Verify;
@@ -43,23 +37,17 @@ public class AtividadeController implements Initializable {
 
     private Atividade atividade;
     
-    @FXML
-    private TableView<AtividadeProperty> tableAtividade;
+    @FXML private TableView<Atividade> tableAtividade;
 
-    @FXML
-    private TableColumn<AtividadeProperty, String> columnDescr;
+    @FXML private TableColumn<Atividade, String> columnDescr;
 
-    @FXML
-    private TableColumn<AtividadeProperty, String> columnTipo;
+    @FXML private TableColumn<Atividade, String> columnTipo;
 
-    @FXML
-    private TableColumn<AtividadeProperty, Integer> columnIntervalo;
+    @FXML private TableColumn<Atividade, Integer> columnIntervalo;
 
-    @FXML
-    public JFXTextArea textAreaAtividadeObs;
+    @FXML public JFXTextArea textAreaAtividadeObs;
     
-    @FXML
-    public JFXButton buttonSalvar;
+    @FXML public JFXButton buttonSalvar;
     
     @FXML
     void buttonAddAtividade(ActionEvent event) {
@@ -82,12 +70,6 @@ public class AtividadeController implements Initializable {
             catch (Exception e) {
                 Modelo.getInstance().showAlertErro(e.getMessage());
             }
-//            try {
-//                Stage stage = new Stage();
-//                new AddAtividadeLoader().start(stage);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
         }
         else{
             Modelo.getInstance().showAlertErro("Selecione um Protocolo.");
@@ -99,14 +81,14 @@ public class AtividadeController implements Initializable {
         if(tableAtividade.getSelectionModel().isEmpty()){
             Modelo.getInstance().showAlertErro("Selecione uma Atividade.");
         }
-        else if(Verify.hasEvent(tableAtividade.getSelectionModel().getSelectedItem().getAtividade())){
+        else if(Verify.hasEvent(tableAtividade.getSelectionModel().getSelectedItem())){
             if(Modelo.getInstance().showAlertConfirm("Excluir uma Atividade também irá excluir o Evento em que está"
             + " atrelado, se tiver algum. Deseja continuar?")){
 
                 DaoAtividade daoAtividade = new DaoAtividade();
                 DaoEvento daoEvento = new DaoEvento();
 
-                Atividade atv = tableAtividade.getSelectionModel().getSelectedItem().getAtividade();
+                Atividade atv = tableAtividade.getSelectionModel().getSelectedItem();
 
                 daoEvento.removeEventoAtividadeById(atv.getId());
                 daoAtividade.removeAtividade(atv.getId());
@@ -119,7 +101,7 @@ public class AtividadeController implements Initializable {
             DaoAtividade daoAtividade = new DaoAtividade();
             DaoEvento daoEvento = new DaoEvento();
 
-            Atividade atv = tableAtividade.getSelectionModel().getSelectedItem().getAtividade();
+            Atividade atv = tableAtividade.getSelectionModel().getSelectedItem();
 
             daoEvento.removeEventoAtividadeById(atv.getId());
             daoAtividade.removeAtividade(atv.getId());
@@ -165,16 +147,11 @@ public class AtividadeController implements Initializable {
         daoA.atualizaAtividade(atv);
     }
     
-    private ObservableList<AtividadeProperty> listaTodos() {
+    private ObservableList<Atividade> getListAtividade() {
         DaoAtividade daoAtividade = new DaoAtividade();
         int protocoloId = Modelo.getInstance().protocolo.getId();
         
-        ObservableList<AtividadeProperty> listaAtiv = FXCollections.observableArrayList();
-        daoAtividade.getListaAtividadeByProtocoloId(protocoloId).forEach(atividade ->{
-            listaAtiv.add(new AtividadeProperty(atividade));
-        });
-        
-        return listaAtiv;
+        return daoAtividade.getListaAtividadeByProtocoloId(protocoloId);
     }
    
     public void iniciaTabela() {
@@ -189,11 +166,11 @@ public class AtividadeController implements Initializable {
                 e.consume();
             }
             else if(!e.getNewValue().trim().isEmpty()){
-                AtividadeProperty atividade = tableAtividade.getSelectionModel().getSelectedItem();
-                atividade.setDescricaoProperty(e.getNewValue().trim());
+                Atividade atividade = tableAtividade.getSelectionModel().getSelectedItem();
+                atividade.setDescricao(e.getNewValue().trim());
 
                 DaoAtividade daoAtividade = new DaoAtividade();
-                daoAtividade.atualizaAtividade(atividade.getAtividade());
+                daoAtividade.atualizaAtividade(atividade);
                 Modelo.getMainController().atualizaCalendario();  
             }
             else{
@@ -208,9 +185,9 @@ public class AtividadeController implements Initializable {
                 e.consume();
             }
             else if(e.getNewValue() != null){
-                AtividadeProperty atividade = tableAtividade.getSelectionModel().getSelectedItem();
+                Atividade atividade = tableAtividade.getSelectionModel().getSelectedItem();
                 try{
-                    atividade.setIntervaloProperty(Integer.parseInt(e.getNewValue().toString()));
+                    atividade.setIntervalo(Integer.parseInt(e.getNewValue().toString()));
                     
                 }
                 catch(NumberFormatException error){
@@ -218,7 +195,7 @@ public class AtividadeController implements Initializable {
                 }
 
                 DaoAtividade daoAtividade = new DaoAtividade();
-                daoAtividade.atualizaAtividade(atividade.getAtividade());
+                daoAtividade.atualizaAtividade(atividade);
                 Modelo.getMainController().atualizaCalendario();   
             }
             else{
@@ -235,32 +212,32 @@ public class AtividadeController implements Initializable {
         columnTipo.setCellFactory(ComboBoxTableCell.forTableColumn(listaTipos));
         columnTipo.setOnEditCommit(e ->{
             DaoAtividade daoAtividade = new DaoAtividade();
-            AtividadeProperty atividade = tableAtividade.getSelectionModel().getSelectedItem();
+            Atividade atividade = tableAtividade.getSelectionModel().getSelectedItem();
             if(e.getNewValue().equals("Principal")){
-                atividade.setTipoProperty(e.getNewValue());
-                atividade.setIntervaloProperty(0);
+                atividade.setTipo(e.getNewValue());
+                atividade.setIntervalo(0);
                 
                 changeOldPrincipalToImportante(atividade.getProtocoloId());
             }
             else if(e.getOldValue().equals("Principal")){
-                atividade.setTipoProperty(e.getNewValue());
-                atividade.setIntervaloProperty(-1);
+                atividade.setTipo(e.getNewValue());
+                atividade.setIntervalo(-1);
             }
             else{
-                atividade.setTipoProperty(e.getNewValue());
+                atividade.setTipo(e.getNewValue());
             }
-            daoAtividade.atualizaAtividade(atividade.getAtividade());
+            daoAtividade.atualizaAtividade(atividade);
             iniciaTabela();
         });   
         
-        tableAtividade.setItems(listaTodos());
+        tableAtividade.setItems(getListAtividade());
         tableAtividade.setPlaceholder(new Label("Lista Vazia."));
         tableAtividade.setEditable(true);
         tableAtividade.getSortOrder().add(columnIntervalo);
         tableAtividade.sort();
         
         tableAtividade.setOnMouseClicked( (e) -> {
-            atividade = tableAtividade.getSelectionModel().getSelectedItem().getAtividade();
+            atividade = tableAtividade.getSelectionModel().getSelectedItem();
             
             textAreaAtividadeObs.clear();
             textAreaAtividadeObs.disableProperty().set(false);

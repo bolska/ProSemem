@@ -1,67 +1,61 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Classes;
 
-/**
- *
- * @author Bolska
- */
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 public class Atividade {
-    private int id;
-    private String descricao;
-    private int intervalo;
-    private String tipo;    //Principal, Importante, Secundário
-    private int protocoloId;
-    private String obs;
+    private SimpleIntegerProperty id;
+    private SimpleStringProperty descricao;
+    private SimpleIntegerProperty intervalo;
+    private SimpleStringProperty tipo;    //"P" = Principal, "I" = Importante, "S" = Secundário
+    private SimpleStringProperty observacao;
+    private SimpleIntegerProperty protocoloId;
 
     public int getId() {
-        return id;
+        return id.getValue();
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id = new SimpleIntegerProperty(id);
     }
 
     public String getDescricao() {
-        return descricao;
+        return descricao.getValue();
     }
 
     public void setDescricao(String descricao) {
-        this.descricao = descricao;
+        this.descricao = new SimpleStringProperty(descricao);
     }
 
     public int getIntervalo() {
-        return intervalo;
+        return intervalo.getValue();
     }
 
     public void setIntervalo(int intervalo) {
-        this.intervalo = intervalo;
+        this.intervalo = new SimpleIntegerProperty(intervalo);
     }
 
     public String getTipo() {
-        return tipo;
+        return tipo.getValue();
     }
 
     public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public int getProtocoloId() {
-        return protocoloId;
-    }
-
-    public void setProtocoloId(int protocoloId) {
-        this.protocoloId = protocoloId;
+        this.tipo = new SimpleStringProperty(tipo);
     }
 
     public String getObs() {
-        return obs;
+        return observacao.getValue();
     }
 
     public void setObs(String obs) {
-        this.obs = obs;
+        this.observacao = new SimpleStringProperty(obs);
+    }
+
+    public int getProtocoloId() {
+        return protocoloId.getValue();
+    }
+
+    public void setProtocoloId(int protocoloId) {
+        this.protocoloId = new SimpleIntegerProperty(protocoloId);
     }
 }

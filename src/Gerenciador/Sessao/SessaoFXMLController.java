@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Gerenciador.Sessao;
 
 import BancoDeDados.DaoSessao;
-import Classes.SessaoProperty;
+import Classes.Sessao;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,53 +12,34 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-/**
- * FXML Controller class
- *
- * @author user
- */
 public class SessaoFXMLController implements Initializable {
 
     @FXML
-    private TableView<SessaoProperty> tableSessaoAber;
+    private TableView<Sessao> tableSessaoAber;
     
     @FXML
-    private TableView<SessaoProperty> tableSessaoEnc;
+    private TableView<Sessao> tableSessaoEnc;
     
     @FXML
-    private TableColumn<SessaoProperty, String> columnIdAber;
+    private TableColumn<Sessao, String> columnIdAber;
     
     @FXML
-    private TableColumn<SessaoProperty, String> columnNameAber;
+    private TableColumn<Sessao, String> columnNameAber;
     
     @FXML
-    private TableColumn<SessaoProperty, String> columnIdEnc;
+    private TableColumn<Sessao, String> columnIdEnc;
     
     @FXML
-    private TableColumn<SessaoProperty, String> columnNameEnc;
+    private TableColumn<Sessao, String> columnNameEnc;
     
-    private ObservableList<SessaoProperty> listAllAberta() {
+    private ObservableList<Sessao> listAllAberta() {
         DaoSessao daoS = new DaoSessao();
-        
-        ObservableList<SessaoProperty> listSessao = FXCollections.observableArrayList();
-        
-        daoS.getListSessaoByEstado("A").forEach(sessao -> {
-            listSessao.add(new SessaoProperty(sessao));
-        });
-        
-        return listSessao;
+        return daoS.getListSessaoByEstado("A");
     }
     
-    private ObservableList<SessaoProperty> listAllEncerrada() {
+    private ObservableList<Sessao> listAllEncerrada() {
         DaoSessao daoS = new DaoSessao();
-        
-        ObservableList<SessaoProperty> listSessao = FXCollections.observableArrayList();
-        
-        daoS.getListSessaoByEstado("E").forEach(sessao -> {
-            listSessao.add(new SessaoProperty(sessao));
-        });
-
-        return listSessao;
+        return daoS.getListSessaoByEstado("E");
     }
     
     public void startTableAberta() {

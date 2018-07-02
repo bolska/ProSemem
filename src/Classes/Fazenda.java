@@ -1,67 +1,62 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Classes;
 
-/**
- *
- * @author user
- */
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+
 public class Fazenda {
-    private int id;
-    private String nome;
-    private String descricao;
-    private int encarregadoId;
-    private String encarregadoNome;
-    private String sigla;
+    private SimpleIntegerProperty id;
+    private SimpleStringProperty nome;
+    private SimpleStringProperty descricao;
+    private SimpleIntegerProperty encarregadoId;
+    private SimpleStringProperty encarregadoNome;
+    private SimpleStringProperty sigla;
 
     public int getId() {
-        return id;
+        return id.getValue();
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id = new SimpleIntegerProperty(id);
     }
 
     public String getNome() {
-        return nome;
+        return nome.getValue();
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = new SimpleStringProperty(nome);
     }
 
     public String getDescricao() {
-        return descricao;
+        return descricao.getValue();
     }
 
     public void setDescricao(String descricao) {
-        this.descricao = descricao;
+        this.descricao = new SimpleStringProperty(descricao);
     }
 
     public int getEncarregadoId() {
-        return encarregadoId;
+        return encarregadoId.getValue();
     }
 
     public void setEncarregadoId(int encarregadoId) {
-        this.encarregadoId = encarregadoId;
+        this.encarregadoId = new SimpleIntegerProperty(encarregadoId);
     }
 
     public String getEncarregadoNome() {
-        return encarregadoNome;
+        return encarregadoNome.getValue();
     }
 
     public void setEncarregadoNome(String encarregado_nome) {
-        this.encarregadoNome = encarregado_nome;
+        this.encarregadoNome = new SimpleStringProperty(encarregado_nome);
     }
 
     public String getSigla() {
-        return sigla;
+        return sigla.getValue();
     }
 
     public void setSigla(String sigla) {
-        this.sigla = sigla;
+        this.sigla = new SimpleStringProperty(sigla);
     }
 }

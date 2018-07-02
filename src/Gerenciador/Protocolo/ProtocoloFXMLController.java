@@ -2,7 +2,6 @@ package Gerenciador.Protocolo;
 
 import BancoDeDados.DaoProtocolo;
 import Classes.Protocolo;
-import Classes.ProtocoloProperty;
 import Model.Modelo;
 import Model.SnackbarModel;
 import RegrasNegocio.Verify;
@@ -11,7 +10,6 @@ import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTextArea;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,10 +25,10 @@ import javafx.scene.layout.AnchorPane;
 public class ProtocoloFXMLController implements Initializable {
     
     @FXML
-    public TableView<ProtocoloProperty> tableProtocolo;
+    public TableView<Protocolo> tableProtocolo;
     
     @FXML
-    private TableColumn<ProtocoloProperty, String> columnDescr;
+    private TableColumn<Protocolo, String> columnDescr;
     
     @FXML
     private AnchorPane rootPane;
@@ -47,9 +45,9 @@ public class ProtocoloFXMLController implements Initializable {
     @FXML
     private void tableClickedEvent(MouseEvent evt){
         if(evt.getClickCount() == 1 && !evt.isConsumed() && !tableProtocolo.getSelectionModel().isEmpty()){
-            if(Modelo.getInstance().protocolo != tableProtocolo.getSelectionModel().getSelectedItem().getProtocolo()){
+            if(Modelo.getInstance().protocolo != tableProtocolo.getSelectionModel().getSelectedItem()){
                 
-                Modelo.getInstance().protocolo = tableProtocolo.getSelectionModel().getSelectedItem().getProtocolo();
+                Modelo.getInstance().protocolo = tableProtocolo.getSelectionModel().getSelectedItem();
                 Modelo.getInstance().pane = rootPane;
                 
                 Modelo.atividadeController.iniciaTabela();  
@@ -73,7 +71,7 @@ public class ProtocoloFXMLController implements Initializable {
         if (tableProtocolo.getSelectionModel().isEmpty()) {
             Modelo.getInstance().showAlertErro("Selecione um protocolo.");
         }
-        else if(Verify.hasEvent(tableProtocolo.getSelectionModel().getSelectedItem().getProtocolo())){
+        else if(Verify.hasEvent(tableProtocolo.getSelectionModel().getSelectedItem())){
             if(Modelo.getInstance().showAlertConfirm("Excluir um Protocolo também irá excluir suas Atividade e seus"
                     + " Eventos cadastrados. Deseja continuar?")){
 
@@ -112,23 +110,16 @@ public class ProtocoloFXMLController implements Initializable {
         } catch (Exception e) {
             Modelo.getInstance().showAlertErro(e.getMessage());
         }
-//        try {
-//            Stage stage = new Stage();
-//            new AddProtocoloLoader().start(stage);
-//        } 
-//        catch (Exception e) {
-//             System.out.println(e);
-//        }
     }
     
     @FXML
     private void buttonSalvarObsP(ActionEvent event) {
-        Protocolo proto = Modelo.getInstance().protocolo;
-        if(proto.getObs() == null){
+        Protocolo protocolo = Modelo.getInstance().protocolo;
+        if(protocolo.getObs() == null){
             updateObs(Modelo.getInstance().protocolo);
         }
-        else if(!proto.getObs().equals(textAreaObs.getText())){
-            updateObs(proto);
+        else if(!protocolo.getObs().equals(textAreaObs.getText())){
+            updateObs(protocolo);
         }
         else{
             Modelo.getInstance().showAlertErro("Não houve nenhuma alteração no campo Observação.");
@@ -142,19 +133,13 @@ public class ProtocoloFXMLController implements Initializable {
         daoP.atualizaProtocolo(proto);
     }
     
-    private ObservableList<ProtocoloProperty> listaTodos() {
+    private ObservableList<Protocolo> listaTodos() {
         DaoProtocolo daoProtocolo = new DaoProtocolo();
         
-        ObservableList<ProtocoloProperty> lista = FXCollections.observableArrayList();
-        daoProtocolo.getListProtocolo().forEach(protocolo ->{
-            lista.add(new ProtocoloProperty(protocolo));
-        });
-        
-        return lista;
+        return daoProtocolo.getListProtocolo();
     }
    
     public void iniciaTabela() {
-//        colunaID.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnDescr.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         columnDescr.setSortType(TableColumn.SortType.ASCENDING);
         
@@ -169,11 +154,11 @@ public class ProtocoloFXMLController implements Initializable {
                 e.consume();
             }
             else if(!e.getNewValue().trim().isEmpty()){
-                ProtocoloProperty protocoloP = tableProtocolo.getSelectionModel().getSelectedItem();
-                protocoloP.setDescricaoProperty(e.getNewValue().trim());
-                if(!Verify.hasEqual(protocoloP.getProtocolo())){
+                Protocolo protocolo = tableProtocolo.getSelectionModel().getSelectedItem();
+                protocolo.setDescricao(e.getNewValue().trim());
+                if(!Verify.hasEqual(protocolo)){
                     DaoProtocolo daoP = new DaoProtocolo();
-                    daoP.atualizaProtocolo(protocoloP.getProtocolo());
+                    daoP.atualizaProtocolo(protocolo);
                     Modelo.getMainController().atualizaCalendario();
                 }
                 else{

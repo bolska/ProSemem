@@ -100,7 +100,7 @@ public class Verify {
 
         if(fazenda.getNome() != null && fazenda.getSigla() != null){
             for(int i = 0; i < listFazenda.size(); i++){
-                if(listFazenda.get(i).getNome().equals(fazenda.getNome()) || listFazenda.get(i).getSigla().equals(fazenda.getSigla())){
+                if(listFazenda.get(i).getNome().equals(fazenda.getNome()) && listFazenda.get(i).getSigla().equals(fazenda.getSigla())){
                     return true;
                 }
             }

@@ -1,44 +1,43 @@
 package Classes;
 
-/**
- *
- * @author Bolska
- */
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 public class Compromisso {
-    private int id;
-    private String descricao;
-    private String tipo;
-    private String cor;
+    private SimpleIntegerProperty id;
+    private SimpleStringProperty descricao;
+    private SimpleStringProperty tipo;
+    private SimpleStringProperty cor;
 
     public int getId() {
-        return id;
+        return id.getValue();
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id = new SimpleIntegerProperty(id);
     }
 
     public String getDescricao() {
-        return descricao;
+        return descricao.getValue();
     }
 
     public void setDescricao(String descricao) {
-        this.descricao = descricao;
+        this.descricao = new SimpleStringProperty(descricao);
     }
 
     public String getTipo() {
-        return tipo;
+        return tipo.getValue();
     }
 
     public void setTipo(String tipo) {
-        this.tipo = tipo;
+        this.tipo = new SimpleStringProperty(tipo);
     }
 
     public String getCor() {
-        return cor;
+        return cor.getValue();
     }
 
     public void setCor(String cor) {
-        this.cor = cor;
+        this.cor = new SimpleStringProperty(cor);
     }
 }

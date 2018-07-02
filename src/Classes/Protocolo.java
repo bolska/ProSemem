@@ -1,40 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Classes;
 
-/**
- *
- * @author Bolska
- */
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 public class Protocolo {
-    private int id;
-    private String descricao;
-    private String obs;
+    private SimpleIntegerProperty id;
+    private SimpleStringProperty descricao;
+    private SimpleStringProperty observacao;
     
     public int getId() {
-        return id;
+        return id.getValue();
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id = new SimpleIntegerProperty(id);
     }
 
     public String getDescricao() {
-        return descricao;
+        return descricao.getValue();
     }
 
     public void setDescricao(String descricao) {
-        this.descricao = descricao;
+        this.descricao = new SimpleStringProperty(descricao);
     }
 
     public String getObs() {
-        return obs;
+        return observacao.getValue();
     }
 
     public void setObs(String obs) {
-        this.obs = obs;
+        this.observacao = new SimpleStringProperty(obs);
     }
 }

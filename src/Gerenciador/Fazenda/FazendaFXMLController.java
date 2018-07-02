@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Gerenciador.Fazenda;
 
 import BancoDeDados.DaoEncarregado;
 import BancoDeDados.DaoFazenda;
 import Classes.Encarregado;
 import Classes.Fazenda;
-import Classes.FazendaProperty;
 import Model.Modelo;
 import Model.SnackbarModel;
 import RegrasNegocio.Verify;
@@ -17,7 +11,6 @@ import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTextArea;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,26 +23,22 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author user
- */
+
+
 public class FazendaFXMLController implements Initializable {
 
     @FXML
-    private TableView<FazendaProperty> tableFazenda;
+    private TableView<Fazenda> tableFazenda;
     
     @FXML
-    private TableColumn<FazendaProperty, String> columnNome;
+    private TableColumn<Fazenda, String> columnNome;
     
     @FXML
-    private TableColumn<FazendaProperty, String> columnSigla;
+    private TableColumn<Fazenda, String> columnSigla;
     
     @FXML
-    private TableColumn<FazendaProperty, String> columnEncarregado;
+    private TableColumn<Fazenda, String> columnEncarregado;
     
     @FXML
     private JFXTextArea textAreaDescricao;
@@ -100,11 +89,11 @@ public class FazendaFXMLController implements Initializable {
     @FXML
     private void editableTextArea(KeyEvent event) {
         if(event.getCode().toString().equals("ENTER")){
-            FazendaProperty fazenda = tableFazenda.getSelectionModel().getSelectedItem();
-            fazenda.setDescricaoProperty(textAreaDescricao.getText());
+            Fazenda fazenda = tableFazenda.getSelectionModel().getSelectedItem();
+            fazenda.setDescricao(textAreaDescricao.getText());
                 
             DaoFazenda daoF = new DaoFazenda();
-            daoF.updateFazenda(fazenda.getFazenda());
+            daoF.updateFazenda(fazenda);
                 
             textAreaDescricao.setEditable(false);//Pode mudar a forma de edição
         }
@@ -113,23 +102,21 @@ public class FazendaFXMLController implements Initializable {
     @FXML
     private void tableClickedEvent(MouseEvent evt) {
         if(evt.getClickCount() == 1 && !evt.isConsumed()) {
-            Fazenda fazenda = tableFazenda.getSelectionModel().getSelectedItem().getFazenda();
+            Fazenda fazenda = tableFazenda.getSelectionModel().getSelectedItem();
             textAreaDescricao.setText(fazenda.getDescricao());
             textAreaDescricao.setEditable(true);
         }
     }
     
-    private ObservableList<FazendaProperty> listAll() {
+    private ObservableList<Fazenda> listAll() {
         DaoFazenda daoFazenda = new DaoFazenda();
+        DaoEncarregado daoE = new DaoEncarregado();
         
-        ObservableList<FazendaProperty> listFazenda = FXCollections.observableArrayList();
+        ObservableList<Fazenda> listFazenda = daoFazenda.getListFazenda();
         
-        daoFazenda.getListFazenda().forEach(fazenda -> {
-            DaoEncarregado daoE = new DaoEncarregado();
+        listFazenda.forEach(fazenda -> {
             Encarregado encarregado = daoE.getEncarregadoById(fazenda.getEncarregadoId());
             fazenda.setEncarregadoNome(encarregado.getNome());
-            
-            listFazenda.add(new FazendaProperty(fazenda));
         });
 
         return listFazenda;
@@ -156,16 +143,15 @@ public class FazendaFXMLController implements Initializable {
                 e.consume();
             }
             else if(!e.getNewValue().trim().isEmpty()){
-                Fazenda fazenda = new Fazenda();
+                Fazenda fazenda = tableFazenda.getSelectionModel().getSelectedItem();
                 fazenda.setNome(e.getNewValue().trim());
+                
                 if(!Verify.hasEqual(fazenda)){
-                    FazendaProperty fazendaP = tableFazenda.getSelectionModel().getSelectedItem();
-                    fazendaP.setNomeProperty(e.getNewValue().trim());
                     DaoFazenda daoF = new DaoFazenda();
-                    daoF.updateFazenda(fazendaP.getFazenda());
+                    daoF.updateFazenda(fazenda);
                 }
                 else{
-                    Modelo.getInstance().showAlertErro("Já possui um Encarreagdo com o mesmo nome.");
+                    Modelo.getInstance().showAlertErro("Já possui uma Fazenda com o mesmo nome.");
                     startTable();
                 }
             }
@@ -181,11 +167,15 @@ public class FazendaFXMLController implements Initializable {
                 e.consume();
             }
             else if(!e.getNewValue().trim().isEmpty()){
-                FazendaProperty fazendaP = tableFazenda.getSelectionModel().getSelectedItem();
-                fazendaP.setEncarregadoNome(e.getNewValue().trim());
-                if(!Verify.hasEqual(fazendaP.getEncarregado())){
+                Fazenda fazenda = tableFazenda.getSelectionModel().getSelectedItem();
+                
+                DaoEncarregado daoEncarregado = new DaoEncarregado();
+                Encarregado encarregado = daoEncarregado.getEncarregadoById(fazenda.getEncarregadoId());
+                encarregado.setNome(e.getNewValue().trim());
+                
+                if(!Verify.hasEqual(encarregado)){
                     DaoEncarregado daoE = new DaoEncarregado();
-                    daoE.updateEncarregado(fazendaP.getEncarregado());
+                    daoE.updateEncarregado(encarregado);
                 }
                 else{
                     Modelo.getInstance().showAlertErro("Já possui um Encarreagdo com o mesmo nome.");
@@ -204,14 +194,12 @@ public class FazendaFXMLController implements Initializable {
                 e.consume();
             }
             else if(!e.getNewValue().trim().isEmpty()){
-                Fazenda fazenda = new Fazenda();
+                Fazenda fazenda = tableFazenda.getSelectionModel().getSelectedItem();
                 fazenda.setSigla(e.getNewValue().trim());
                 
                 if(!Verify.hasEqual(fazenda)){
                     DaoFazenda daoF = new DaoFazenda();
-                    FazendaProperty fazendaP = tableFazenda.getSelectionModel().getSelectedItem();
-                    fazendaP.setSiglaProperty(e.getNewValue().trim());
-                    daoF.updateFazenda(fazendaP.getFazenda());
+                    daoF.updateFazenda(fazenda);
                     Modelo.getMainController().atualizaCalendario();
                 }
                 else{
