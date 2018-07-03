@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -242,7 +243,7 @@ public class AtividadeController implements Initializable {
             textAreaAtividadeObs.clear();
             textAreaAtividadeObs.disableProperty().set(false);
             buttonSalvar.disableProperty().set(false);
-            
+
             if(atividade.getObs() != null){
                 textAreaAtividadeObs.setText(atividade.getObs());
             }

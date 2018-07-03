@@ -596,6 +596,7 @@ public class MainController implements Initializable {
                     
                     setDragAndDropEventSource(labelEvento);
                     
+                    
                     vBox.getChildren().add(labelEvento);
                 }
             }
@@ -1089,6 +1090,6 @@ public class MainController implements Initializable {
         inicializaTudo();
         atualizaCalendario();
         populateVBoxCompromissos();
-        populateListConfirmacao();
+//        populateListConfirmacao();
     }
 }
