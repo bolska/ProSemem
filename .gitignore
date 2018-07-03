@@ -23,7 +23,7 @@
 hs_err_pid*
 
 #Diretórios a serem ignorados
-#/bibliotecas/
+
 /build/
 /dist/
 /nbproject/
