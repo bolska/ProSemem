@@ -41,6 +41,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import RegrasNegocio.Verify;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXPopup;
@@ -48,6 +49,7 @@ import java.sql.Date;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
+import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -90,7 +92,7 @@ public class MainController implements Initializable {
     
     @FXML private JFXButton buttonCompromisso;
     
-    @FXML private ScrollPane scrollPaneCompromissos;
+//    @FXML private ScrollPane scrollPaneCompromissos;
     
     @FXML private ScrollPane scrollPaneConfirmacao;
     
@@ -140,8 +142,17 @@ public class MainController implements Initializable {
     
     @FXML
     private void buttonTodayDate(ActionEvent evt){
-        Modelo.getInstance().dataAtual = Modelo.getInstance().dataHoje;
-        atualizaCalendario();
+        
+        //Apenas troca de data se for diferente da que o calendário está mostrando
+        if(Modelo.getInstance().dataHoje.getDayOfYear() != Modelo.getInstance().dataAtual.getDayOfYear()
+                || Modelo.getInstance().dataHoje.getMonthValue() != Modelo.getInstance().dataAtual.getMonthValue()) {
+            
+            Modelo.getInstance().dataAtual = Modelo.getInstance().dataHoje;
+            comboMes.getSelectionModel().select(Modelo.getInstance().dataAtual.getMonthValue() - 1);
+            spinnerAno.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(2015, 2100, Modelo.getInstance().dataAtual.getYear()));
+
+            atualizaCalendario();
+        }
     }
     
     private void carregaCalendarioLabels() {
@@ -510,7 +521,6 @@ public class MainController implements Initializable {
                                 labelEventoAnimation = labelEvento;
                             }
                         }
-                            
                         
                         //Monta o estilo em CSS
                         colorString.append("-fx-background-color: #");
@@ -962,7 +972,10 @@ public class MainController implements Initializable {
                 
                 label.setPrefWidth(vBoxConfirmacao.getPrefWidth());
                 
-                label.setOnMouseClicked( (e) -> {
+                hBox = new HBox(label);
+                hBox.getStylesheets().add("CSS/CalendarioCSS.css");
+                
+                hBox.setOnMouseClicked( (e) -> {
                     if(!isEventShowing(evento)){
                         Modelo.getInstance().dataAtual = evento.getData().toLocalDate();
                         
@@ -977,9 +990,6 @@ public class MainController implements Initializable {
                     atualizaCalendario();
                 });
                 
-                hBox = new HBox(label);
-                hBox.getStylesheets().add("CSS/CalendarioCSS.css");
-                
                 if(atividade.getTipo().equals("Principal") || atividade.getTipo().equals("Importante")){
                     hBox.getStyleClass().add("HBox-Confirmacao-Important");
 //                    hBox.setStyle("-fx-border-color: RED");
@@ -990,6 +1000,17 @@ public class MainController implements Initializable {
                     
                 }
 
+                JFXCheckBox checkBoxConfirmation = new JFXCheckBox();
+                checkBoxConfirmation.setPadding(new Insets(1));
+                
+                checkBoxConfirmation.setOnAction((e3) -> {
+                    evento.setConfirmado(1);
+                    DaoEvento daoEvento = new DaoEvento();
+                    daoEvento.updateConfirmadoEvento(evento);
+                    atualizaCalendario();
+                });
+
+                hBox.getChildren().add(checkBoxConfirmation);
                 
                 vBoxConfirmacao.getChildren().add(hBox);
             }
@@ -1080,7 +1101,7 @@ public class MainController implements Initializable {
         scrollPaneInStackPane.getStyleClass().add("edge-to-edge"); //Tira a borda do ScrollPane
         scrollPaneInStackPane.setFitToWidth(true);
         leftVBox.getStyleClass().add("edge-to-edge");
-        scrollPaneCompromissos.getStyleClass().add("edge-to-edge");
+//        scrollPaneCompromissos.getStyleClass().add("edge-to-edge");
         scrollPaneConfirmacao.getStyleClass().add("edge-to-edge");
         
         SnackbarModel.pane = rootPane;
