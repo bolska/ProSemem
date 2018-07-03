@@ -65,7 +65,7 @@ public class DaoEvento {
                     pstm.setInt(3, sessao.getProtocoloId());
                     pstm.setInt(4, atv.getId());
 
-                    if(Verify.hasEventOnDate(sqlData)){
+                    if(Verify.hasEventOnDate(sqlData) || Verify.isSunday(sqlData)){
                         pstm.setInt(5, 0);
                     }
                     else{
@@ -164,7 +164,7 @@ public class DaoEvento {
                 pstm.setDate(1, evento.getData());
                 pstm.setInt(3, evento.getId());
                 
-                if(Verify.hasEventOnDate(evento.getData())){
+                if(Verify.hasEventOnDate(evento.getData()) || Verify.isSunday(evento.getData())){
                     pstm.setInt(2, 0);
                 }
                 else{

@@ -16,6 +16,8 @@ import Classes.Fazenda;
 import Classes.Protocolo;
 import Classes.Sessao;
 import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -169,5 +171,15 @@ public class Verify {
             return true;
         }
         return false;
+    }
+    
+    public static boolean isSunday(Date sqlDate){
+        LocalDate date = sqlDate.toLocalDate();
+        if(date.getDayOfWeek() == DayOfWeek.SUNDAY){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

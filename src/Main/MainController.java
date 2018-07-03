@@ -154,9 +154,9 @@ public class MainController implements Initializable {
         int contDiaSemana = 1;      //Valor do dia de semana (Sempre começa no Domingo)
         
         //Variáveis para manipular os dias do mês atual
-        LocalDate primeiroDiaMes = dataAtual.withDayOfMonth(1);                      //Pega a data do primeiro dia do mês
-        int diaComecaMesAtual = primeiroDiaMes.getDayOfWeek().getValue() + 1;   //Usa-se +1 para corrigir o dia da semana
-        int qtdeDiasMesAtual = dataAtual.lengthOfMonth();                            //Quantidade de dias no mês
+        LocalDate primeiroDiaMes = dataAtual.withDayOfMonth(1);                     //Pega a data do primeiro dia do mês
+        int diaComecaMesAtual = primeiroDiaMes.getDayOfWeek().getValue() + 1;       //Usa-se +1 para corrigir o dia da semana
+        int qtdeDiasMesAtual = dataAtual.lengthOfMonth();                           //Quantidade de dias no mês
         
         //Variáveis para manipular os dias do mês anterior
         int qtdeDiasMesAnterior = dataAtual.minusMonths(1).lengthOfMonth();

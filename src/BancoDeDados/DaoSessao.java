@@ -48,7 +48,7 @@ public class DaoSessao {//MUDAR
                 pstm.setString(6, sessao.getCor());
                 pstm.execute();
 
-                //Gerar Eventos a partir de Ativididade de atrelar a sua Sessão
+                //Gerar Eventos a partir de Ativididade do Protocolo
                 DaoEvento daoEvt = new DaoEvento();
                 daoEvt.insertEvento(sessao);
 
