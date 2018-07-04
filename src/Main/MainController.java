@@ -49,11 +49,11 @@ import java.sql.Date;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
-import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
@@ -62,7 +62,7 @@ import javafx.scene.paint.Color;
 
 public class MainController implements Initializable {
 
-    private Label labelEventoAnimation;
+    private Label labelEventoAnimation = new Label();;
     private boolean isMenuOpen = true;
     private boolean isEventoAnimation = false;
     private String whichCompromissoIsSelected; //Seleciona o Compromisso a ser adicionado
@@ -70,11 +70,13 @@ public class MainController implements Initializable {
     private final DataFormat DRAG_EVENT = new DataFormat("DRAG_EVENT");
     private final TransitionAnimation animation = new TransitionAnimation();
     
+    private HBox differentCalendarViewRootPane = new HBox(new Label());
+    
     @FXML private VBox rootPane;
     
+    @FXML private VBox vBoxCalendario;
+    
     @FXML private GridPane calendarioGridPane;
-
-    @FXML private ScrollPane scrollPaneInStackPane;
     
     @FXML private VBox leftVBox;
 
@@ -91,8 +93,6 @@ public class MainController implements Initializable {
     @FXML private VBox vBoxCompromissos;
     
     @FXML private JFXButton buttonCompromisso;
-    
-//    @FXML private ScrollPane scrollPaneCompromissos;
     
     @FXML private ScrollPane scrollPaneConfirmacao;
     
@@ -152,6 +152,85 @@ public class MainController implements Initializable {
             spinnerAno.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(2015, 2100, Modelo.getInstance().dataAtual.getYear()));
 
             atualizaCalendario();
+        }
+    }
+    
+    @FXML
+    private void onScroll(ScrollEvent evt){
+        double deltaY = evt.getDeltaY();
+        if(deltaY > 0){
+            //Rolagem do mouse para cima. Volta um mês
+            comboMes.getSelectionModel().selectPrevious();
+        }
+        else{
+            //Rolagem do mouse para baixo. Vai para o próximo mês
+            comboMes.getSelectionModel().selectNext();
+        }
+    }
+        
+    @FXML
+    private void openProximos(){
+        try {
+            
+            if(centerStackPane.getChildren().contains(vBoxCalendario)){
+                
+                centerStackPane.getChildren().remove(vBoxCalendario);
+                centerStackPane.getChildren().add(differentCalendarViewRootPane);
+            }
+            Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
+            label.setText("Janela Próximos em desenvolvimento.");
+            
+//            AnchorPane rootProximos = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Gerenciador/Protocolo/ProtocoloFXML.fxml"));
+
+        }
+        catch (Exception e) {
+            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Próximos " + e.getMessage());
+        }
+    }
+    
+    @FXML
+    private void openMes(){
+        try {
+            if(centerStackPane.getChildren().contains(differentCalendarViewRootPane)){
+
+                centerStackPane.getChildren().remove(differentCalendarViewRootPane);
+                centerStackPane.getChildren().add(vBoxCalendario);
+            }
+        }
+        catch (Exception e) {
+            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Mês " + e.getMessage());
+        }
+    }
+    
+    @FXML
+    private void openSemana(){
+        try {
+            if(centerStackPane.getChildren().contains(vBoxCalendario)){
+                
+                centerStackPane.getChildren().remove(vBoxCalendario);
+                centerStackPane.getChildren().add(differentCalendarViewRootPane);
+            }
+            Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
+            label.setText("Janela Semana em desenvolvimento.");
+        }
+        catch (Exception e) {
+            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Próximos " + e.getMessage());
+        }
+    }
+    
+    @FXML
+    private void openAno(){
+        try {
+            if(centerStackPane.getChildren().contains(vBoxCalendario)){
+                
+                centerStackPane.getChildren().remove(vBoxCalendario);
+                centerStackPane.getChildren().add(differentCalendarViewRootPane);
+            }
+            Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
+            label.setText("Janela Ano em desenvolvimento.");
+        }
+        catch (Exception e) {
+            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Próximos " + e.getMessage());
         }
     }
     
@@ -977,27 +1056,28 @@ public class MainController implements Initializable {
                 hBox.getStylesheets().add("CSS/CalendarioCSS.css");
                 
                 hBox.setOnMouseClicked( (e) -> {
+                    
+                    openMes();
+                    
+                    isEventoAnimation = true;
+                    labelEventoAnimation.setId(Integer.toString(evento.getId()));
+                    
                     if(!isEventShowing(evento)){
                         Modelo.getInstance().dataAtual = evento.getData().toLocalDate();
                         
-                        comboMes.getSelectionModel().select(Modelo.getInstance().dataAtual.getMonthValue() - 1);
                         spinnerAno.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(2015, 2100, Modelo.getInstance().dataAtual.getYear()));
+                        comboMes.getSelectionModel().select(Modelo.getInstance().dataAtual.getMonthValue() - 1);
                     }
-                    
-                    isEventoAnimation = true;
-                    labelEventoAnimation = new Label();
-                    labelEventoAnimation.setId(Integer.toString(evento.getId()));
-                    
-                    atualizaCalendario();
+                    else{
+                        atualizaCalendario();
+                    }
                 });
                 
                 if(atividade.getTipo().equals("Principal") || atividade.getTipo().equals("Importante")){
                     hBox.getStyleClass().add("HBox-Confirmacao-Important");
-//                    hBox.setStyle("-fx-border-color: RED");
                 }
                 else{
                     hBox.getStyleClass().add("HBox-Confirmacao-notImportant");
-//                    hBox.setStyle("-fx-border-color: #FFC200");
                     
                 }
 
@@ -1099,11 +1179,11 @@ public class MainController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        scrollPaneInStackPane.getStyleClass().add("edge-to-edge"); //Tira a borda do ScrollPane
-        scrollPaneInStackPane.setFitToWidth(true);
         leftVBox.getStyleClass().add("edge-to-edge");
-//        scrollPaneCompromissos.getStyleClass().add("edge-to-edge");
         scrollPaneConfirmacao.getStyleClass().add("edge-to-edge");
+        
+        differentCalendarViewRootPane.setAlignment(Pos.CENTER);
+        differentCalendarViewRootPane.setPrefSize(centerStackPane.getWidth(), centerStackPane.getHeight());
         
         SnackbarModel.pane = rootPane;
         
@@ -1112,6 +1192,5 @@ public class MainController implements Initializable {
         inicializaTudo();
         atualizaCalendario();
         populateVBoxCompromissos();
-//        populateListConfirmacao();
     }
 }
