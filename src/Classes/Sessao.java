@@ -1,21 +1,24 @@
 package Classes;
 
+import BancoDeDados.DaoFazenda;
 import BancoDeDados.DaoProtocolo;
 import java.sql.Date;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Sessao 
 {
     private SimpleStringProperty id;
     private SimpleStringProperty estado;
-    private SimpleStringProperty protocoloDescricao;
     private SimpleStringProperty cor;
     private SimpleIntegerProperty protocoloId;
+    private SimpleStringProperty protocoloDescricao;
     private SimpleIntegerProperty fazendaId;
-
-    private Date dataAbertura;
-    private Date dataEncerramento;
+    private SimpleStringProperty fazendaNome;
+    private ObjectProperty<Date> dataAbertura;
+    private ObjectProperty<Date> dataEncerramento;
 
     public String getId() {
         return id.getValue();
@@ -50,19 +53,27 @@ public class Sessao
     }
 
     public Date getDataAbertura() {
-        return dataAbertura;
+        return dataAbertura.getValue();
     }
 
     public void setDataAbertura(Date dataAbertura) {
-        this.dataAbertura = dataAbertura;
+        this.dataAbertura = new SimpleObjectProperty<Date>(dataAbertura);
     }
 
+    public ObjectProperty dataAberturaProperty(){
+        return dataAbertura;
+    } 
+    
     public Date getDataEncerramento() {
-        return dataEncerramento;
+        return dataEncerramento.getValue();
     }
 
     public void setDataEncerramento(Date dataEncerramento) {
-        this.dataEncerramento = dataEncerramento;
+        this.dataEncerramento = new SimpleObjectProperty<Date>(dataEncerramento);
+    }
+    
+    public ObjectProperty dataEncerramentoProperty(){
+        return dataEncerramento;
     }
 
     public String getCor() {
@@ -77,5 +88,11 @@ public class Sessao
         DaoProtocolo daoProtocolo = new DaoProtocolo();
         Protocolo protocolo = daoProtocolo.getProtocoloById(getProtocoloId());
         return protocolo.getDescricao();
+    }
+    
+    public String getFazendaNome(){
+        DaoFazenda daoFazenda = new DaoFazenda();
+        Fazenda fazenda = daoFazenda.getFazendaById(getFazendaId());
+        return fazenda.getNome();
     }
 }

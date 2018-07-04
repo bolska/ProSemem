@@ -572,22 +572,23 @@ public class MainController implements Initializable {
 
                             //Pega o id do Evento que está armazenada na label
                             Modelo.getInstance().evento = daoEvento.getEventoById(Integer.parseInt(labelEvento.getId()));
-                        
-                            try {
-                                AnchorPane popupRoot = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("DescricaoEvento/DescricaoEventoFXML.fxml"));
-                                JFXPopup popup = new JFXPopup(popupRoot);
+                            if(Modelo.getInstance().evento.getCompromissoId() == 0){
+                                try {
+                                    AnchorPane popupRoot = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("DescricaoEvento/DescricaoEventoFXML.fxml"));
+                                    JFXPopup popup = new JFXPopup(popupRoot);
 
-                                double centerX = (rootPane.getWidth()/2 - popupRoot.getPrefWidth()/2);
-                                double centerY = (rootPane.getHeight()/2 - popupRoot.getPrefHeight()/2 - 80);
+                                    double centerX = (rootPane.getWidth()/2 - popupRoot.getPrefWidth()/2);
+                                    double centerY = (rootPane.getHeight()/2 - popupRoot.getPrefHeight()/2 - 80);
 
-                                Modelo.getInstance().popup = popup;
-                                SnackbarModel.pane = rootPane;
+                                    Modelo.getInstance().popup = popup;
+                                    SnackbarModel.pane = rootPane;
 
-                                popup.show(SnackbarModel.pane, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, centerX, centerY);
+                                    popup.show(SnackbarModel.pane, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, centerX, centerY);
 
-                            } 
-                            catch (Exception error) {
-                                Modelo.getInstance().showAlertErro(error.getMessage());
+                                } 
+                                catch (Exception error) {
+                                    Modelo.getInstance().showAlertErro(error.getMessage());
+                                }
                             }
                         }
                     });

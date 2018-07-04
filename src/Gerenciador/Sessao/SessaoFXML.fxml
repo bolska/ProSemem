@@ -7,30 +7,40 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gerenciador.Sessao.SessaoFXMLController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gerenciador.Sessao.SessaoFXMLController">
    <children>
       <SplitPane prefHeight="675.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
             <AnchorPane prefHeight="675.0" prefWidth="1280.0">
                <children>
-                  <TableView fx:id="tableSessaoAber" layoutX="142.0" layoutY="197.0" prefHeight="200.0" prefWidth="452.0" AnchorPane.leftAnchor="150.0">
+                  <TableView fx:id="tableSessaoAber" layoutX="288.0" layoutY="97.0" prefHeight="200.0" prefWidth="705.0" AnchorPane.leftAnchor="288.0" AnchorPane.rightAnchor="286.0" AnchorPane.topAnchor="97.0">
                     <columns>
-                      <TableColumn fx:id="columnIdAber" prefWidth="120.0" text="Identificador" />
-                      <TableColumn fx:id="columnNameAber" prefWidth="331.0" text="Nome do Protocolo" />
+                      <TableColumn fx:id="columnIdAber" prefWidth="100.0" text="Identificador" />
+                      <TableColumn fx:id="columnNameAber" prefWidth="275.0" text="Nome do Protocolo" />
+                        <TableColumn fx:id="columnFazendaAber" prefWidth="183.0" text="Fazenda" />
+                        <TableColumn fx:id="columnDataAber" prefWidth="145.0" text="Data de Abertura" />
                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
-                  <TableView fx:id="tableSessaoEnc" layoutX="735.0" layoutY="197.0" prefHeight="200.0" prefWidth="452.0" AnchorPane.rightAnchor="150.0">
+                  <TableView fx:id="tableSessaoEnc" layoutX="287.0" layoutY="395.0" prefHeight="200.0" prefWidth="705.0" AnchorPane.leftAnchor="287.0" AnchorPane.rightAnchor="286.0" AnchorPane.topAnchor="395.0">
                      <columns>
-                        <TableColumn fx:id="columnIdEnc" prefWidth="120.0" text="Identificador" />
-                        <TableColumn fx:id="columnNameEnc" prefWidth="331.0" text="Nome do Protocolo" />
+                        <TableColumn fx:id="columnIdEnc" prefWidth="100.0" text="Identificador" />
+                        <TableColumn fx:id="columnNameEnc" prefWidth="275.0" text="Nome do Protocolo" />
+                        <TableColumn fx:id="columnFazendaEnc" prefWidth="183.0" text="Fazenda" />
+                        <TableColumn fx:id="columnDataEnc" prefWidth="146.0" text="Data de Encerramento" />
                      </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
-                  <Label layoutX="281.0" layoutY="137.0" text="Sessões Abertas" AnchorPane.leftAnchor="281.0">
+                  <Label layoutX="559.0" layoutY="36.0" text="Sessões Abertas" AnchorPane.leftAnchor="559.0" AnchorPane.rightAnchor="556.0">
                      <font>
                         <Font size="23.0" />
                      </font>
                   </Label>
-                  <Label layoutX="787.0" layoutY="137.0" text="Sessões Encerradas" AnchorPane.rightAnchor="261.0">
+                  <Label layoutX="541.0" layoutY="329.0" prefHeight="34.0" prefWidth="207.0" text="Sessões Encerradas" AnchorPane.leftAnchor="558.0" AnchorPane.rightAnchor="513.0">
                      <font>
                         <Font size="23.0" />
                      </font>
