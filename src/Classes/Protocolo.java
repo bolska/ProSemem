@@ -4,31 +4,31 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Protocolo {
-    private SimpleIntegerProperty id;
-    private SimpleStringProperty descricao;
-    private SimpleStringProperty observacao;
+    private int id;
+    private String descricao;
+    private String observacao;
     
     public int getId() {
-        return id.getValue();
+        return id;
     }
 
     public void setId(int id) {
-        this.id = new SimpleIntegerProperty(id);
+        this.id = id;
     }
 
     public String getDescricao() {
-        return descricao.getValue();
+        return descricao;
     }
 
     public void setDescricao(String descricao) {
-        this.descricao = new SimpleStringProperty(descricao);
+        this.descricao = descricao;
     }
 
     public String getObs() {
-        return observacao.getValue();
+        return observacao;
     }
 
     public void setObs(String obs) {
-        this.observacao = new SimpleStringProperty(obs);
+        this.observacao = obs;
     }
 }

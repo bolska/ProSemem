@@ -4,52 +4,50 @@ import BancoDeDados.DaoFazenda;
 import BancoDeDados.DaoProtocolo;
 import java.sql.Date;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 
 public class Sessao 
 {
-    private SimpleStringProperty id;
-    private SimpleStringProperty estado;
-    private SimpleStringProperty cor;
-    private SimpleIntegerProperty protocoloId;
-    private SimpleStringProperty protocoloDescricao;
-    private SimpleIntegerProperty fazendaId;
-    private SimpleStringProperty fazendaNome;
+    private String id;
+    private String estado;;
+    private String cor;
+    private int protocoloId;
+    private String protocoloDescricao;;
+    private int fazendaId;
+    private String fazendaNome;
     private ObjectProperty<Date> dataAbertura;
     private ObjectProperty<Date> dataEncerramento;
 
     public String getId() {
-        return id.getValue();
+        return id;
     }
 
     public void setId(String id) {
-        this.id = new SimpleStringProperty(id);
+        this.id = id;
     }
 
     public String getEstado() {
-        return estado.getValue();
+        return estado;
     }
 
     public void setEstado(String estado) {
-        this.estado = new SimpleStringProperty(estado);
+        this.estado = estado;
     }
 
     public int getFazendaId() {
-        return fazendaId.getValue();
+        return fazendaId;
     }
 
     public void setFazendaId(int fazendaId) {
-        this.fazendaId = new SimpleIntegerProperty(fazendaId);
+        this.fazendaId = fazendaId;
     }
     
     public int getProtocoloId() {
-        return protocoloId.getValue();
+        return protocoloId;
     }
 
     public void setProtocoloId(int protocoloId) {
-        this.protocoloId = new SimpleIntegerProperty(protocoloId);
+        this.protocoloId = protocoloId;
     }
 
     public Date getDataAbertura() {
@@ -57,7 +55,7 @@ public class Sessao
     }
 
     public void setDataAbertura(Date dataAbertura) {
-        this.dataAbertura = new SimpleObjectProperty<Date>(dataAbertura);
+        this.dataAbertura = new SimpleObjectProperty<>(dataAbertura);
     }
 
     public ObjectProperty dataAberturaProperty(){
@@ -69,7 +67,7 @@ public class Sessao
     }
 
     public void setDataEncerramento(Date dataEncerramento) {
-        this.dataEncerramento = new SimpleObjectProperty<Date>(dataEncerramento);
+        this.dataEncerramento = new SimpleObjectProperty<>(dataEncerramento);
     }
     
     public ObjectProperty dataEncerramentoProperty(){
@@ -77,11 +75,11 @@ public class Sessao
     }
 
     public String getCor() {
-        return cor.getValue();
+        return cor;
     }
 
     public void setCor(String cor) {
-        this.cor = new SimpleStringProperty(cor);
+        this.cor = cor;
     }
     
     public String getProtocoloDescricao(){

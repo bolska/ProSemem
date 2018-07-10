@@ -1,61 +1,58 @@
 package Classes;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-
 public class Atividade {
-    private SimpleIntegerProperty id;
-    private SimpleStringProperty descricao;
-    private SimpleIntegerProperty intervalo;
-    private SimpleStringProperty tipo;    //"P" = Principal, "I" = Importante, "S" = Secundário
-    private SimpleStringProperty observacao;
-    private SimpleIntegerProperty protocoloId;
+    private int id;
+    private String descricao;
+    private int intervalo;;
+    private String tipo;
+    private String observacao;
+    private int protocoloId;
 
     public int getId() {
-        return id.getValue();
+        return id;
     }
 
     public void setId(int id) {
-        this.id = new SimpleIntegerProperty(id);
+        this.id = id;
     }
 
     public String getDescricao() {
-        return descricao.getValue();
+        return descricao;
     }
 
     public void setDescricao(String descricao) {
-        this.descricao = new SimpleStringProperty(descricao);
+        this.descricao = descricao;
     }
 
     public int getIntervalo() {
-        return intervalo.getValue();
+        return intervalo;
     }
 
     public void setIntervalo(int intervalo) {
-        this.intervalo = new SimpleIntegerProperty(intervalo);
+        this.intervalo = intervalo;
     }
 
     public String getTipo() {
-        return tipo.getValue();
+        return tipo;
     }
 
     public void setTipo(String tipo) {
-        this.tipo = new SimpleStringProperty(tipo);
+        this.tipo = tipo;
     }
 
     public String getObs() {
-        return observacao.getValue();
+        return observacao;
     }
 
     public void setObs(String obs) {
-        this.observacao = new SimpleStringProperty(obs);
+        this.observacao = obs;
     }
 
     public int getProtocoloId() {
-        return protocoloId.getValue();
+        return protocoloId;
     }
 
     public void setProtocoloId(int protocoloId) {
-        this.protocoloId = new SimpleIntegerProperty(protocoloId);
+        this.protocoloId = protocoloId;
     }
 }

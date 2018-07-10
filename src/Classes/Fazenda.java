@@ -5,58 +5,58 @@ import javafx.beans.property.SimpleStringProperty;
 
 
 public class Fazenda {
-    private SimpleIntegerProperty id;
-    private SimpleStringProperty nome;
-    private SimpleStringProperty descricao;
-    private SimpleIntegerProperty encarregadoId;
-    private SimpleStringProperty encarregadoNome;
-    private SimpleStringProperty sigla;
+    private int id;
+    private String nome;
+    private String descricao;
+    private int encarregadoId;
+    private String encarregadoNome;
+    private String sigla;
 
     public int getId() {
-        return id.getValue();
+        return id;
     }
 
     public void setId(int id) {
-        this.id = new SimpleIntegerProperty(id);
+        this.id = id;
     }
 
     public String getNome() {
-        return nome.getValue();
+        return nome;
     }
 
     public void setNome(String nome) {
-        this.nome = new SimpleStringProperty(nome);
+        this.nome = nome;
     }
 
     public String getDescricao() {
-        return descricao.getValue();
+        return descricao;
     }
 
     public void setDescricao(String descricao) {
-        this.descricao = new SimpleStringProperty(descricao);
+        this.descricao = descricao;
     }
 
     public int getEncarregadoId() {
-        return encarregadoId.getValue();
+        return encarregadoId;
     }
 
     public void setEncarregadoId(int encarregadoId) {
-        this.encarregadoId = new SimpleIntegerProperty(encarregadoId);
+        this.encarregadoId = encarregadoId;
     }
 
     public String getEncarregadoNome() {
-        return encarregadoNome.getValue();
+        return encarregadoNome;
     }
 
     public void setEncarregadoNome(String encarregado_nome) {
-        this.encarregadoNome = new SimpleStringProperty(encarregado_nome);
+        this.encarregadoNome = encarregado_nome;
     }
 
     public String getSigla() {
-        return sigla.getValue();
+        return sigla;
     }
 
     public void setSigla(String sigla) {
-        this.sigla = new SimpleStringProperty(sigla);
+        this.sigla = sigla;
     }
 }

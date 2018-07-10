@@ -1,26 +1,23 @@
 package Classes;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-
 public class Encarregado {
-    private SimpleIntegerProperty id;
-    private SimpleStringProperty nome;
+    private int id;
+    private String nome;
 
     public int getId() {
-        return id.getValue();
+        return id;
     }
 
     public void setId(int id) {
-        this.id = new SimpleIntegerProperty(id);
+        this.id = id;
     }
 
     public String getNome() {
-        return nome.getValue();
+        return nome;
     }
 
     public void setNome(String nome) {
-        this.nome = new SimpleStringProperty(nome);
+        this.nome = nome;
     }
     
 }
