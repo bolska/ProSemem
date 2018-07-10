@@ -29,6 +29,7 @@ import RegrasNegocio.Verify;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
+import javafx.scene.paint.Color;
 
 /**
  * FXML Controller class
@@ -106,10 +107,16 @@ public class AddEventoController implements Initializable {
         Date sqlDate = Date.valueOf(localDate);
         
         DaoSessao daoS = new DaoSessao();
+        DaoFazenda daoF = new DaoFazenda();
+        
         Sessao sessao = new Sessao();
-
+        
+        Fazenda fazenda = Modelo.getInstance().fazenda;
+        fazenda.setCor(colorPicker.getValue().toString());
+        daoF.updateFazenda(fazenda);
+        
         sessao.setProtocoloId(Modelo.getInstance().protocolo.getId());
-        sessao.setFazendaId(Modelo.getInstance().fazenda.getId());
+        sessao.setFazendaId(fazenda.getId());
         sessao.setId(textFieldSessao.getText());
         sessao.setDataAbertura(sqlDate);
         sessao.setCor(colorPicker.getValue().toString());
@@ -131,9 +138,8 @@ public class AddEventoController implements Initializable {
     
     private void iniciaComboProtocolo(){
         DaoProtocolo daoProtocolo = new DaoProtocolo();
-        ObservableList<Protocolo> listaProtocolo = FXCollections.observableArrayList();
+        ObservableList<Protocolo> listaProtocolo = daoProtocolo.getListProtocolo();
                 
-        listaProtocolo = daoProtocolo.getListProtocolo();
         comboBoxProtocolo.setItems(listaProtocolo);
         
         //Configurações do comboBox para por o objeto Protocolo em vez de apenas sua Descrição
@@ -209,6 +215,14 @@ public class AddEventoController implements Initializable {
             @Override
             public Fazenda fromString(String nomeString) {
                 return null; // No conversion fromString needed.
+            }
+        });
+        
+        comboBoxFazenda.setOnAction( (e) -> {
+            Fazenda fazenda = (Fazenda) comboBoxFazenda.getSelectionModel().getSelectedItem();
+            
+            if(fazenda.getCor() != null){
+                colorPicker.setValue(Color.web(fazenda.getCor()));
             }
         });
     }
