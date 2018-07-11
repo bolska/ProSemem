@@ -1,10 +1,13 @@
 package AddEvento;
 
 import BancoDeDados.DaoAtividade;
+import BancoDeDados.DaoCompromisso;
+import BancoDeDados.DaoEvento;
 import BancoDeDados.DaoFazenda;
 import BancoDeDados.DaoProtocolo;
 import BancoDeDados.DaoSessao;
 import Classes.Atividade;
+import Classes.Compromisso;
 import Classes.Protocolo;
 import Model.Modelo;
 import com.jfoenix.controls.JFXComboBox;
@@ -12,7 +15,6 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,11 +33,7 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.scene.paint.Color;
 
-/**
- * FXML Controller class
- *
- * @author Bolska
- */
+
 public class AddEventoController implements Initializable {
 
     @FXML private Label labelDataSelecionada;
@@ -46,7 +44,11 @@ public class AddEventoController implements Initializable {
     
     @FXML private JFXTextField textFieldSessao;
     
+    @FXML private JFXTextField textFieldAvulso;
+    
     @FXML private JFXColorPicker colorPicker;
+    
+    @FXML private JFXColorPicker colorPickerAvulso;
 
     @FXML private TableView<Atividade> tableAtividade;
     
@@ -58,6 +60,53 @@ public class AddEventoController implements Initializable {
     
     @FXML private TableColumn<Atividade, String> columnTipo;
 
+    @FXML
+    private void buttonAddAvulso(ActionEvent evt){
+        if(!textFieldAvulso.getText().trim().isEmpty()){
+            DaoCompromisso daoC = new DaoCompromisso();
+            DaoEvento daoE = new DaoEvento();
+            
+            Compromisso compromisso = new Compromisso();
+            compromisso.setDescricao(textFieldAvulso.getText().trim());
+            compromisso.setCor(colorPickerAvulso.getValue().toString());
+            compromisso.setTipo("A");
+            
+            /*
+            *    Se já tiver um compromisso do tipo avulso com a mesma descrição, não insere de novo no banco de dados
+            *    Apenas insere um novo evento com esse compromisso
+            */
+            if(Verify.hasEqual(compromisso)){
+                compromisso = daoC.getCompromissoByTipoDescricao(compromisso);
+                
+                if(!compromisso.getCor().equals(colorPickerAvulso.getValue().toString())){
+                    compromisso.setCor(colorPickerAvulso.getValue().toString());
+                    daoC.updateCompromissoCor(compromisso);
+                }
+            }
+            else{
+                daoC.insertCompromisso(compromisso);
+                compromisso = daoC.getCompromissoByTipoDescricao(compromisso); //Para retornar o id
+            }
+
+            int ano = Modelo.getInstance().eventoAnoSelecionado;
+            int mes = Modelo.getInstance().eventoMesSelecionado;
+            int dia = Modelo.getInstance().eventoDiaSelecionado;
+        
+            LocalDate localDate = LocalDate.of(ano, mes, dia);
+            Date sqlDate = Date.valueOf(localDate);
+            
+            daoE.inserirEvento(compromisso, sqlDate);
+            
+            Modelo.getMainController().atualizaCalendario();
+            closePopup();
+        }
+        else{
+            Modelo.getInstance().popup.setAutoHide(false);
+            Modelo.getInstance().showAlertErro("Campo Vazio.");
+            Modelo.getInstance().popup.setAutoHide(true);
+        }
+    }
+    
     @FXML
     private void botaoSalvarEventoProtocolo(MouseEvent evt){
         boolean verifyFields = true;

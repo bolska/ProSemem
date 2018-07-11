@@ -669,6 +669,24 @@ public class MainController implements Initializable {
                                     Modelo.getInstance().showAlertErro(error.getMessage());
                                 }
                             }
+                            else{
+                                try {
+                                    AnchorPane popupRoot = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("DescricaoEvento/DescricaoCompromissoFXML.fxml"));
+                                    JFXPopup popup = new JFXPopup(popupRoot);
+
+                                    double centerX = (rootPane.getWidth()/2 - popupRoot.getPrefWidth()/2);
+                                    double centerY = (rootPane.getHeight()/2 - popupRoot.getPrefHeight()/2 - 80);
+
+                                    Modelo.getInstance().popup = popup;
+                                    SnackbarModel.pane = rootPane;
+
+                                    popup.show(SnackbarModel.pane, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, centerX, centerY);
+
+                                } 
+                                catch (Exception error) {
+                                    Modelo.getInstance().showAlertErro(error.getMessage());
+                                }
+                            }
                         }
                     });
                     
