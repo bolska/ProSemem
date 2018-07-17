@@ -206,12 +206,10 @@ public class MainController implements Initializable {
     private void openSemana(){
         try {
             if(centerStackPane.getChildren().contains(vBoxCalendario)){
-                
+                differentCalendarViewRootPane = (HBox) FXMLLoader.load(getClass().getClassLoader().getResource("TelaSemana/TelaSemana.fxml"));
                 centerStackPane.getChildren().remove(vBoxCalendario);
                 centerStackPane.getChildren().add(differentCalendarViewRootPane);
             }
-            Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
-            label.setText("Janela Semana em desenvolvimento.");
         }
         catch (Exception e) {
             Modelo.getInstance().showAlertErro("Erro ao abrir a janela Próximos " + e.getMessage());
@@ -222,12 +220,9 @@ public class MainController implements Initializable {
     private void openAno(){
         try {
             if(centerStackPane.getChildren().contains(vBoxCalendario)){
-                
                 centerStackPane.getChildren().remove(vBoxCalendario);
                 centerStackPane.getChildren().add(differentCalendarViewRootPane);
             }
-            Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
-            label.setText("Janela Ano em desenvolvimento.");
         }
         catch (Exception e) {
             Modelo.getInstance().showAlertErro("Erro ao abrir a janela Próximos " + e.getMessage());
