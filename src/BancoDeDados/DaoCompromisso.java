@@ -27,9 +27,7 @@ public class DaoCompromisso {
     private final String UPDATE_DESCR_COMPROMISSO = "UPDATE COMPROMISSO SET COMP_DESCRICAO=? WHERE COMP_ID=?";
     private final String DELETE_COMPROMISSO = "DELETE FROM COMPROMISSO WHERE COMP_ID=?";
     private final String LIST_COMPROMISSO = "SELECT * FROM COMPROMISSO";
-    private final String LIST_COMPROMISSO_VETERINARIO = "SELECT * FROM COMPROMISSO WHERE COMP_TIPO = 'V'";
-    private final String LIST_COMPROMISSO_AVULSO = "SELECT * FROM COMPROMISSO WHERE COMP_TIPO = 'A'";
-    private final String LIST_COMPROMISSO_BY_TIPO_DESCRICAO = "SELECT * FROM COMPROMISSO WHERE COMP_DESCRICAO=? AND COMP_TIPO = ?";
+    private final String LIST_BY_DESCRICAO_COMPROMISSO = "SELECT * FROM COMRPOMISSO WHERE COMP_DESCRICAO=?";
     private final String LIST_BY_ID_COMPROMISSO = "SELECT * FROM COMPROMISSO WHERE COMP_ID=?";
 
     
@@ -177,72 +175,6 @@ public class DaoCompromisso {
         return listCompromisso;
     }
     
-    public ObservableList<Compromisso> getListCompromissoVeterinario() {
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        ObservableList<Compromisso> listCompromisso = FXCollections.observableArrayList();
-            
-        try {
-            conn = Conexao.getConexao();
-            pstm = conn.prepareStatement(LIST_COMPROMISSO_VETERINARIO);
-            rs = pstm.executeQuery();
-
-            while(rs.next()) {
-                Compromisso compromisso = new Compromisso();
-                compromisso.setId(rs.getInt("COMP_ID"));
-                compromisso.setDescricao(rs.getString("COMP_DESCRICAO"));
-                compromisso.setTipo(rs.getString("COMP_TIPO"));
-                compromisso.setCor(rs.getString("COMP_COR"));
-                
-                listCompromisso.add(compromisso);
-            }
-            
-            Conexao.fechaConexao(conn, pstm, rs);
-
-        } catch(Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Mensagem de Erro");
-            alert.setContentText("Não foi possível listar Compromisso: " + e.getMessage());
-            alert.showAndWait();
-        }
-
-        return listCompromisso;
-    }
-    
-    public ObservableList<Compromisso> getListCompromissoAvulso() {
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        ObservableList<Compromisso> listCompromisso = FXCollections.observableArrayList();
-            
-        try {
-            conn = Conexao.getConexao();
-            pstm = conn.prepareStatement(LIST_COMPROMISSO_AVULSO);
-            rs = pstm.executeQuery();
-
-            while(rs.next()) {
-                Compromisso compromisso = new Compromisso();
-                compromisso.setId(rs.getInt("COMP_ID"));
-                compromisso.setDescricao(rs.getString("COMP_DESCRICAO"));
-                compromisso.setTipo(rs.getString("COMP_TIPO"));
-                compromisso.setCor(rs.getString("COMP_COR"));
-                
-                listCompromisso.add(compromisso);
-            }
-            
-            Conexao.fechaConexao(conn, pstm, rs);
-
-        } catch(Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Mensagem de Erro");
-            alert.setContentText("Não foi possível listar Compromisso: " + e.getMessage());
-            alert.showAndWait();
-        }
-
-        return listCompromisso;
-    }
-    
     public Compromisso getCompromissoById(int idCompromisso) {
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -271,37 +203,6 @@ public class DaoCompromisso {
         }
 
         return compromisso;
-    }
-    
-    public Compromisso getCompromissoByTipoDescricao(Compromisso compromisso) {
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        Compromisso comp = new Compromisso();
-            
-        try {
-            conn = Conexao.getConexao();
-            pstm = conn.prepareStatement(LIST_COMPROMISSO_BY_TIPO_DESCRICAO);
-            pstm.setString(1, compromisso.getDescricao());
-            pstm.setString(2, compromisso.getTipo());
-            rs = pstm.executeQuery();
-
-            while(rs.next()) {
-                comp.setId(rs.getInt("COMP_ID"));
-                comp.setDescricao(rs.getString("COMP_DESCRICAO"));
-                comp.setTipo(rs.getString("COMP_TIPO"));
-                comp.setCor(rs.getString("COMP_COR"));
-            }
-            Conexao.fechaConexao(conn, pstm, rs);
-
-        } catch(Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Mensagem de Erro");
-            alert.setContentText("Não foi possível listar Compromisso: " + e.getMessage());
-            alert.showAndWait();
-        }
-
-        return comp;
     }
     
     public void removeCompromisso(Compromisso compromisso) {

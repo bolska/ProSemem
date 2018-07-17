@@ -1,5 +1,8 @@
 package Classes;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 
 public class Fazenda {
     private int id;
@@ -8,7 +11,6 @@ public class Fazenda {
     private int encarregadoId;
     private String encarregadoNome;
     private String sigla;
-    private String cor;
 
     public int getId() {
         return id;
@@ -48,14 +50,6 @@ public class Fazenda {
 
     public void setEncarregadoNome(String encarregado_nome) {
         this.encarregadoNome = encarregado_nome;
-    }
-
-    public String getCor() {
-        return cor;
-    }
-
-    public void setCor(String cor) {
-        this.cor = cor;
     }
 
     public String getSigla() {

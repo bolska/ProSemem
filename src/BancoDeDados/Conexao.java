@@ -19,7 +19,7 @@ import java.sql.ResultSet;
 public class Conexao {
     //local
     private static final String USUARIO = "root";
-    private static final String SENHA = "root";
+    private static final String SENHA = "0888501088";
     private static final String DATABASE = "mydb";
     private static final String DRIVER_CONEXAO = "com.mysql.jdbc.Driver";
     private static final String STR_CONEXAO = "jdbc:mysql://localhost:3306/";
