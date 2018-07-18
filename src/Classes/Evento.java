@@ -1,6 +1,7 @@
 package Classes;
 
 import java.sql.Date;
+import java.sql.Time;
 
 public class Evento {
     private int id;
@@ -11,6 +12,8 @@ public class Evento {
     private String sessaoId;
     private int confirmado;
     private int bloqueado;
+    private Integer horaInicio;
+    private int duracao;
 
     public int getId() {
         return id;
@@ -27,7 +30,23 @@ public class Evento {
     public void setData(Date data) {
         this.data = data;
     }
+    // Marilia
+    public void setHoraInicio(Integer hora) {
+        this.horaInicio = hora;
+    }
     
+    public Integer getHoraInicio() {
+        return horaInicio;
+    }
+    
+    public void setDuracao(int duracao) {
+        this.duracao = duracao;
+    }
+    
+    public int getDuracao() {
+        return duracao;
+    }
+    // 
     public int getCompromissoId() {
         return compromissoId;
     }

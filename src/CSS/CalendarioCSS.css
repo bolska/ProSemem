@@ -214,3 +214,28 @@
 
 /*GENERAL CLASSES*/
 
+.pane-semana{
+    -fx-background-color:#E3ECF0;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.pane-semana:hover{
+    -fx-effect: dropshadow(gaussian, gray, 10, 0.5, 0, 0);
+}
+
+.Label-evento-semana {
+    -fx-label-padding: 0 2 0 10;
+    -fx-border-insets: 1;
+    -fx-background-insets: 1;
+    -fx-border-style: none; 
+}
+
+.Label-hoje {
+    -fx-font: 14px Roboto;
+    -fx-padding: 4;
+    -fx-border-style:none;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-background-color:tomato;
+}
