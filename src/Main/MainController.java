@@ -212,7 +212,7 @@ public class MainController implements Initializable {
             }
         }
         catch (Exception e) {
-            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Próximos " + e.getMessage());
+            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Semana" + e.getMessage());
         }
     }
     
@@ -225,7 +225,7 @@ public class MainController implements Initializable {
             }
         }
         catch (Exception e) {
-            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Próximos " + e.getMessage());
+            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Ano" + e.getMessage());
         }
     }
     
