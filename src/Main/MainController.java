@@ -45,6 +45,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXPopup;
+import java.io.IOException;
 import java.sql.Date;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -62,15 +63,20 @@ import javafx.scene.paint.Color;
 
 public class MainController implements Initializable {
 
-    private Label labelEventoAnimation = new Label();;
+    private Label labelEventoAnimation = new Label();
     private boolean isMenuOpen = true;
     private boolean isEventoAnimation = false;
     private String whichCompromissoIsSelected; //Seleciona o Compromisso a ser adicionado
     private final Stage gerenciadorStage = new Stage();
     private final DataFormat DRAG_EVENT = new DataFormat("DRAG_EVENT");
     private final TransitionAnimation animation = new TransitionAnimation();
+    private final String N_COMP = "SELECT COUNT(COMP_ID) FROM COMPROMISSO NATURAL JOIN EVENTO WHERE EVT_DATA = (SELECT CURRENT_DATE());";
     
-    private HBox differentCalendarViewRootPane = new HBox(new Label());
+    private final String N_SESS = "SELECT COUNT(SES_ID) FROM SESSAO NATURAL JOIN EVENTO WHERE EVT_DATA = (SELECT CURRENT_DATE());";
+
+    private HBox differentCalendarViewRootPane = new HBox(new Label()); //Horizontal box criada justamente para ser usada para incluir algo na tela
+    
+    private AnchorPane rootDias;
     
     @FXML private VBox rootPane;
     
@@ -97,6 +103,10 @@ public class MainController implements Initializable {
     @FXML private ScrollPane scrollPaneConfirmacao;
     
     @FXML private VBox vBoxConfirmacao;
+
+    public MainController() throws IOException {    //rootDias criado para fazer as verificações em openMes, openAno e etc..
+        this.rootDias = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Dia/DiaFXML.fxml"));
+    }
     
     @FXML
     private void animationMenu(MouseEvent evt) throws InterruptedException{
@@ -167,21 +177,49 @@ public class MainController implements Initializable {
             comboMes.getSelectionModel().selectNext();
         }
     }
-        
+    
+    //Talvez haja uma forma de fazer a mudança de tela entre dia,semana,mes,ano e proximos de forma mais otimizada
     @FXML
-    private void openProximos(){
+    private void openDia(){
+        
         try {
-            
+            if(centerStackPane.getChildren().contains(vBoxCalendario)){ //Caso haja vBoxCalendario
+                
+                //AnchorPane rootDias = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Dia/DiaFXML.fxml"));
+                
+                centerStackPane.getChildren().remove(vBoxCalendario);   //Removo o calendário para adicionar rootDias
+                centerStackPane.getChildren().add(rootDias);
+            }
+            else if (centerStackPane.getChildren().contains(differentCalendarViewRootPane)){    //Caso haja uma box qualquer
+                
+                //AnchorPane rootDias = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Dia/DiaFXML.fxml"));
+                
+                centerStackPane.getChildren().remove(differentCalendarViewRootPane);
+                centerStackPane.getChildren().add(rootDias);
+            }
+            //Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
+            //label.setText("Janela DIA em desenvolvimento.");
+        }
+        catch (Exception e) {
+            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Dia " + e.getMessage());
+        }
+    }
+    
+    @FXML
+    private void openSemana(){
+        try {
             if(centerStackPane.getChildren().contains(vBoxCalendario)){
                 
                 centerStackPane.getChildren().remove(vBoxCalendario);
                 centerStackPane.getChildren().add(differentCalendarViewRootPane);
             }
+            else if(centerStackPane.getChildren().contains(rootDias)){
+                
+                centerStackPane.getChildren().remove(rootDias);
+                centerStackPane.getChildren().add(differentCalendarViewRootPane);
+            }
             Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
-            label.setText("Janela Próximos em desenvolvimento.");
-            
-//            AnchorPane rootProximos = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Gerenciador/Protocolo/ProtocoloFXML.fxml"));
-
+            label.setText("Janela Semana em desenvolvimento.");
         }
         catch (Exception e) {
             Modelo.getInstance().showAlertErro("Erro ao abrir a janela Próximos " + e.getMessage());
@@ -196,6 +234,11 @@ public class MainController implements Initializable {
                 centerStackPane.getChildren().remove(differentCalendarViewRootPane);
                 centerStackPane.getChildren().add(vBoxCalendario);
             }
+            else if(centerStackPane.getChildren().contains(rootDias)){
+                
+                centerStackPane.getChildren().remove(rootDias);
+                centerStackPane.getChildren().add(vBoxCalendario);
+            }
         }
         catch (Exception e) {
             Modelo.getInstance().showAlertErro("Erro ao abrir a janela Mês " + e.getMessage());
@@ -203,13 +246,20 @@ public class MainController implements Initializable {
     }
     
     @FXML
-    private void openSemana(){
+    private void openAno(){
         try {
             if(centerStackPane.getChildren().contains(vBoxCalendario)){
-                differentCalendarViewRootPane = (HBox) FXMLLoader.load(getClass().getClassLoader().getResource("TelaSemana/TelaSemana.fxml"));
+                
                 centerStackPane.getChildren().remove(vBoxCalendario);
                 centerStackPane.getChildren().add(differentCalendarViewRootPane);
             }
+            else if(centerStackPane.getChildren().contains(rootDias)){
+                
+                centerStackPane.getChildren().remove(rootDias);
+                centerStackPane.getChildren().add(differentCalendarViewRootPane);
+            }
+            Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
+            label.setText("Janela Ano em desenvolvimento.");
         }
         catch (Exception e) {
             Modelo.getInstance().showAlertErro("Erro ao abrir a janela Semana" + e.getMessage());
@@ -217,12 +267,24 @@ public class MainController implements Initializable {
     }
     
     @FXML
-    private void openAno(){
+    private void openProximos(){
         try {
-            if(centerStackPane.getChildren().contains(vBoxCalendario)){
+            
+            if(centerStackPane.getChildren().contains(vBoxCalendario)){ //Verifica se já há um vBoxCalendario (ID de VBox dentro da StackPane)
+                
                 centerStackPane.getChildren().remove(vBoxCalendario);
                 centerStackPane.getChildren().add(differentCalendarViewRootPane);
             }
+            else if(centerStackPane.getChildren().contains(rootDias)){
+                
+                centerStackPane.getChildren().remove(rootDias);
+                centerStackPane.getChildren().add(differentCalendarViewRootPane);
+            }
+           
+            Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
+            label.setText("Janela Próximos ainda em desenvolvimento");
+//            AnchorPane rootProximos = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Gerenciador/Protocolo/ProtocoloFXML.fxml"));
+
         }
         catch (Exception e) {
             Modelo.getInstance().showAlertErro("Erro ao abrir a janela Ano" + e.getMessage());
@@ -649,24 +711,6 @@ public class MainController implements Initializable {
                             if(Modelo.getInstance().evento.getCompromissoId() == 0){
                                 try {
                                     AnchorPane popupRoot = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("DescricaoEvento/DescricaoEventoFXML.fxml"));
-                                    JFXPopup popup = new JFXPopup(popupRoot);
-
-                                    double centerX = (rootPane.getWidth()/2 - popupRoot.getPrefWidth()/2);
-                                    double centerY = (rootPane.getHeight()/2 - popupRoot.getPrefHeight()/2 - 80);
-
-                                    Modelo.getInstance().popup = popup;
-                                    SnackbarModel.pane = rootPane;
-
-                                    popup.show(SnackbarModel.pane, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, centerX, centerY);
-
-                                } 
-                                catch (Exception error) {
-                                    Modelo.getInstance().showAlertErro(error.getMessage());
-                                }
-                            }
-                            else{
-                                try {
-                                    AnchorPane popupRoot = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("DescricaoEvento/DescricaoCompromissoFXML.fxml"));
                                     JFXPopup popup = new JFXPopup(popupRoot);
 
                                     double centerX = (rootPane.getWidth()/2 - popupRoot.getPrefWidth()/2);
@@ -1127,7 +1171,7 @@ public class MainController implements Initializable {
         return false;
     }
     
-    private void showTodayDate(StringBuilder stringColor, VBox vBoxDay){
+    private void showTodayDate(StringBuilder stringColor, VBox vBoxDay){    //Destacando o dia atual no calendário
         LocalDate todayDate = LocalDate.now();
         LocalDate showingDate = Modelo.getInstance().dataAtual;
         

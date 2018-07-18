@@ -15,6 +15,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,7 +34,11 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.scene.paint.Color;
 
-
+/**
+ * FXML Controller class
+ *
+ * @author Bolska
+ */
 public class AddEventoController implements Initializable {
 
     @FXML private Label labelDataSelecionada;
@@ -47,7 +52,7 @@ public class AddEventoController implements Initializable {
     @FXML private JFXTextField textFieldAvulso;
     
     @FXML private JFXColorPicker colorPicker;
-    
+
     @FXML private JFXColorPicker colorPickerAvulso;
 
     @FXML private TableView<Atividade> tableAtividade;
@@ -60,53 +65,6 @@ public class AddEventoController implements Initializable {
     
     @FXML private TableColumn<Atividade, String> columnTipo;
 
-    @FXML
-    private void buttonAddAvulso(ActionEvent evt){
-        if(!textFieldAvulso.getText().trim().isEmpty()){
-            DaoCompromisso daoC = new DaoCompromisso();
-            DaoEvento daoE = new DaoEvento();
-            
-            Compromisso compromisso = new Compromisso();
-            compromisso.setDescricao(textFieldAvulso.getText().trim());
-            compromisso.setCor(colorPickerAvulso.getValue().toString());
-            compromisso.setTipo("A");
-            
-            /*
-            *    Se já tiver um compromisso do tipo avulso com a mesma descrição, não insere de novo no banco de dados
-            *    Apenas insere um novo evento com esse compromisso
-            */
-            if(Verify.hasEqual(compromisso)){
-                compromisso = daoC.getCompromissoByTipoDescricao(compromisso);
-                
-                if(!compromisso.getCor().equals(colorPickerAvulso.getValue().toString())){
-                    compromisso.setCor(colorPickerAvulso.getValue().toString());
-                    daoC.updateCompromissoCor(compromisso);
-                }
-            }
-            else{
-                daoC.insertCompromisso(compromisso);
-                compromisso = daoC.getCompromissoByTipoDescricao(compromisso); //Para retornar o id
-            }
-
-            int ano = Modelo.getInstance().eventoAnoSelecionado;
-            int mes = Modelo.getInstance().eventoMesSelecionado;
-            int dia = Modelo.getInstance().eventoDiaSelecionado;
-        
-            LocalDate localDate = LocalDate.of(ano, mes, dia);
-            Date sqlDate = Date.valueOf(localDate);
-            
-            daoE.inserirEvento(compromisso, sqlDate);
-            
-            Modelo.getMainController().atualizaCalendario();
-            closePopup();
-        }
-        else{
-            Modelo.getInstance().popup.setAutoHide(false);
-            Modelo.getInstance().showAlertErro("Campo Vazio.");
-            Modelo.getInstance().popup.setAutoHide(true);
-        }
-    }
-    
     @FXML
     private void botaoSalvarEventoProtocolo(MouseEvent evt){
         boolean verifyFields = true;
@@ -156,16 +114,10 @@ public class AddEventoController implements Initializable {
         Date sqlDate = Date.valueOf(localDate);
         
         DaoSessao daoS = new DaoSessao();
-        DaoFazenda daoF = new DaoFazenda();
-        
         Sessao sessao = new Sessao();
-        
-        Fazenda fazenda = Modelo.getInstance().fazenda;
-        fazenda.setCor(colorPicker.getValue().toString());
-        daoF.updateFazenda(fazenda);
-        
+
         sessao.setProtocoloId(Modelo.getInstance().protocolo.getId());
-        sessao.setFazendaId(fazenda.getId());
+        sessao.setFazendaId(Modelo.getInstance().fazenda.getId());
         sessao.setId(textFieldSessao.getText());
         sessao.setDataAbertura(sqlDate);
         sessao.setCor(colorPicker.getValue().toString());
@@ -187,8 +139,9 @@ public class AddEventoController implements Initializable {
     
     private void iniciaComboProtocolo(){
         DaoProtocolo daoProtocolo = new DaoProtocolo();
-        ObservableList<Protocolo> listaProtocolo = daoProtocolo.getListProtocolo();
+        ObservableList<Protocolo> listaProtocolo = FXCollections.observableArrayList();
                 
+        listaProtocolo = daoProtocolo.getListProtocolo();
         comboBoxProtocolo.setItems(listaProtocolo);
         
         //Configurações do comboBox para por o objeto Protocolo em vez de apenas sua Descrição
@@ -264,14 +217,6 @@ public class AddEventoController implements Initializable {
             @Override
             public Fazenda fromString(String nomeString) {
                 return null; // No conversion fromString needed.
-            }
-        });
-        
-        comboBoxFazenda.setOnAction( (e) -> {
-            Fazenda fazenda = (Fazenda) comboBoxFazenda.getSelectionModel().getSelectedItem();
-            
-            if(fazenda.getCor() != null){
-                colorPicker.setValue(Color.web(fazenda.getCor()));
             }
         });
     }

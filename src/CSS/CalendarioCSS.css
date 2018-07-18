@@ -202,6 +202,14 @@
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
+
+/*DAY*/
+.dateYear{
+    -fx-background-color: rgba(140,163,255,0.5);
+    -fx-font-size: 14px;  
+    -fx-font-weight: lighter;
+}
+
 /*TABLE*/
 
 /*GENERAL CLASSES*/

@@ -20,7 +20,7 @@ import javafx.collections.ObservableList;
  */
 public class DaoFazenda {
     private final String INSERT_FAZENDA = "INSERT INTO FAZENDA (FAZEN_ID, FAZEN_NOME, FAZEN_SIGLA, FAZEN_DESCRICAO, ENCAR_ID) VALUES (0,?,?,?,?)";
-    private final String UPDATE_FAZENDA = "UPDATE FAZENDA SET FAZEN_NOME=?, FAZEN_SIGLA=?, FAZEN_DESCRICAO=?, FAZEN_COR=? WHERE FAZEN_ID=?";
+    private final String UPDATE_FAZENDA = "UPDATE FAZENDA SET FAZEN_NOME=?, FAZEN_SIGLA=?, FAZEN_DESCRICAO=? WHERE FAZEN_ID=?";
     private final String DELETE_FAZENDA = "DELETE FROM FAZENDA WHERE FAZEN_ID=?";
     private final String LIST_FAZENDA = "SELECT * FROM FAZENDA";
     private final String LIST_FAZENDA_BY_ID = "SELECT * FROM FAZENDA WHERE FAZEN_ID=?";
@@ -64,8 +64,7 @@ public class DaoFazenda {
                 pstm.setString(1, fazenda.getNome());
                 pstm.setString(2, fazenda.getSigla());
                 pstm.setString(3, fazenda.getDescricao());
-                pstm.setString(4, fazenda.getCor());
-                pstm.setInt(5, fazenda.getId());
+                pstm.setInt(4, fazenda.getId());
                 
                 pstm.execute();
                 Conexao.fechaConexao(conn);
@@ -121,8 +120,6 @@ public class DaoFazenda {
                 fazenda.setSigla(rs.getString("FAZEN_SIGLA"));
                 fazenda.setDescricao(rs.getString("FAZEN_DESCRICAO"));
                 fazenda.setEncarregadoId(rs.getInt("ENCAR_ID"));
-                fazenda.setCor(rs.getString("FAZEN_COR"));
-                
                 listFazenda.add(fazenda);
             }
             Conexao.fechaConexao(conn, pstm, rs);
@@ -152,7 +149,6 @@ public class DaoFazenda {
                 fazenda.setSigla(rs.getString("FAZEN_SIGLA"));
                 fazenda.setDescricao(rs.getString("FAZEN_DESCRICAO"));
                 fazenda.setEncarregadoId(rs.getInt("ENCAR_ID"));
-                fazenda.setCor(rs.getString("FAZEN_COR"));
             }
             Conexao.fechaConexao(conn, pstm, rs);
         } 

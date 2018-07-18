@@ -26,7 +26,7 @@ public class Main extends Application {
         
         Scene scene = new Scene(root);
         
-        scene.getStylesheets().add("CSS/Calendario.css");
+        scene.getStylesheets().add("CSS/CalendarioCSS.css");
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.getIcons().add(new Image("Icons/unect_logo.png"));
