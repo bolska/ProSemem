@@ -43,6 +43,7 @@ public class DaoEvento {
     private final String LIST_EVENTO_BY_SESSAO_ID = "SELECT * FROM EVENTO WHERE SES_ID=?";
     private final String LIST_EVENTO_BY_CONFIRMADO = "select * from EVENTO where EVT_CONFIRMADO = 0 and ATIV_ID != 0 and EVT_DATA > ?";
     
+    
     public void insertEvento(Sessao sessao){
         if(sessao != null){
             Connection conn = null;

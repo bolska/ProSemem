@@ -40,7 +40,7 @@ public class CompromissoController implements Initializable {
             }
             else{
                 Modelo.getInstance().popup.setAutoHide(false);
-                Modelo.getInstance().showAlertErro("Já possui um Compromisso com essa descrição.");
+                Modelo.getInstance().showAlertErro("Um compromisso com essa descrição já existe!");
                 Modelo.getInstance().popup.setAutoHide(true);
             }
         }
@@ -69,7 +69,7 @@ public class CompromissoController implements Initializable {
             }
             else{
                 Modelo.getInstance().popup.setAutoHide(false);
-                Modelo.getInstance().showAlertErro("Já possui um Compromisso com essa descrição.");
+                Modelo.getInstance().showAlertErro("Um compromisso com essa descrição já existe!");
                 Modelo.getInstance().popup.setAutoHide(true);
             }    
         }
@@ -90,7 +90,7 @@ public class CompromissoController implements Initializable {
             }
             else{
                 Modelo.getInstance().popup.setAutoHide(false);
-                Modelo.getInstance().showAlertErro("Já possui um Compromisso com essa descrição.");
+                Modelo.getInstance().showAlertErro("Um compromisso com essa descrição já existe!");
                 Modelo.getInstance().popup.setAutoHide(true);
             } 
         }
