@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="rootPane" onScroll="#onScroll" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../CSS/CalendarioCSS.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.MainController">
+<VBox fx:id="rootPane" onScroll="#onScroll" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../CSS/CalendarioCSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.MainController">
    <children>
       <AnchorPane prefHeight="40.0" prefWidth="1280.0" styleClass="Anchor-top" stylesheets="@../CSS/CalendarioCSS.css">
          <children>
@@ -119,7 +119,7 @@
          <center>
             <StackPane fx:id="centerStackPane" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1120.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox fx:id="vBoxCalendario" prefWidth="1118.0" style="-fx-background-color: white;" styleClass="Background-calendar" stylesheets="@../CSS/CalendarioCSS.css">
+                  <VBox fx:id="vBoxCalendario" prefWidth="1118.0" styleClass="Background-calendar" stylesheets="@../CSS/CalendarioCSS.css">
                      <children>
                         <HBox fx:id="cabecarioSemana" alignment="CENTER" fillHeight="false" prefHeight="30.0" prefWidth="894.0" />
                         <GridPane fx:id="calendarioGridPane" hgap="5.0" minWidth="600.0" prefWidth="1118.0" vgap="5.0" VBox.vgrow="ALWAYS">
@@ -143,26 +143,6 @@
                           </rowConstraints>
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </GridPane>
-                     </children>
-                  </VBox>
-                  <VBox fx:id="anoBox" prefHeight="600.0" prefWidth="1120.0" style="-fx-background-color: white;">
-                     <children>
-                        <GridPane fx:id="fullCalendarGridPane" hgap="7.0" minWidth="600.0" prefWidth="1120.0" vgap="7.0">
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="200.0" vgrow="ALWAYS" />
-                              <RowConstraints minHeight="200.0" vgrow="ALWAYS" />
-                              <RowConstraints minHeight="200.0" vgrow="ALWAYS" />
-                           </rowConstraints>
-                           <padding>
-                              <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
                            </padding>
                         </GridPane>
                      </children>
