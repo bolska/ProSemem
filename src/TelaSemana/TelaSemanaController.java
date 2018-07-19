@@ -48,9 +48,9 @@ public class TelaSemanaController implements Initializable {
     
     private LocalDate firstDayOfWeek;
     
-    private int primeiraHoraDoDia = 7;
+    private final int primeiraHoraDoDia = 7;
     
-    private int ultimaHoraDoDia = 23;
+    private final int ultimaHoraDoDia = 23;
     
     private void inicializaGridSemana() {
         for( int coluna = 0; coluna < 7; coluna ++) {
@@ -173,7 +173,7 @@ public class TelaSemanaController implements Initializable {
             labelEvento.getStyleClass().add("Label-evento-semana");
             
             StackPane pane = new StackPane(labelEvento);
-            styleString.append("-fx-background-color: #").append(compromisso.getCor().substring(2,8)).append(";\n");
+            styleString.append("-fx-background-color: #").append(compromisso.getCor().substring(2,8)).append(";");
             pane.setStyle(styleString.toString());
 
             pane.getStylesheets().add("CSS/CalendarioCSS.css");

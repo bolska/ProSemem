@@ -78,6 +78,8 @@ public class MainController implements Initializable {
     
     private AnchorPane rootDias;
     
+    private HBox rootSemana;
+    
     @FXML private VBox rootPane;
     
     @FXML private VBox vBoxCalendario;
@@ -104,6 +106,7 @@ public class MainController implements Initializable {
     
     @FXML private VBox vBoxConfirmacao;
 
+    
     public MainController() throws IOException {    //rootDias criado para fazer as verificações em openMes, openAno e etc..
         this.rootDias = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Dia/DiaFXML.fxml"));
     }
@@ -183,22 +186,9 @@ public class MainController implements Initializable {
     private void openDia(){
         
         try {
-            if(centerStackPane.getChildren().contains(vBoxCalendario)){ //Caso haja vBoxCalendario
-                
-                //AnchorPane rootDias = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Dia/DiaFXML.fxml"));
-                
-                centerStackPane.getChildren().remove(vBoxCalendario);   //Removo o calendário para adicionar rootDias
-                centerStackPane.getChildren().add(rootDias);
-            }
-            else if (centerStackPane.getChildren().contains(differentCalendarViewRootPane)){    //Caso haja uma box qualquer
-                
-                //AnchorPane rootDias = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Dia/DiaFXML.fxml"));
-                
-                centerStackPane.getChildren().remove(differentCalendarViewRootPane);
-                centerStackPane.getChildren().add(rootDias);
-            }
-            //Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
-            //label.setText("Janela DIA em desenvolvimento.");
+                centerStackPane.getChildren().clear();
+                AnchorPane rootDias = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Dia/DiaFXML.fxml"));
+                centerStackPane.getChildren().add(rootDias); 
         }
         catch (Exception e) {
             Modelo.getInstance().showAlertErro("Erro ao abrir a janela Dia " + e.getMessage());
@@ -207,38 +197,22 @@ public class MainController implements Initializable {
     
     @FXML
     private void openSemana(){
-        try {
-            if(centerStackPane.getChildren().contains(vBoxCalendario)){
-                
-                centerStackPane.getChildren().remove(vBoxCalendario);
-                centerStackPane.getChildren().add(differentCalendarViewRootPane);
-            }
-            else if(centerStackPane.getChildren().contains(rootDias)){
-                
-                centerStackPane.getChildren().remove(rootDias);
-                centerStackPane.getChildren().add(differentCalendarViewRootPane);
-            }
-            Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
-            label.setText("Janela Semana em desenvolvimento.");
+        try {  
+                centerStackPane.getChildren().clear();
+                HBox rootSemana = (HBox) FXMLLoader.load(getClass().getClassLoader().getResource("TelaSemana/TelaSemana.fxml"));
+                centerStackPane.getChildren().add(rootSemana);   
         }
         catch (Exception e) {
-            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Próximos " + e.getMessage());
+            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Semana " + e.getMessage());
         }
     }
     
     @FXML
     private void openMes(){
         try {
-            if(centerStackPane.getChildren().contains(differentCalendarViewRootPane)){
-
-                centerStackPane.getChildren().remove(differentCalendarViewRootPane);
+                if(!centerStackPane.getChildren().isEmpty()) // Quando abrir o programa o StackPane estara vazio, entao apenas adiciona o vBox
+                    centerStackPane.getChildren().clear();
                 centerStackPane.getChildren().add(vBoxCalendario);
-            }
-            else if(centerStackPane.getChildren().contains(rootDias)){
-                
-                centerStackPane.getChildren().remove(rootDias);
-                centerStackPane.getChildren().add(vBoxCalendario);
-            }
         }
         catch (Exception e) {
             Modelo.getInstance().showAlertErro("Erro ao abrir a janela Mês " + e.getMessage());
@@ -247,17 +221,11 @@ public class MainController implements Initializable {
     
     @FXML
     private void openAno(){
-        try {
-            if(centerStackPane.getChildren().contains(vBoxCalendario)){
-                
-                centerStackPane.getChildren().remove(vBoxCalendario);
+        try {    
+                centerStackPane.getChildren().clear();
+                // Load differentCalendarViewRootPane              
                 centerStackPane.getChildren().add(differentCalendarViewRootPane);
-            }
-            else if(centerStackPane.getChildren().contains(rootDias)){
-                
-                centerStackPane.getChildren().remove(rootDias);
-                centerStackPane.getChildren().add(differentCalendarViewRootPane);
-            }
+            
             Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
             label.setText("Janela Ano em desenvolvimento.");
         }
@@ -268,19 +236,11 @@ public class MainController implements Initializable {
     
     @FXML
     private void openProximos(){
-        try {
-            
-            if(centerStackPane.getChildren().contains(vBoxCalendario)){ //Verifica se já há um vBoxCalendario (ID de VBox dentro da StackPane)
-                
-                centerStackPane.getChildren().remove(vBoxCalendario);
+        try {                
+                centerStackPane.getChildren().clear();
+                //Load differentCalendarViewRootPane FXML
                 centerStackPane.getChildren().add(differentCalendarViewRootPane);
-            }
-            else if(centerStackPane.getChildren().contains(rootDias)){
-                
-                centerStackPane.getChildren().remove(rootDias);
-                centerStackPane.getChildren().add(differentCalendarViewRootPane);
-            }
-           
+                       
             Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
             label.setText("Janela Próximos ainda em desenvolvimento");
 //            AnchorPane rootProximos = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Gerenciador/Protocolo/ProtocoloFXML.fxml"));
