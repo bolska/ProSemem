@@ -5,10 +5,13 @@
  */
 package TelaAno;
 
+import BancoDeDados.DaoEvento;
+import Classes.Evento;
 import Model.Modelo;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
@@ -58,7 +61,7 @@ public class TelaAnoController implements Initializable {
 
                 VBox vBoxCalendar = new VBox();
 
-                vBoxCalendar.setMinWidth(fullCalendarGridPane.getPrefWidth() / 7);
+                vBoxCalendar.setPrefWidth(fullCalendarGridPane.getPrefWidth() / 7);
 
                 GridPane.setVgrow(vBoxCalendar, Priority.ALWAYS);
                 fullCalendarGridPane.add(vBoxCalendar, column, row);
@@ -79,7 +82,7 @@ public class TelaAnoController implements Initializable {
 
                 hBoxMonth.setHgrow(paneM, Priority.ALWAYS);
                 paneM.setMaxWidth(Double.MAX_VALUE);
-                paneM.setMinWidth(vBoxCalendary.getWidth()); //Tamanho do hBox, baseado no vBox da grid
+                paneM.setPrefWidth(vBoxCalendary.getWidth()); //Tamanho do hBox, baseado no vBox da grid
 
                 hBoxMonth.getChildren().add(paneM); //Adiciona os stack pane no hBox
                 paneM.getChildren().add(new Label(months[aux])); //Adiciona a string em uma label que adiciona no stack pane
@@ -93,7 +96,7 @@ public class TelaAnoController implements Initializable {
 
                     hBoxWeek.setHgrow(paneD, Priority.ALWAYS);
                     paneD.setMaxWidth(Double.MAX_VALUE);
-                    paneD.setMinWidth(vBoxCalendary.getWidth() / 7); //Divide em tamanhos iguais
+                    paneD.setPrefWidth(vBoxCalendary.getWidth() / 7); //Divide em tamanhos iguais
 
                     hBoxWeek.getChildren().add(paneD); //Adiciona os stack panes no hBox
                     paneD.getChildren().add(new Label(days[i])); //Adiciona Strings no stack pane
@@ -102,21 +105,21 @@ public class TelaAnoController implements Initializable {
             //Etapa3
             //Etapa4
                 GridPane gridMiniCalendar = new GridPane(); //Cria o gridpane do calendario
-                gridMiniCalendar.setMinWidth(vBoxCalendary.getWidth()); //Largura baseada no box do grid maior
-                gridMiniCalendar.setVgap(1); //Espaço entre os nodes de 1
-                gridMiniCalendar.setHgap(1); //Espaço entre os nodes de 1
+                gridMiniCalendar.setPrefWidth(vBoxCalendary.getWidth()); //Largura baseada no box do grid maior
+                gridMiniCalendar.setVgap(2); //Espaço entre os nodes de 1
+                gridMiniCalendar.setHgap(2); //Espaço entre os nodes de 1
                 gridMiniCalendar.setAlignment(Pos.CENTER); //Alinha centro
 
                 for (int i = 0; i < 7; i++) {
                     ColumnConstraints colConst = new ColumnConstraints(); //Novas colunas
-                    colConst.setMinWidth(gridMiniCalendar.getWidth() / 7); //Divide o tamanho pela quantidade
+                    colConst.setPrefWidth(gridMiniCalendar.getWidth() / 7); //Divide o tamanho pela quantidade
                     colConst.setHgrow(Priority.ALWAYS);
                     colConst.setHalignment(HPos.CENTER);
                     gridMiniCalendar.getColumnConstraints().add(colConst); //Adiciona ao gridpane
                 }
                 for (int i = 0; i < 6; i++) {
                     RowConstraints rowConst = new RowConstraints(); //novas linhas 
-                    rowConst.setMinHeight(gridMiniCalendar.getHeight() / 6); //Divide o tamanho pela quantidade
+                    rowConst.setPrefHeight(gridMiniCalendar.getHeight() / 6); //Divide o tamanho pela quantidade
                     rowConst.setVgrow(Priority.ALWAYS);
                     rowConst.setValignment(VPos.CENTER);
                     gridMiniCalendar.getRowConstraints().add(rowConst); //Adiciona ao gridpane   
@@ -128,8 +131,9 @@ public class TelaAnoController implements Initializable {
 
                         VBox vBoxDays = new VBox();
 
-                        vBoxDays.setMinWidth(gridMiniCalendar.getWidth() / 7);
-
+                        vBoxDays.setPrefWidth(gridMiniCalendar.getWidth() / 7);
+                        vBoxDays.setAlignment(Pos.CENTER);
+                        
                         GridPane.setVgrow(vBoxDays, Priority.ALWAYS);
                         gridMiniCalendar.add(vBoxDays, column, row);
                     }
@@ -163,6 +167,8 @@ public class TelaAnoController implements Initializable {
 
                     for(Node node2 : gridMiniCalendar.getChildren()) {
                         VBox vBoxDay = (VBox) node2;
+                        vBoxDay.getStylesheets().add("CSS/CalendarioCSS.css");
+                        vBoxDay.getStyleClass().add("Box-dia");
                         vBoxDay.getChildren().clear();
 
                         //Ajusta para começar na primeira linha do calendário (tava começando na segunda linha)
@@ -247,6 +253,8 @@ public class TelaAnoController implements Initializable {
                             }
                             contDiaAtual++;
                         }
+                        
+                        carregaEventos(vBoxDay);
                     }
                 //===========================================================================
                 vBoxCalendary.getChildren().clear(); //Adiciona tudo criado ao vBox
@@ -256,6 +264,8 @@ public class TelaAnoController implements Initializable {
 
                 aux++;
                 mesAno++;
+            
+                
             }
         }
     
@@ -281,9 +291,9 @@ public class TelaAnoController implements Initializable {
         return null;
     }
     
-    private void showTodayDate(StringBuilder stringColor, VBox vBoxDay){
+    private void showTodayDate(StringBuilder stringColor, VBox vBoxDay) {
         LocalDate todayDate = LocalDate.now();
-        LocalDate showingDate = Modelo.getInstance().dataAtual;
+        LocalDate showingDate = Modelo.getInstance().dataAtualAno;
         
         stringColor.append(" -fx-border-color: ");
         
@@ -315,11 +325,64 @@ public class TelaAnoController implements Initializable {
             stringColor.append("white;");
         }
         
-        vBoxDay.setStyle(stringColor.toString()); 
+        vBoxDay.setStyle(stringColor.toString());
     }
     
-    public void updateYearPage() {
-        startYearPage();
+    private void carregaEventos(VBox vBox){
+        DaoEvento daoEvento = new DaoEvento();
+        ObservableList<Evento> listaEvento = daoEvento.getListEventoForCalendario();
+        
+        int anoAtual = Modelo.getInstance().dataAtualAno.getYear();
+        int mesAtual = Modelo.getInstance().dataAtualAno.getMonthValue();    
+        
+        for(Evento evento : listaEvento){   
+                
+            if(vBox.getId().equals("anterior")){
+                int mes, ano;
+                if(mesAtual == 1){
+                   ano = anoAtual - 1;
+                   mes = 12;
+                }
+                else{
+                    mes = mesAtual - 1;
+                    ano = anoAtual;
+                }
+                adicionaEvento(mes, ano, vBox, evento);
+            }
+            else if(vBox.getId().equals("posterior")){
+                int mes, ano;
+                if(mesAtual == 12){
+                    ano = anoAtual + 1;
+                    mes = 1;
+                }
+                else{
+                    mes = mesAtual + 1;
+                    ano = anoAtual;
+                }
+                adicionaEvento(mes, ano, vBox, evento);
+            }
+            else{
+                adicionaEvento(mesAtual, anoAtual, vBox, evento);
+            }
+            
+        }
+    }
+    
+    
+    private void adicionaEvento(int mes, int ano, VBox vBox, Evento evento){
+        if(ano == evento.getData().toLocalDate().getYear()){
+            
+            if(mes == evento.getData().toLocalDate().getMonthValue()){
+
+                Label label = (Label) vBox.getChildren().get(0);
+                int dia = evento.getData().toLocalDate().getDayOfMonth();
+                
+                if(Integer.parseInt(label.getText()) == dia){
+                    
+                    vBox.setStyle("-fx-background-color: yellow");
+                }
+            }
+        }
     }
     
     @Override
