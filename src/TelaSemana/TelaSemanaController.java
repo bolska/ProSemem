@@ -6,10 +6,16 @@
 
 package TelaSemana;
 
+import BancoDeDados.DaoAtividade;
 import BancoDeDados.DaoCompromisso;
 import BancoDeDados.DaoEvento;
+import BancoDeDados.DaoFazenda;
+import BancoDeDados.DaoSessao;
+import Classes.Atividade;
 import Classes.Compromisso;
 import Classes.Evento;
+import Classes.Fazenda;
+import Classes.Sessao;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -147,6 +153,11 @@ public class TelaSemanaController implements Initializable {
     private void addEvento(Evento evento, LocalDate date) {
         int horaInicio = primeiraHoraDoDia+3;
         int duracao = 8;
+        
+        Label labelEvento = new Label();
+        Tooltip tooltip = new Tooltip();
+        String cor = new String();
+        
         /*
         int horaInicio = evento.getHoraInicio();
         int duracao = evento.getDuracao();
@@ -162,18 +173,34 @@ public class TelaSemanaController implements Initializable {
         int coluna = date.getDayOfWeek().plus(1).getValue() - 1; //plus(1) para corrigir a ordem dos dias da semana de dom-sab para seg-dom
         StringBuilder styleString = new StringBuilder(); //cor do stackpane
         
-        
-        DaoCompromisso daoCompromisso = new DaoCompromisso();
-        
-        Compromisso compromisso = daoCompromisso.getCompromissoById(evento.getCompromissoId());
+        if(evento.getCompromissoId() != 0) {    // Evento do tipo Compromisso
+            DaoCompromisso daoCompromisso = new DaoCompromisso();
+            Compromisso compromisso = daoCompromisso.getCompromissoById(evento.getCompromissoId());
             
-            Label labelEvento = new Label(compromisso.getDescricao());
-            Tooltip tooltip = new Tooltip(compromisso.getDescricao());
+            labelEvento.setText(compromisso.getDescricao());
+            tooltip.setText(compromisso.getDescricao());
+            cor = compromisso.getCor();
+        }
+        
+        else if(evento.getSessaoId() != null) { // Evento do tipo Sessão
+            DaoSessao daoSessao = new DaoSessao();
+            DaoAtividade daoAtividade = new DaoAtividade();
+            DaoFazenda daoFazenda = new DaoFazenda();
+            
+            Sessao sessao = daoSessao.getSessaoById(evento.getSessaoId());
+            Atividade atividade = daoAtividade.getAtividadeById(evento.getAtividadeId());
+            Fazenda fazenda = daoFazenda.getFazendaById(sessao.getFazendaId());
+            
+            labelEvento.setText(atividade.getDescricao() + "" + fazenda.getSigla().toUpperCase());
+            tooltip.setText(atividade.getDescricao() + "" + fazenda.getSigla().toUpperCase());
+            cor = sessao.getCor();
+        }
+
             labelEvento.getStylesheets().add("CSS/CalendarioCSS.css");
             labelEvento.getStyleClass().add("Label-evento-semana");
             
             StackPane pane = new StackPane(labelEvento);
-            styleString.append("-fx-background-color: #").append(compromisso.getCor().substring(2,8)).append(";");
+            styleString.append("-fx-background-color: #").append(cor.substring(2,8)).append(";");
             pane.setStyle(styleString.toString());
 
             pane.getStylesheets().add("CSS/CalendarioCSS.css");
@@ -181,6 +208,7 @@ public class TelaSemanaController implements Initializable {
             labelEvento.setTooltip(tooltip);
             
             semanaGridPane.add(pane, coluna, linhaInicio, 1, duracao);
+            
         
     }
 
