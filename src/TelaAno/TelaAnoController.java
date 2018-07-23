@@ -8,11 +8,17 @@ package TelaAno;
 import BancoDeDados.DaoEvento;
 import Classes.Evento;
 import Model.Modelo;
+import Model.SnackbarModel;
+import com.jfoenix.controls.JFXPopup;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -20,6 +26,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -51,6 +58,11 @@ public class TelaAnoController implements Initializable {
         String[] days = {
             "D", "S", "T", "Q", "Q", "S", "S", //Inicial dos dias
         };
+        
+        DaoEvento daoEvento = new DaoEvento();
+        ObservableList<Evento> listaEvento = daoEvento.getListEventoForCalendario();
+        
+        fullCalendarGridPane.setId(Integer.toString(Modelo.getInstance().dataAtualAno.getYear()));
         
         //Etapa1
         rootPane.setPrefSize(Modelo.getInstance().centerWidth, Modelo.getInstance().centerHeight); //Seta tamanho para vBox
@@ -254,7 +266,7 @@ public class TelaAnoController implements Initializable {
                             contDiaAtual++;
                         }
                         
-                        carregaEventos(vBoxDay);
+                        carregaEventos(vBoxDay, listaEvento);
                     }
                 //===========================================================================
                 vBoxCalendary.getChildren().clear(); //Adiciona tudo criado ao vBox
@@ -328,9 +340,7 @@ public class TelaAnoController implements Initializable {
         vBoxDay.setStyle(stringColor.toString());
     }
     
-    private void carregaEventos(VBox vBox){
-        DaoEvento daoEvento = new DaoEvento();
-        ObservableList<Evento> listaEvento = daoEvento.getListEventoForCalendario();
+    private void carregaEventos(VBox vBox, ObservableList<Evento> listaEvento){
         
         int anoAtual = Modelo.getInstance().dataAtualAno.getYear();
         int mesAtual = Modelo.getInstance().dataAtualAno.getMonthValue();    
@@ -378,11 +388,68 @@ public class TelaAnoController implements Initializable {
                 int dia = evento.getData().toLocalDate().getDayOfMonth();
                 
                 if(Integer.parseInt(label.getText()) == dia){
-                    
+                    vBox.setId(Integer.toString(mes));
                     vBox.setStyle("-fx-background-color: yellow");
+                    
+                    vBox.setOnMouseClicked((e) -> {
+                    if(e.getClickCount() == 1 && !e.isConsumed()) {
+                        Label labelDia = (Label) vBox.getChildren().get(0);
+                        
+                        LocalDate data = LocalDate.now();
+                        Modelo.getInstance().dataDiaEvento = data.of(Integer.parseInt(fullCalendarGridPane.getId()), Integer.parseInt(vBox.getId()), Integer.parseInt(labelDia.getText()));
+
+                        try {
+                            openListEvents(vBox);
+
+                        } catch (IOException ex) {
+                            Modelo.getInstance().showAlertErro(ex.getMessage());
+                        }
+                    }
+                    });
                 }
             }
         }
+    }
+    
+    private void openListEvents(VBox vBox) throws IOException {
+        int xOffSet = 5;
+
+        AnchorPane popupRoot = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("DescricaoEvento/ListaEventoFXML.fxml"));
+        JFXPopup popup = new JFXPopup(popupRoot);
+
+        popup.setOnShowing( (evtShowing) -> {
+            vBox.setStyle("-fx-background-color: blue");
+        });
+
+        popup.setOnHiding( (evtHiding) -> {
+            vBox.setStyle("-fx-background-color: yellow");
+        });
+
+        //se x.popup > width.scene e y.popup > height.scene
+        if((vBox.getLayoutX() + vBox.getWidth() + popupRoot.getPrefWidth() + xOffSet) > rootPane.getPrefWidth() 
+            && (vBox.getLayoutY() + popupRoot.getPrefHeight()) > rootPane.getPrefHeight() ){
+
+            popup.show(vBox, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.RIGHT, -(vBox.getWidth() + xOffSet), 0);
+        }
+        //se x.popup > width.scene e y.popup <= height.scene
+        else if((vBox.getLayoutX() + vBox.getWidth() + popupRoot.getPrefWidth() + xOffSet) > rootPane.getPrefWidth() 
+            && (vBox.getLayoutY() + popupRoot.getPrefHeight()) <= rootPane.getPrefHeight() ){
+
+            popup.show(vBox, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, -(vBox.getWidth() + xOffSet), 0);
+        }
+        //se x.popup <= width.scene e y.popup > height.scene
+        else if((vBox.getLayoutX() + vBox.getWidth() + popupRoot.getPrefWidth() + xOffSet) <= rootPane.getPrefWidth() 
+            && (vBox.getLayoutY() + popupRoot.getPrefHeight()) > rootPane.getPrefHeight() ){
+
+            popup.show(vBox, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT, (vBox.getWidth() + xOffSet), 0);
+        }
+        //se x.popup <= width.scene e y.popup <= height.scene
+        else{
+            popup.show(vBox, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, (vBox.getWidth() + xOffSet), 0);
+        }
+
+        Modelo.getInstance().popup = popup;
+        SnackbarModel.pane = rootPane;
     }
     
     @Override

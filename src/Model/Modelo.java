@@ -44,7 +44,8 @@ public class Modelo {
     
     //Data
     public LocalDate dataAtual; //Data em que o calendário está
-    public LocalDate dataAtualAno;
+    public LocalDate dataAtualAno; //Data em que o calendário ano esta
+    public LocalDate dataDiaEvento; //Data selecionada no calendário ano para listar eventos
     public LocalDate dataHoje; 
     
     //Data do Evento
