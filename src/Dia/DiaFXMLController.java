@@ -27,9 +27,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import Classes.Sessao;
+import Model.Modelo;
+import java.io.IOException;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 
 /**
  * FXML Controller class
@@ -64,6 +69,22 @@ public class DiaFXMLController implements Initializable {
     @FXML 
     private TableColumn <DiaConstructor, String> colCompromissos;    
 
+    @FXML private AnchorPane diaAP;
+
+    //Implementando a funcionalidade do botão "Atualizar" na aba "Dia"
+    @FXML
+    private void openDiaAtt(){
+        try {
+            if(diaAP.getChildren().contains(tableId)){
+                diaAP.getChildren().remove(tableId);
+                AnchorPane rootDias = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Dia/DiaFXML.fxml"));
+                diaAP.getChildren().add(rootDias);
+            }      
+        }
+        catch (Exception e) {
+            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Dia " + e.getMessage());
+        }
+    }
      
     @Override
     public void initialize(URL url, ResourceBundle rb) {    //Incrementando as células da tabela        
@@ -79,10 +100,10 @@ public class DiaFXMLController implements Initializable {
             //formato da data retornada pelo SQL: YYYY-MM-DD
             ResultSet rsSess = conn.createStatement().executeQuery("SELECT SES_ID \n" +
                                                                    "FROM SESSAO NATURAL JOIN EVENTO\n" +
-                                                                   "WHERE EVT_DATA = (SELECT CURRENT_DATE());");
+                                                                   "WHERE EVT_DATA = (SELECT CURRENT_DATE()) ORDER BY SES_ID;");
             ResultSet rsComp = conn.createStatement().executeQuery("SELECT COMP_DESCRICAO \n" +
                                                                    "FROM COMPROMISSO NATURAL JOIN EVENTO\n" +
-                                                                   "WHERE EVT_DATA = (SELECT CURRENT_DATE());");
+                                                                   "WHERE EVT_DATA = (SELECT CURRENT_DATE()) ORDER BY COMP_DESCRICAO;");
             while(rsComp.next()){ 
                while(rsSess.next()){
                   dayEvents.add(new DiaConstructor("hh:mm", rsSess.getString(1)));    //Pegando primeiro as sessões
@@ -90,15 +111,16 @@ public class DiaFXMLController implements Initializable {
                dayEvents.add(new DiaConstructor("hh:mm",rsComp.getString(1)));  //getString começa em 1, é o indice do meu select
             }
             
-            tableId.setItems(null); 
             tableId.setItems(dayEvents);
             
             colHorario.setCellValueFactory(new PropertyValueFactory<>("colHorario"));
-            colHorario.setCellFactory(TextFieldTableCell.forTableColumn()); //Tornando o campo Horario editável
             colCompromissos.setCellValueFactory(new PropertyValueFactory<>("colCompromissos"));
 
             colHorario.setStyle("-fx-alignment: CENTER");
             colCompromissos.setStyle("-fx-alignment: CENTER");
+            
+            colHorario.setEditable(true);
+            colHorario.setCellFactory(TextFieldTableCell.forTableColumn()); //Tornando o campo Horario editável
             
         } catch(SQLException ex){
             System.err.println("Error"+ex);
@@ -130,7 +152,13 @@ public class DiaFXMLController implements Initializable {
                 dateYear.setText("Domingo" +": " +Integer.toString(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) +'/'+Integer.toString(Calendar.getInstance().get(Calendar.MONTH)+1) +"/"+Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
                 break;
         }
-        
-    }      
+     
+    } 
+    
+    //Tentativa de aprimorar a edição no campo "Horário" fazendo com que este não seja perdido ao clicar no botão  "Dia"
+    public void onEditChanged(TableColumn.CellEditEvent<DiaConstructor,String> HorarioStringCellEditEvent){
+        DiaConstructor dc = tableId.getSelectionModel().getSelectedItem();
+        dc.setColHorario(HorarioStringCellEditEvent.getNewValue());
+    }
     
 }

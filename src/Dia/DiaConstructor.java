@@ -15,8 +15,8 @@ import javafx.beans.property.SimpleStringProperty;
 //Foi necessário criar essa classe em especial para fazer a tabela funcionar (é a desvantagem de usar tabela)
 public class DiaConstructor {
     
-    private final SimpleStringProperty colHorario;
-    private final SimpleStringProperty colCompromissos;
+    private SimpleStringProperty colHorario;
+    private SimpleStringProperty colCompromissos;
 
     public DiaConstructor(String colHorario, String colCompromissos) {
         this.colHorario = new SimpleStringProperty(colHorario);
@@ -31,5 +31,8 @@ public class DiaConstructor {
         return colCompromissos.get();
     }
     
-    
+    public void setColHorario(String colHorario){
+        this.colHorario = new SimpleStringProperty (colHorario);
+    }
+   
 }
