@@ -225,11 +225,8 @@ public class MainController implements Initializable {
     private void openAno(){
         try {    
                 centerStackPane.getChildren().clear();
-                // Load differentCalendarViewRootPane              
-                centerStackPane.getChildren().add(differentCalendarViewRootPane);
-            
-            Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
-            label.setText("Janela Ano em desenvolvimento.");
+                HBox rootSemana = (HBox) FXMLLoader.load(getClass().getClassLoader().getResource("TelaAno/TelaAno.fxml"));
+                centerStackPane.getChildren().add(rootSemana);
         }
         catch (Exception e) {
             Modelo.getInstance().showAlertErro("Erro ao abrir a janela Semana" + e.getMessage());

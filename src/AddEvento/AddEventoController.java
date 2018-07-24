@@ -49,8 +49,6 @@ public class AddEventoController implements Initializable {
     
     @FXML private JFXColorPicker colorPickerAvulso;
 
-    @FXML private JFXColorPicker colorPickerAvulso;
-
     @FXML private TableView<Atividade> tableAtividade;
     
     @FXML private TableColumn<Atividade, Integer> columnID;
