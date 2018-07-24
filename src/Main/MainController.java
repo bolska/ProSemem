@@ -47,6 +47,8 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXPopup;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -686,6 +688,24 @@ public class MainController implements Initializable {
                                     Modelo.getInstance().showAlertErro(error.getMessage());
                                 }
                             }
+                            else{
+                                try {
+                                    AnchorPane popupRoot = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("DescricaoEvento/DescricaoCompromissoFXML.fxml"));
+                                    JFXPopup popup = new JFXPopup(popupRoot);
+
+                                    double centerX = (rootPane.getWidth()/2 - popupRoot.getPrefWidth()/2);
+                                    double centerY = (rootPane.getHeight()/2 - popupRoot.getPrefHeight()/2 - 80);
+
+                                    Modelo.getInstance().popup = popup;
+                                    SnackbarModel.pane = rootPane;
+
+                                    popup.show(SnackbarModel.pane, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, centerX, centerY);
+
+                                } 
+                                catch (Exception error) {
+                                    Modelo.getInstance().showAlertErro(error.getMessage());
+                                }
+                            }
                         }
                     });
                     
@@ -748,13 +768,25 @@ public class MainController implements Initializable {
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
                 LocalDate data = Modelo.getInstance().dataAtual;
                 Modelo.getInstance().dataAtual = data.of(newValue, data.getMonthValue(), 1);
-                atualizaCalendario();
+                Modelo.getInstance().dataAtualAno = data.of(newValue, data.getMonthValue(), 1);
+                if(centerStackPane.getChildren().contains(vBoxCalendario)) {
+                    atualizaCalendario();
+                } else if(centerStackPane.getChildren().contains(differentCalendarViewRootPane)){
+                    try {
+                        differentCalendarViewRootPane = (HBox) FXMLLoader.load(getClass().getClassLoader().getResource("TelaAno/TelaAno.fxml"));
+                        centerStackPane.getChildren().clear();
+                        centerStackPane.getChildren().add(differentCalendarViewRootPane);
+                    } catch (IOException ex) {
+                        Modelo.getInstance().showAlertErro("Erro atualizar tela Ano: " + ex.getMessage());
+                    }
+                }
             }
         });
     }
     
     private void inicializaData(){
         Modelo.getInstance().dataAtual = LocalDate.now();
+        Modelo.getInstance().dataAtualAno = LocalDate.now();
         Modelo.getInstance().dataHoje = Modelo.getInstance().dataAtual;
     }
     

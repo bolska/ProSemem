@@ -15,6 +15,7 @@ import Gerenciador.Atividade.AtividadeController;
 import Gerenciador.Fazenda.FazendaFXMLController;
 import Gerenciador.Protocolo.ProtocoloFXMLController;
 import Main.MainController;
+import TelaAno.TelaAnoController;
 import com.jfoenix.controls.JFXPopup;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -39,9 +40,12 @@ public class Modelo {
     public static ProtocoloFXMLController protocoloController;
     public static AtividadeController atividadeController;
     public static FazendaFXMLController fazendaController;
+    public static TelaAnoController telaAnoController;
     
     //Data
     public LocalDate dataAtual; //Data em que o calendário está
+    public LocalDate dataAtualAno; //Data em que o calendário ano esta
+    public LocalDate dataDiaEvento; //Data selecionada no calendário ano para listar eventos
     public LocalDate dataHoje; 
     
     //Data do Evento
@@ -53,6 +57,7 @@ public class Modelo {
     
     //RODRIGO===============================
     public String labelId; //Para comparar o seu id, obter o dia da semana quando o click é em um vbox
+    public double centerWidth, centerHeight; //Pega tamanho do centerStackPane
     //RODRIGO===============================
     
     //Protocolo selecionado

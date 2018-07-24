@@ -6,6 +6,8 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddEvento.AddEventoController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddEvento.AddEventoController">
    <children>
       <VBox prefHeight="513.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -34,46 +36,70 @@
                   </StackPane>
                </children>
             </HBox>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="385.0" prefWidth="650.0">
-               <children>
-                  <HBox alignment="CENTER" layoutX="108.0" layoutY="2.0" prefHeight="68.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <StackPane>
+            <TabPane prefHeight="465.0" prefWidth="650.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Sessão">
+                     <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="385.0" prefWidth="650.0">
                            <children>
-                              <JFXComboBox fx:id="comboBoxProtocolo" labelFloat="true" prefHeight="25.0" prefWidth="157.0" promptText="Selecione Protocolo" />
+                              <HBox alignment="CENTER" layoutX="108.0" layoutY="2.0" prefHeight="68.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <StackPane>
+                                       <children>
+                                          <JFXComboBox fx:id="comboBoxProtocolo" labelFloat="true" prefHeight="25.0" prefWidth="157.0" promptText="Selecione Protocolo" />
+                                       </children>
+                                    </StackPane>
+                                    <StackPane prefHeight="68.0" prefWidth="36.0" />
+                                    <StackPane prefHeight="68.0" prefWidth="184.0">
+                                       <children>
+                                          <JFXComboBox fx:id="comboBoxFazenda" labelFloat="true" prefHeight="26.0" prefWidth="211.0" promptText="Selecione Fazenda" />
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </HBox>
+                              <Label layoutX="14.0" layoutY="67.0" text="Atividades:" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <TableView fx:id="tableAtividade" layoutX="14.0" layoutY="84.0" prefHeight="222.0" prefWidth="622.0">
+                                 <columns>
+                                    <TableColumn fx:id="columnID" maxWidth="90.0" prefWidth="73.0" resizable="false" text="Código" />
+                                    <TableColumn fx:id="columnDescr" minWidth="0.0" prefWidth="353.0" resizable="false" text="Descrição" />
+                                    <TableColumn fx:id="columnTipo" minWidth="0.0" prefWidth="103.0" resizable="false" text="Tipo" />
+                                    <TableColumn fx:id="columnIntervalo" maxWidth="421.0" minWidth="0.0" prefWidth="92.0" resizable="false" text="Intervalo" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <Label layoutX="26.0" layoutY="331.0" text="Código da Sessão:" />
+                              <JFXTextField fx:id="textFieldSessao" layoutX="154.0" layoutY="326.0" prefHeight="25.0" prefWidth="127.0" />
+                              <Label layoutX="386.0" layoutY="331.0" text="Cor:" />
+                              <JFXColorPicker fx:id="colorPicker" layoutX="424.0" layoutY="327.0" prefHeight="25.0" prefWidth="50.0" style="-fx-color-label-visible: false;" />
+                              <HBox alignment="CENTER" layoutY="384.0" prefHeight="35.0" prefWidth="650.0">
+                                 <children>
+                                    <JFXButton buttonType="RAISED" onMouseClicked="#botaoSalvarEventoProtocolo" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../CSS/CalendarioCSS.css" text="Adicionar" />
+                                 </children>
+                              </HBox>
                            </children>
-                        </StackPane>
-                        <StackPane prefHeight="68.0" prefWidth="36.0" />
-                        <StackPane prefHeight="68.0" prefWidth="184.0">
+                        </AnchorPane>
+                     </content>
+                </Tab>
+                <Tab text="Compromisso Avulso">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <JFXComboBox fx:id="comboBoxFazenda" labelFloat="true" prefHeight="26.0" prefWidth="211.0" promptText="Selecione Fazenda" />
+                              <HBox alignment="CENTER" layoutY="263.0" prefHeight="35.0" prefWidth="650.0">
+                                 <children>
+                                    <JFXButton fx:id="buttonAdicionarAvulso" buttonType="RAISED" onAction="#buttonAddAvulso" onMouseClicked="#botaoSalvarEventoProtocolo" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../CSS/CalendarioCSS.css" text="Adicionar" />
+                                 </children>
+                              </HBox>
+                              <JFXTextField fx:id="textFieldAvulso" labelFloat="true" layoutX="200.0" layoutY="89.0" prefHeight="25.0" prefWidth="250.0" promptText="Descrição" />
+                              <Label layoutX="200.0" layoutY="173.0" prefHeight="17.0" prefWidth="24.0" text="Cor:" />
+                              <JFXColorPicker fx:id="colorPickerAvulso" layoutX="243.0" layoutY="169.0" prefHeight="25.0" prefWidth="100.0" style="-fx-color-label-visible: false;" />
                            </children>
-                        </StackPane>
-                     </children>
-                  </HBox>
-                  <Label layoutX="14.0" layoutY="67.0" text="Atividades:" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-                  <TableView fx:id="tableAtividade" layoutX="14.0" layoutY="84.0" prefHeight="222.0" prefWidth="622.0">
-                     <columns>
-                        <TableColumn fx:id="columnID" maxWidth="90.0" prefWidth="73.0" resizable="false" text="Código" />
-                        <TableColumn fx:id="columnDescr" minWidth="0.0" prefWidth="353.0" resizable="false" text="Descrição" />
-                        <TableColumn fx:id="columnTipo" minWidth="0.0" prefWidth="103.0" resizable="false" text="Tipo" />
-                        <TableColumn fx:id="columnIntervalo" maxWidth="421.0" minWidth="0.0" prefWidth="92.0" resizable="false" text="Intervalo" />
-                     </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                  </TableView>
-                  <Label layoutX="26.0" layoutY="331.0" text="Código da Sessão:" />
-                  <JFXTextField fx:id="textFieldSessao" layoutX="154.0" layoutY="326.0" prefHeight="25.0" prefWidth="127.0" />
-                  <Label layoutX="335.0" layoutY="331.0" text="Cor:" />
-                  <JFXColorPicker fx:id="colorPicker" layoutX="369.0" layoutY="328.0" prefHeight="25.0" prefWidth="50.0" style="-fx-color-label-visible: false;" />
-               </children>
-            </AnchorPane>
-            <HBox alignment="CENTER" prefHeight="35.0" prefWidth="650.0">
-               <children>
-                  <JFXButton buttonType="RAISED" onMouseClicked="#botaoSalvarEventoProtocolo" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../CSS/CalendarioCSS.css" text="Adicionar" />
-               </children>
-            </HBox>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
          </children>
       </VBox>
    </children>
