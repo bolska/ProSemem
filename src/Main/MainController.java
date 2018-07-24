@@ -223,13 +223,17 @@ public class MainController implements Initializable {
     
     @FXML
     private void openAno(){
-        try {    
-                centerStackPane.getChildren().clear();
-                HBox rootSemana = (HBox) FXMLLoader.load(getClass().getClassLoader().getResource("TelaAno/TelaAno.fxml"));
-                centerStackPane.getChildren().add(rootSemana);
+        try {
+            Modelo.getInstance().centerWidth = centerStackPane.getWidth();
+            Modelo.getInstance().centerHeight = centerStackPane.getHeight();
+            
+            centerStackPane.getChildren().clear();
+            HBox rootAno = (HBox) FXMLLoader.load(getClass().getClassLoader().getResource("TelaAno/TelaAno.fxml"));
+            rootAno.setId("ano");
+            centerStackPane.getChildren().add(rootAno);
         }
         catch (Exception e) {
-            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Semana" + e.getMessage());
+            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Ano" + e.getMessage());
         }
     }
     
@@ -768,11 +772,12 @@ public class MainController implements Initializable {
                 Modelo.getInstance().dataAtualAno = data.of(newValue, data.getMonthValue(), 1);
                 if(centerStackPane.getChildren().contains(vBoxCalendario)) {
                     atualizaCalendario();
-                } else if(centerStackPane.getChildren().contains(differentCalendarViewRootPane)){
+                } else if(centerStackPane.getChildren().get(0).getId().equals("ano")){
                     try {
-                        differentCalendarViewRootPane = (HBox) FXMLLoader.load(getClass().getClassLoader().getResource("TelaAno/TelaAno.fxml"));
+                        HBox rootAno = (HBox) FXMLLoader.load(getClass().getClassLoader().getResource("TelaAno/TelaAno.fxml"));
+                        rootAno.setId("ano");
                         centerStackPane.getChildren().clear();
-                        centerStackPane.getChildren().add(differentCalendarViewRootPane);
+                        centerStackPane.getChildren().add(rootAno);
                     } catch (IOException ex) {
                         Modelo.getInstance().showAlertErro("Erro atualizar tela Ano: " + ex.getMessage());
                     }
