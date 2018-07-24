@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DescricaoEvento.ListaEventoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DescricaoEvento.ListaEventoController">
    <children>
-      <VBox prefHeight="300.0" prefWidth="400.0">
+      <VBox prefHeight="150.0" prefWidth="200.0">
          <children>
-            <HBox prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #4286f4;">
+            <HBox prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #4286f4;">
                <children>
-                  <StackPane prefHeight="150.0" prefWidth="369.0">
+                  <StackPane prefHeight="150.0" prefWidth="169.0">
                      <children>
                         <Label alignment="CENTER" prefWidth="369.0" text="Eventos" />
                      </children>
@@ -26,11 +26,11 @@
                   </StackPane>
                </children>
             </HBox>
-            <AnchorPane prefHeight="260.0" prefWidth="400.0">
+            <AnchorPane prefHeight="110.0" prefWidth="200.0">
                <children>
-                  <ScrollPane prefHeight="260.0" prefWidth="400.0">
+                  <ScrollPane prefHeight="110.0" prefWidth="200.0">
                      <content>
-                        <VBox fx:id="eventoBox" prefHeight="0.0" prefWidth="398.0" />
+                        <VBox fx:id="eventoBox" prefHeight="0.0" prefWidth="198.0" />
                      </content>
                   </ScrollPane>
                </children>

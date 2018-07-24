@@ -389,7 +389,11 @@ public class TelaAnoController implements Initializable {
                 
                 if(Integer.parseInt(label.getText()) == dia){
                     vBox.setId(Integer.toString(mes));
-                    vBox.setStyle("-fx-background-color: yellow");
+                    if(evento.getCompromissoId() != 0) {
+                        vBox.setStyle("-fx-background-color: #FFDF00");
+                    } else {
+                        vBox.setStyle("-fx-background-color: #FE3636");
+                    }
                     
                     vBox.setOnMouseClicked((e) -> {
                     if(e.getClickCount() == 1 && !e.isConsumed()) {
@@ -399,7 +403,7 @@ public class TelaAnoController implements Initializable {
                         Modelo.getInstance().dataDiaEvento = data.of(Integer.parseInt(fullCalendarGridPane.getId()), Integer.parseInt(vBox.getId()), Integer.parseInt(labelDia.getText()));
 
                         try {
-                            openListEvents(vBox);
+                            openListEvents(vBox, evento);
 
                         } catch (IOException ex) {
                             Modelo.getInstance().showAlertErro(ex.getMessage());
@@ -411,18 +415,26 @@ public class TelaAnoController implements Initializable {
         }
     }
     
-    private void openListEvents(VBox vBox) throws IOException {
+    private void openListEvents(VBox vBox, Evento evento) throws IOException {
         int xOffSet = 5;
 
         AnchorPane popupRoot = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("DescricaoEvento/ListaEventoFXML.fxml"));
         JFXPopup popup = new JFXPopup(popupRoot);
 
         popup.setOnShowing( (evtShowing) -> {
-            vBox.setStyle("-fx-background-color: blue");
+            if(evento.getCompromissoId() != 0) {
+                vBox.setStyle("-fx-background-color: #FFBA00");
+            } else {
+                vBox.setStyle("-fx-background-color: #FE1A1A");
+            }
         });
 
         popup.setOnHiding( (evtHiding) -> {
-            vBox.setStyle("-fx-background-color: yellow");
+            if(evento.getCompromissoId() != 0) {
+                vBox.setStyle("-fx-background-color: #FFDF00");
+            } else {
+                vBox.setStyle("-fx-background-color: #FE3636");
+            }
         });
 
         //se x.popup > width.scene e y.popup > height.scene

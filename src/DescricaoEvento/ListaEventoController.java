@@ -49,6 +49,8 @@ public class ListaEventoController implements Initializable {
         DaoCompromisso daoCompromisso = new DaoCompromisso();
         
         ObservableList<Evento> listEvento = daoEvt.listByData(Date.valueOf(Modelo.getInstance().dataDiaEvento));
+        
+        StringBuilder colorString = new StringBuilder();
 
         for(Evento evento : listEvento) {
             Sessao sessao = daoSessao.getSessaoByEventoId(evento.getId());
@@ -57,13 +59,23 @@ public class ListaEventoController implements Initializable {
             Compromisso compromisso = daoCompromisso.getCompromissoById(evento.getCompromissoId());
             
             Label labelEvento = new Label();
+            labelEvento.getStylesheets().add("CSS/CalendarioCSS.css");
+            labelEvento.getStyleClass().add("Label-atividade");
             labelEvento.setMaxWidth(Double.MAX_VALUE);
             labelEvento.setId(Integer.toString(evento.getId()));
-            if(fazenda.getSigla() != null && evento.getSessaoId() != null) {
+            
+            if(evento.getSessaoId() != null) {
                 labelEvento.setText(evento.getSessaoId() + " - " + fazenda.getSigla().toUpperCase() + " - " + atividade.getDescricao());
+                colorString.append("-fx-background-color: #");
+                colorString.append(sessao.getCor().substring(2,8)).append(";\n");
             } else {
                 labelEvento.setText(compromisso.getDescricao());
+                colorString.append("-fx-background-color: #");
+                colorString.append(compromisso.getCor().substring(2,8)).append(";\n");
             }
+            
+            labelEvento.setStyle(colorString.toString());
+            
             eventoBox.getChildren().add(labelEvento);
         }
     }
