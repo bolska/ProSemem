@@ -19,7 +19,7 @@
                     <columns>
                       <TableColumn fx:id="columnNome" prefWidth="368.0" text="Nome" />
                         <TableColumn fx:id="columnSigla" minWidth="5.0" prefWidth="104.0" text="Sigla" />
-                        <TableColumn fx:id="columnEncarregado" minWidth="0.0" prefWidth="280.0" resizable="false" text="Encarreagado" />
+                        <TableColumn fx:id="columnEncarregado" minWidth="0.0" prefWidth="280.0" resizable="false" text="Encarregado" />
                     </columns>
                   </TableView>
                   <JFXButton layoutX="490.0" layoutY="488.0" onAction="#addButtonFazenda" prefHeight="28.0" prefWidth="82.0" ripplerFill="#496eff" styleClass="Set-Border-Button" stylesheets="@../../CSS/CalendarioCSS.css" text="Adicionar" />

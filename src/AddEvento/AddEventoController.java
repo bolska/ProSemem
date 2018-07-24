@@ -33,7 +33,6 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.scene.paint.Color;
 
-
 public class AddEventoController implements Initializable {
 
     @FXML private Label labelDataSelecionada;
@@ -48,6 +47,8 @@ public class AddEventoController implements Initializable {
     
     @FXML private JFXColorPicker colorPicker;
     
+    @FXML private JFXColorPicker colorPickerAvulso;
+
     @FXML private JFXColorPicker colorPickerAvulso;
 
     @FXML private TableView<Atividade> tableAtividade;

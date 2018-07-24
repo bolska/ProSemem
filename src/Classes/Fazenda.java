@@ -10,6 +10,7 @@ public class Fazenda {
     private String sigla;
     private String cor;
 
+
     public int getId() {
         return id;
     }
