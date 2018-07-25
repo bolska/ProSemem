@@ -62,13 +62,27 @@ public class Verify {
     
     public static boolean hasEqual(Compromisso compromisso){
         DaoCompromisso daoCompromisso = new DaoCompromisso();
-        ObservableList<Compromisso> listCompromisso = daoCompromisso.getListCompromisso();
         
-        for(int i = 0; i < listCompromisso.size(); i++){
-            if(listCompromisso.get(i).getDescricao().equals(compromisso.getDescricao())){
-                return true;
+        if(compromisso.getTipo().equals("V")){
+            ObservableList<Compromisso> listCompromisso = daoCompromisso.getListCompromissoVeterinario();
+
+            for(int i = 0; i < listCompromisso.size(); i++){
+                if(listCompromisso.get(i).getDescricao().equals(compromisso.getDescricao())){
+                    return true;
+                }
             }
         }
+        else{
+            //Tipo A (avulso)
+            ObservableList<Compromisso> listCompromisso = daoCompromisso.getListCompromissoAvulso();
+            
+            for(Compromisso comp : listCompromisso){
+                if(comp.getDescricao().equals(compromisso.getDescricao())){
+                    return true;
+                }
+            }
+        }
+        
         return false;
     }
     

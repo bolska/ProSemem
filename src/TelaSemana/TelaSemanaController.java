@@ -23,6 +23,23 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import BancoDeDados.DaoAtividade;
+import BancoDeDados.DaoCompromisso;
+import BancoDeDados.DaoEvento;
+import BancoDeDados.DaoFazenda;
+import BancoDeDados.DaoSessao;
+import Classes.Atividade;
+import Classes.Compromisso;
+import Classes.Evento;
+import Classes.Fazenda;
+import Classes.Sessao;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -97,7 +114,6 @@ public class TelaSemanaController implements Initializable {
             newPane.setMaxWidth(Double.MAX_VALUE);
             newPane.setMinWidth(cabecarioDiasNum.getPrefWidth() / 7);
             
-            
             if(diaAtual.isEqual(hoje)) {
                 labelData.getStylesheets().add("CSS/CalendarioCSS.css");
                 labelData.getStyleClass().add("Label-hoje");
@@ -106,7 +122,6 @@ public class TelaSemanaController implements Initializable {
             cabecarioDiasNum.getChildren().add(newPane);
             
             newPane.getChildren().add(labelData);
-            
             
             //    Dias da semana
             StackPane pane = new StackPane();
@@ -123,7 +138,6 @@ public class TelaSemanaController implements Initializable {
     
     
     private void inicializaCabecarioHorarios() {
-        
         for (int i = primeiraHoraDoDia; i <= ultimaHoraDoDia; i++) {
             String labelHora = Integer.toString(i)+"h00";
             StackPane pane = new StackPane();
@@ -219,7 +233,6 @@ public class TelaSemanaController implements Initializable {
         inicializaGridSemana();
         inicializaCabecarioHorarios();  
         carregaEventos();
-
     }    
     
 }
