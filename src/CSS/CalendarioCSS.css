@@ -210,6 +210,11 @@
     -fx-font-weight: lighter;
 }
 
+/*.dayAttButton{
+    -fx-background-color: rgba(140,163,255,0.2);
+    -fx-border-radius: 1000px;
+}*/
+
 /*TABLE*/
 
 /*GENERAL CLASSES*/

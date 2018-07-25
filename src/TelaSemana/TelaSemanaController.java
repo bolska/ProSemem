@@ -6,10 +6,20 @@
 
 package TelaSemana;
 
-import Model.Modelo;
+import BancoDeDados.DaoAtividade;
+import BancoDeDados.DaoCompromisso;
+import BancoDeDados.DaoEvento;
+import BancoDeDados.DaoFazenda;
+import BancoDeDados.DaoSessao;
+import Classes.Atividade;
+import Classes.Compromisso;
+import Classes.Evento;
+import Classes.Fazenda;
+import Classes.Sessao;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
