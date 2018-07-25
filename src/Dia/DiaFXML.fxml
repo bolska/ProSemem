@@ -10,8 +10,8 @@
    <children>
       <TableView id="tableId" fx:id="tableId" editable="true" layoutX="57.0" layoutY="42.0" prefHeight="677.0" prefWidth="635.0" styleClass="tableId" stylesheets="@../CSS/CalendarioCSS.css">
         <columns>
-          <TableColumn fx:id="colHorario" onEditCommit="#onEditChanged" prefWidth="75.0" sortable="false" text="Horarios (editável)" />
-          <TableColumn fx:id="colCompromissos" editable="false" prefWidth="75.0" sortable="false" text="Eventos" />
+          <TableColumn fx:id="colHorario" editable="false" onEditCommit="#onEditChanged" prefWidth="75.0" text="Horarios (editável)" />
+          <TableColumn fx:id="colCompromissos" editable="false" prefWidth="75.0" text="Eventos" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
