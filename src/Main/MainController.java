@@ -240,17 +240,18 @@ public class MainController implements Initializable {
     @FXML
     private void openProximos(){
         try {                
+                Modelo.getInstance().centerWidth = centerStackPane.getWidth();
+                Modelo.getInstance().centerHeight = centerStackPane.getHeight();
+            
                 centerStackPane.getChildren().clear();
-                //Load differentCalendarViewRootPane FXML
-                centerStackPane.getChildren().add(differentCalendarViewRootPane);
-                       
-            Label label = (Label) differentCalendarViewRootPane.getChildren().get(0);
-            label.setText("Janela Próximos ainda em desenvolvimento");
+                AnchorPane rootProximos = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("TelaProximos/TelaProximos.fxml"));
+                centerStackPane.getChildren().add(rootProximos);
+
 //            AnchorPane rootProximos = (AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("Gerenciador/Protocolo/ProtocoloFXML.fxml"));
 
         }
         catch (Exception e) {
-            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Ano" + e.getMessage());
+            Modelo.getInstance().showAlertErro("Erro ao abrir a janela Próximos" + e.getMessage());
         }
     }
     
