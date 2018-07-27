@@ -239,3 +239,8 @@
     -fx-background-radius: 50;
     -fx-background-color:tomato;
 }
+
+.Label-proximos-eventos {
+    -fx-label-padding: 2;
+   
+}

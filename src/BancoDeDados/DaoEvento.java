@@ -35,13 +35,14 @@ public class DaoEvento {
     private final String DELETE_COMPROMISSO_EVENTO = "DELETE FROM EVENTO WHERE COMP_ID=? and EVT_DATA=?";
     private final String DELETE_EVENTO_COMPROMISSO_BY_ID = "DELETE FROM EVENTO WHERE COMP_ID=?";
     private final String COUNT_EVENTO_BY_DATE = "select count(EVT_ID) from EVENTO where EVT_DATA=?";
-    private final String LIST_EVENTO_FOR_CALENDARIO = "SELECT * FROM EVENTO WHERE EVT_DATA >= ? AND EVT_DATA <= ?";
+    private final String LIST_EVENTO_FOR_CALENDARIO = "SELECT * FROM EVENTO WHERE EVT_DATA >= ? AND EVT_DATA <= ? ORDER BY EVT_DATA";
     private final String LISTBYDATA_AND_ATIVIDADE_EVENTO = "SELECT * FROM EVENTO WHERE EVT_DATA=? AND ATIV_ID=?";
     private final String LIST_EVENTO_BY_ID = "SELECT * FROM EVENTO WHERE EVT_ID=?";
     private final String LIST_EVENTO_BY_PROTOCOLO_ID = "SELECT * FROM EVENTO WHERE PROTO_ID=?";
     private final String LIST_EVENTO_BY_ATIVIDADE_ID = "SELECT * FROM EVENTO WHERE ATIV_ID=?";
     private final String LIST_EVENTO_BY_SESSAO_ID = "SELECT * FROM EVENTO WHERE SES_ID=?";
     private final String LIST_EVENTO_BY_CONFIRMADO = "select * from EVENTO where EVT_CONFIRMADO = 0 and ATIV_ID != 0 and EVT_DATA > ?";
+    private final String LIST_EVENTO_BY_DATE = "SELECT * FROM EVENTO WHERE EVT_DATA=?";
     
     
     public void insertEvento(Sessao sessao){
@@ -661,6 +662,49 @@ public class DaoEvento {
                 
             } catch(Exception e) {
                 Modelo.getInstance().showAlertErro("Não foi possível listar os eventos para sessão: \n" + e.getMessage());
+            }   
+        
+        return listEvento;
+    }
+    
+    public ObservableList<Evento> listByData(Date date){
+        
+            Connection conn = null;
+            PreparedStatement pstm = null;
+            ResultSet rs = null;
+            
+            ObservableList<Evento> listEvento = FXCollections.observableArrayList();
+
+            try {
+                conn = Conexao.getConexao();
+
+                pstm = conn.prepareStatement(LIST_EVENTO_BY_DATE);
+                pstm.setDate(1, date);
+                rs = pstm.executeQuery();
+
+                while(rs.next()) {
+                    Evento evento = new Evento();
+
+                    evento.setId(rs.getInt("EVT_ID"));
+                    evento.setData(rs.getDate("EVT_DATA"));
+                    evento.setConfirmado(rs.getInt("EVT_CONFIRMADO"));
+                    evento.setBloqueado(rs.getInt("EVT_BLOQUEADO"));
+                    evento.setAtividadeId(rs.getInt("ATIV_ID"));
+                    evento.setCompromissoId(rs.getInt("COMP_ID"));
+                    evento.setSessaoId(rs.getString("SES_ID"));
+                    evento.setProtocoloId(rs.getInt("PROTO_ID"));
+
+                    listEvento.add(evento);
+                }
+
+                pstm = null;
+                rs = null;
+                
+                
+                Conexao.fechaConexao(conn, pstm, rs);
+                
+            } catch(Exception e) {
+                Modelo.getInstance().showAlertErro("Não foi possível listar os eventos para esta data: \n" + e.getMessage());
             }   
         
         return listEvento;
