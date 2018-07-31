@@ -403,6 +403,55 @@ public class DaoEvento {
         return listaEvento;
     }
     
+    public ObservableList<Evento> getListEventoForCalendarioAno() {
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        ObservableList<Evento> listaEvento = FXCollections.observableArrayList();
+
+        LocalDate dataAtual = Modelo.getInstance().dataAtualAno;
+        LocalDate dataPrimeiroDia = LocalDate.now();
+        LocalDate dataUltimoDia = LocalDate.now();
+        
+        dataPrimeiroDia = LocalDate.of(dataAtual.getYear(), 1, 1);
+        dataUltimoDia = LocalDate.of(dataAtual.getYear(), 12, 31);
+        
+        
+        try {
+            conn = Conexao.getConexao();
+            pstm = conn.prepareStatement(LIST_EVENTO_FOR_CALENDARIO);
+            
+            pstm.setDate(1, Date.valueOf(dataPrimeiroDia));
+            pstm.setDate(2, Date.valueOf(dataUltimoDia));
+            
+            rs = pstm.executeQuery();
+
+            while(rs.next()) {
+                Evento evento = new Evento();
+
+                evento.setId(rs.getInt("EVT_ID"));
+                evento.setData(rs.getDate("EVT_DATA"));
+                evento.setConfirmado(rs.getInt("EVT_CONFIRMADO"));
+                evento.setBloqueado(rs.getInt("EVT_BLOQUEADO"));
+                evento.setAtividadeId(rs.getInt("ATIV_ID"));
+                evento.setCompromissoId(rs.getInt("COMP_ID"));
+                evento.setSessaoId(rs.getString("SES_ID"));
+                evento.setProtocoloId(rs.getInt("PROTO_ID"));
+                
+                listaEvento.add(evento);
+            }
+            Conexao.fechaConexao(conn, pstm, rs);
+
+        } catch(Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Mensagem de Erro");
+            alert.setContentText("Não foi possível listar todos Eventos: " + e.getMessage());
+            alert.showAndWait();
+        }
+
+        return listaEvento;
+    }
+    
     public ObservableList<Evento> getListaEventoByProtocoloId(int protocoloId) {
         Connection conn = null;
         PreparedStatement pstm = null;

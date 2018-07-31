@@ -11,6 +11,7 @@ import Classes.Evento;
 import Classes.Fazenda;
 import Classes.Protocolo;
 import Classes.Sessao;
+import DescricaoEvento.ListaEventoController;
 import Gerenciador.Atividade.AtividadeController;
 import Gerenciador.Fazenda.FazendaFXMLController;
 import Gerenciador.Protocolo.ProtocoloFXMLController;
@@ -41,6 +42,7 @@ public class Modelo {
     public static AtividadeController atividadeController;
     public static FazendaFXMLController fazendaController;
     public static TelaAnoController telaAnoController;
+    public static ListaEventoController listaEventoController;
     
     //Data
     public LocalDate dataAtual; //Data em que o calendário está

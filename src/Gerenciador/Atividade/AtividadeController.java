@@ -24,6 +24,9 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.converter.IntegerStringConverter;
@@ -256,6 +259,24 @@ public class AtividadeController implements Initializable {
         atvP.setTipo("Secundário");
         atvP.setIntervalo(-1);
         daoA.atualizaAtividade(atvP);
+    }
+    
+    private void buttonSalvarObsEnter() {
+        if(isTableSelected()){
+            if(atividade.getObs() == null){
+                updateObs(atividade);
+            }
+            else if(!atividade.getObs().equals(textAreaAtividadeObs.getText())){
+                updateObs(atividade);
+            }
+            else{
+                Modelo.getInstance().showAlertErro("Não houve nenhuma alteração no campo Observação.");
+
+            }
+        }
+        else{
+            Modelo.getInstance().showAlertErro("Selecione uma atividade.");
+        }
     }
     
     @Override

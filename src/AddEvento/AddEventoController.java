@@ -31,6 +31,9 @@ import RegrasNegocio.Verify;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 
 public class AddEventoController implements Initializable {
@@ -60,7 +63,7 @@ public class AddEventoController implements Initializable {
     @FXML private TableColumn<Atividade, String> columnTipo;
 
     @FXML
-    private void buttonAddAvulso(ActionEvent evt){
+    private void buttonAddAvulso(){
         if(!textFieldAvulso.getText().trim().isEmpty()){
             DaoCompromisso daoC = new DaoCompromisso();
             DaoEvento daoE = new DaoEvento();
@@ -107,7 +110,7 @@ public class AddEventoController implements Initializable {
     }
     
     @FXML
-    private void botaoSalvarEventoProtocolo(MouseEvent evt){
+    private void botaoSalvarEventoProtocolo(){
         boolean verifyFields = true;
         
         Protocolo protocolo = (Protocolo) comboBoxProtocolo.getSelectionModel().getSelectedItem();
@@ -309,6 +312,18 @@ public class AddEventoController implements Initializable {
         iniciaTabelaAtividade();
         startComboFazenda();
         textFieldSessao.setText(Modelo.getInstance().lastSessaoId);
+        textFieldSessao.setOnKeyPressed((k) -> {
+            final KeyCombination enter = new KeyCodeCombination(KeyCode.ENTER);
+            if(enter.match(k)) {
+                botaoSalvarEventoProtocolo();
+            }
+        });
+        textFieldAvulso.setOnKeyPressed((k) -> {
+            final KeyCombination enter = new KeyCodeCombination(KeyCode.ENTER);
+            if(enter.match(k)) {
+                buttonAddAvulso();
+            }
+        });
     }    
     
 }

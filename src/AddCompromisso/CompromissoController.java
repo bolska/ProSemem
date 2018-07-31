@@ -11,6 +11,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 
 public class CompromissoController implements Initializable {
@@ -115,12 +118,24 @@ public class CompromissoController implements Initializable {
             button.setOnAction((e) -> {
                 updateCompromisso();
             });
+            textFieldDescr.setOnKeyPressed((k) -> {
+                final KeyCombination enter = new KeyCodeCombination(KeyCode.ENTER);
+                if(enter.match(k)) {
+                    updateCompromisso();
+                }
+            });
         }
         else{
             textFieldDescr.setText("");
             
             button.setOnAction((e) -> {
                 addCompromisso();
+            });
+            textFieldDescr.setOnKeyPressed((k) -> {
+                final KeyCombination enter = new KeyCodeCombination(KeyCode.ENTER);
+                if(enter.match(k)) {
+                    addCompromisso();
+                }
             });
         }
     }    

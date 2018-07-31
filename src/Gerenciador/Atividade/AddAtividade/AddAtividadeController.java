@@ -19,6 +19,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -46,7 +49,7 @@ public class AddAtividadeController implements Initializable {
     
     
     @FXML
-    private void buttonAddAtividade(ActionEvent evt){
+    private void buttonAddAtividade(){
         if(!textFieldDescricao.getText().trim().isEmpty() && !textFieldIntervalo.getText().trim().isEmpty() && !comboBoxTipo.getSelectionModel().isEmpty()){
             try {
                 Atividade atividade = new Atividade();
@@ -102,6 +105,18 @@ public class AddAtividadeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         iniciaComboBoxTipo();
+        textFieldDescricao.setOnKeyPressed((k) -> {
+            final KeyCombination enter = new KeyCodeCombination(KeyCode.ENTER);
+            if(enter.match(k)) {
+                buttonAddAtividade();
+            }
+        });
+        textFieldIntervalo.setOnKeyPressed((k) -> {
+            final KeyCombination enter = new KeyCodeCombination(KeyCode.ENTER);
+            if(enter.match(k)) {
+                buttonAddAtividade();
+            }
+        });
     }    
     
 }

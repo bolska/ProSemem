@@ -18,6 +18,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -43,7 +46,7 @@ public class AddFazendaFXMLController implements Initializable {
     private JFXTextArea textAreaDescricao;
     
     @FXML
-    private void addFazenda(ActionEvent evt) {
+    private void addFazenda() {
         if(!textFieldNome.getText().trim().isEmpty()){
             if(!textFieldSigla.getText().trim().isEmpty()){
                 DaoFazenda daoF = new DaoFazenda();
@@ -113,7 +116,24 @@ public class AddFazendaFXMLController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        textFieldNome.setOnKeyPressed((k) -> {
+            final KeyCombination enter = new KeyCodeCombination(KeyCode.ENTER);
+            if(enter.match(k)) {
+                addFazenda();
+            }
+        });
+        textFieldSigla.setOnKeyPressed((k) -> {
+            final KeyCombination enter = new KeyCodeCombination(KeyCode.ENTER);
+            if(enter.match(k)) {
+                addFazenda();
+            }
+        });
+        textFieldEncarregado.setOnKeyPressed((k) -> {
+            final KeyCombination enter = new KeyCodeCombination(KeyCode.ENTER);
+            if(enter.match(k)) {
+                addFazenda();
+            }
+        });
     }    
     
 }

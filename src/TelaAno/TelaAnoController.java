@@ -24,6 +24,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -60,7 +61,7 @@ public class TelaAnoController implements Initializable {
         };
         
         DaoEvento daoEvento = new DaoEvento();
-        ObservableList<Evento> listaEvento = daoEvento.getListEventoForCalendario();
+        ObservableList<Evento> listaEvento = daoEvento.getListEventoForCalendarioAno();
         
         fullCalendarGridPane.setId(Integer.toString(Modelo.getInstance().dataAtualAno.getYear()));
         
@@ -409,6 +410,14 @@ public class TelaAnoController implements Initializable {
                             Modelo.getInstance().showAlertErro(ex.getMessage());
                         }
                     }
+                    });
+                    
+                    vBox.setOnMouseEntered( (e) -> {
+                        vBox.setCursor(Cursor.HAND);
+                    });
+                    
+                    vBox.setOnMouseExited((e) ->{
+                        vBox.setCursor(Cursor.DEFAULT);
                     });
                 }
             }

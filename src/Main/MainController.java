@@ -56,6 +56,10 @@ import javafx.scene.image.Image;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -875,6 +879,16 @@ public class MainController implements Initializable {
                 hbox.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
                     if(e.getClickCount() == 1 && !e.isConsumed()){
                         selectCompromisso(hbox);
+                    }
+                });
+                rootPane.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+                    if(KeyCode.ESCAPE == event.getCode()) {
+                        if(!whichCompromissoIsSelected.isEmpty()) {
+                            for(int i = 0; i < vBoxCompromissos.getChildren().size(); i++){
+                                vBoxCompromissos.getChildren().get(i).setStyle("-fx-background-color: #FFFFFF");
+                            }
+                            whichCompromissoIsSelected = "";
+                        }
                     }
                 });
 

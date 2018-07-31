@@ -32,6 +32,9 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 
 /**
@@ -213,6 +216,27 @@ public class DescricaoEventoController implements Initializable {
         atv.setObs(textAreaAtividadeObs.getText());
         DaoAtividade daoA = new DaoAtividade();
         daoA.atualizaAtividade(atv);
+    }
+    
+    private void updateObsEnter() {
+        if(protocolo.getObs() == null){
+            updateObs(protocolo);
+        }
+        else if(!protocolo.getObs().equals(textAreaProtocoloObs.getText())){
+            updateObs(protocolo);
+        }
+        else if(atividade.getObs() == null){
+            updateObs(atividade);
+        }
+        else if(!atividade.getObs().equals(textAreaAtividadeObs.getText())){
+            updateObs(atividade);
+        }
+        else{
+            Modelo.getInstance().popup.setAutoHide(false);
+            Modelo.getInstance().showAlertErro("Não houve nenhuma alteração no campo Observação.");
+            Modelo.getInstance().popup.setAutoHide(true);
+          
+        }
     }
     
     @Override

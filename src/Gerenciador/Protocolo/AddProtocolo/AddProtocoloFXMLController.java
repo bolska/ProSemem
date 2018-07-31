@@ -10,6 +10,9 @@ import BancoDeDados.DaoProtocolo;
 import Classes.Protocolo;
 import Model.Modelo;
 import RegrasNegocio.Verify;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 
 public class AddProtocoloFXMLController implements Initializable {
@@ -21,7 +24,7 @@ public class AddProtocoloFXMLController implements Initializable {
     private JFXTextField textFieldProtocolo;
 
     @FXML
-    private void addProtocolo(ActionEvent event) {
+    private void addProtocolo() {
         if(!textFieldProtocolo.getText().trim().isEmpty()){
             Protocolo protocolo = new Protocolo();
             
@@ -56,7 +59,12 @@ public class AddProtocoloFXMLController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        textFieldProtocolo.setOnKeyPressed((k) -> {
+            final KeyCombination enter = new KeyCodeCombination(KeyCode.ENTER);
+            if(enter.match(k)) {
+                addProtocolo();
+            }
+        });
     }    
     
 }
