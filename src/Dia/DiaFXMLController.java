@@ -69,7 +69,8 @@ public class DiaFXMLController implements Initializable {
     @FXML 
     private TableColumn <DiaConstructor, String> colCompromissos;    
 
-    @FXML private AnchorPane diaAP;
+    @FXML 
+    private AnchorPane diaAP;
 
     //Implementando a funcionalidade do botão "Atualizar" na aba "Dia"
     @FXML
@@ -93,7 +94,7 @@ public class DiaFXMLController implements Initializable {
         try{
             connDia = new Conexao();
             
-            Connection conn = connDia.getConexao(); //FICAR ESPERTO COM ISSO 
+            Connection conn = connDia.getConexao();  
             dayEvents = FXCollections.observableArrayList();
                 
             //Executando a query e armazenando em um resultset

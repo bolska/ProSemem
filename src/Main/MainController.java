@@ -50,6 +50,7 @@ import java.sql.Date;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -402,6 +403,13 @@ public class MainController implements Initializable {
     }
     
     private void inicializaCalendarioGridPane() {
+        
+    /*
+        
+        Fazer algo do tipo: if(calandar.getDay() == (dia do feriado) && calendar.getMonth() == (mes do feriado){
+        setStyle("-fx-background-color: red;")
+        
+        */
         for (int linha = 0; linha < 7; linha++) {
             for (int coluna = 0; coluna < 7; coluna++) {
 
@@ -1132,40 +1140,70 @@ public class MainController implements Initializable {
     }
     
     private void showTodayDate(StringBuilder stringColor, VBox vBoxDay){    //Destacando o dia atual no calendário
-        LocalDate todayDate = LocalDate.now();
-        LocalDate showingDate = Modelo.getInstance().dataAtual;
+        LocalDate todayDate = LocalDate.now();  //Data atual do sistema formato: (yyyy-MM-dd)
+        LocalDate showingDate = Modelo.getInstance().dataAtual; //Data em que o calendário está
+                
+        stringColor.append("-fx-border-color: ");
+        //StringBuilder stringBackGroundColor = new StringBuilder();
         
-        stringColor.append(" -fx-border-color: ");
-        
+        //stringBackGroundColor.append("-fx-background-color: ");
         
         if(vBoxDay.getId().equals("atual")){
-            if(showingDate.getYear() == todayDate.getYear()){
-
-                if(showingDate.getMonthValue() == todayDate.getMonthValue()){
+            //String labelMonth = (String)comboMes.getSelectionModel().getSelectedItem(); //retorna o valor do mês atual por extenso
+            //System.out.println(labelMonth);
+            
+            if(showingDate.getYear() == todayDate.getYear()){   //se for igual ao valor do ano do sistema
+                
+                if(showingDate.getMonthValue() == todayDate.getMonthValue()){   //se o valor do calendario for igual ao valor do mês do sistema
+                   
+                    //Analisando o que o sistema retorna
+                    System.out.println("todayDate.getMonthValue: "+ todayDate.getMonthValue());   
+                    System.out.println("todayDate.getDayOfMonth: "+ todayDate.getDayOfMonth());
+                    System.out.println("showingDate.getMonthValue: "+ showingDate.getMonthValue());
 
                     Label labelDay = (Label) vBoxDay.getChildren().get(0);
-                    int dayValue = Integer.parseInt(labelDay.getText());
-
+                    int dayValue = Integer.parseInt(labelDay.getText());    //retorna todos os dias do mês atual (de 1 a 31)
+                    //Destacando o dia atual
                     if(todayDate.getDayOfMonth() == dayValue){
                         stringColor.append("blue;");
                     }
-                    else{
+                    //Caso eu mude a data do meu sistema para dezembro, o feriado aparecerá corretamente
+                    //Isso porque a forma que declarei labelMonth retorna apenas um mês, e não todos os meses possíveis
+                    //por isso só consigo ver o feriado caso o mês da data do sistema esteja exatamente no valor de labelMonth
+                    //o if da linha  1152 influencia nisso!!
+                    if(showingDate.getMonthValue() == 1){
+                        if(dayValue == 1){   
+                            System.out.println("Entrou no if 1 == dayValue");
+                            //stringColor.append("red;");
+                            stringColor.append("FFC04C;");
+                        }
+                        //TALVEZ EU PRECISE MESMO CRIAR OUTRO METODO SÓ PARA OS FERIADOS
+                    
+                    }
+                    else{   //fechando o if(todayDate.getDayOfMonth() == dayValue)
                         stringColor.append("white;");
                     }
-                }
+                }   //fechando o if(showingDate.getMonthValue() == todayDate.getMonthValue())
+                //Implementando a adição de feriados
+                //Destacando feriados brasileiros
+                //Mês de Janeiro
+                
+                    
                 else{
                     stringColor.append("white;");
                 }
+                
             }
-            else{
+            else{   //fechando o if(showingDate.getYear() == todayDate.getYear())
                 stringColor.append("white;");
             }
-        }
+        }   //fechando o equals."posterior"
         else{
             stringColor.append("white;");
         }
-        
-        vBoxDay.setStyle(stringColor.toString()); 
+       
+        //vBoxDay.setStyle(stringBackGroundColor.toString() + stringColor.toString());  //tentativa falha de concatenar dois estilos
+        vBoxDay.setStyle(stringColor.toString());
         
         /*
         Se DataAtual.YEAR == DataHoje.YEAR {

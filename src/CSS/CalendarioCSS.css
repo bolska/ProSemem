@@ -215,10 +215,7 @@
     -fx-border-radius: 1000px;
 }*/
 
-/*TABLE*/
-
-/*GENERAL CLASSES*/
-
+/*Week*/
 .pane-semana{
     -fx-background-color:#E3ECF0;
     -fx-background-radius: 5;
@@ -244,3 +241,11 @@
     -fx-background-radius: 50;
     -fx-background-color:tomato;
 }
+
+/*TABLE*/
+
+/*GENERAL CLASSES*/
+
+
+
+
