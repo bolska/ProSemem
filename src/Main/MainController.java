@@ -1175,7 +1175,7 @@ public class MainController implements Initializable {
                         if(dayValue == 1){   
                             System.out.println("Entrou no if 1 == dayValue");
                             //stringColor.append("red;");
-                            stringColor.append("FFC04C;");
+                            stringColor.append("FFC04C;"); 
                         }
                         //TALVEZ EU PRECISE MESMO CRIAR OUTRO METODO SÓ PARA OS FERIADOS
                     
